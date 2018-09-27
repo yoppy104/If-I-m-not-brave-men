@@ -12,6 +12,7 @@ using namespace std;
 
 typedef uint8_t datatable;
 typedef unsigned long long stagedata;
+//komenntokakuyo
 
 //–{•¶
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
