@@ -1,4 +1,5 @@
 #include "draw.h"
+#include <math.h>
 #include "DxLib.h"
 #include "Player.h"
 #include "Enemy.h"
@@ -59,7 +60,7 @@ int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 	int player_x = me.getX(); // 対象プレイヤーのx座標
 	int player_y = me.getY(); // 対象プレイヤーのy座標
 	Equipment arm = me.getEquipment();
-	int attackable_image = LoadGraph("attackpanel.png");
+	int attackable_image = LoadGraph("not_battlepanel.png");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	if (arm.getAttackable()  == -1) {
@@ -95,11 +96,70 @@ int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 	return result;
 }
 
-void draw_attack_area(int point) {
-	int x = point % 10;
-	int y = (point - x) / 10;
-	int frame = LoadGraph("battleframe.png");
+void draw_attack_area(int point, Player me) {
+	int x = point % 10; //カーソルのx座標
+	int y = (point - x) / 10; //カーソルのy座標
+	int attack_area = LoadGraph("attackpanel.png"); //攻撃パネル
+	int frame = LoadGraph("battleframe.png"); //フレーム
+
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 184);
+	int area = me.getEquipment().getAttackArea();
+
+	if (496 + 160 * x != me.getX() || 136 + 160 * y != me.getY()) {
+		int style = (area - area % 10) / 10;
+		int len = area % 10;
+		if (style == 1) { //武器の攻撃範囲が1の時に
+			DrawGraph(496 + 160 * x, 136 + 160 * y, attack_area, TRUE);
+		}
+		else if (style == 2) {
+			int delta_x = (-me.getX() + (496 + 160 * x) == 0) ? 0 : (-me.getX() + (496 + 160 * x)) / abs(-me.getX() + (496 + 160 * x));
+			int delta_y = (-me.getY() + (136 + 160 * y) == 0) ? 0 : (-me.getY() + (136 + 160 * y)) / abs(-me.getY() + (136 + 160 * y));
+			/*
+			DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", delta_y);
+			WaitTimer(100);
+			*/
+			for (int i = 0; i < len + 1; i++) {
+				DrawGraph(496 + 160 * (x + delta_x * i), 136 + 160 * (y + delta_y * i), attack_area, TRUE);
+			}
+		}
+		else if (style == 3) {
+			//攻撃範囲を伸ばす方向を決定
+			int delta_x = -me.getY() + (136 + 160 * y);
+			int delta_y = -me.getX() + (496 + 160 * x);
+			if (delta_x == 0) delta_y = 1;
+			if (delta_y == 0) delta_x = 1;
+			if ((delta_x < 0 && delta_y < 0) || (delta_x > 0 && delta_y > 0)) {
+				delta_x = 1;
+				delta_y = -1;
+			}
+			else if ((delta_x < 0 && delta_y > 0) || (delta_x > 0 && delta_y < 0)) {
+				delta_x = 1;
+				delta_y = 1;
+			}
+			//ここまで
+			for (int i = 0; i < len + 1; i++) {
+				if (x + delta_x * i >= 0 && x + delta_x * i < 6 && y + delta_y * i >= 0 && y + delta_y * i < 6) { //範囲外は描画しない
+					DrawGraph(496 + 160 * (x + delta_x * i), 136 + 160 * (y + delta_y * i), attack_area, TRUE);
+				}
+				if (x - delta_x * i >= 0 && x - delta_x * i < 6 && y - delta_y * i >= 0 && y - delta_y * i < 6) { //範囲外は描画しない
+					DrawGraph(496 + 160 * (x - delta_x * i), 136 + 160 * (y - delta_y * i), attack_area, TRUE);
+				}
+			}
+		}
+		else if (style == 4) {
+			for (int delta_x = -len; delta_x < len+1; delta_x++) {
+				for (int delta_y = -len; delta_y < len + 1; delta_y++) {
+					if (x - delta_x >= 0 && x - delta_x < 6 && y - delta_y >= 0 && y - delta_y < 6) {
+						DrawGraph(496 + 160 * (x - delta_x), 136 + 160 * (y - delta_y), attack_area, TRUE);
+					}
+				}
+			}
+		}
+
+	}
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DrawGraph(496 + 160 * x, 136 + 160 * y, frame, TRUE);
 
 	DeleteGraph(frame);
+	DeleteGraph(attack_area);
 }

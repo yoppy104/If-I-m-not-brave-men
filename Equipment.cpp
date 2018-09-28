@@ -16,3 +16,7 @@ Equipment::Equipment(int type, int point, int price, int weight, int attackable,
 int Equipment::getAttackable() {
 	return this->attackable;
 }
+
+int Equipment::getAttackArea() {
+	return this->attack_area;
+}

@@ -44,6 +44,7 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy enemy, Player player) {
 }
 
 void Player::battle(stagedata stage) {
+
 }
 
 bool Player::is_attackable(int point) {

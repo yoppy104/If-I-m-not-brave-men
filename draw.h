@@ -16,4 +16,4 @@ void draw_command(int sele);
 
 int draw_attackable_area(Player me, Enemy enemy);
 
-void draw_attack_area(int point);
+void draw_attack_area(int point, Player me);

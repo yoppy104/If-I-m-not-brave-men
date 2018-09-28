@@ -27,5 +27,6 @@ public:
 
 	//パラメータ取り出し用の関数群
 	int getAttackable();
+	int getAttackArea();
 };
 

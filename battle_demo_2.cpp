@@ -54,7 +54,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
-	Equipment iron_sword(true, 5, 50, 1, 1, 1 ); // 装備のクラス
+	Equipment iron_sword(true, 5, 50, 1, 2, 41 ); // 装備のクラス
 
 	Player allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
 
@@ -100,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 		if (select == 0) {
 			int point = draw_attackable_area(allen, slime);
-			draw_attack_area(point);
+			draw_attack_area(point, allen);
 			while(CheckHitKey(KEY_INPUT_SPACE) == 0){
 				if (CheckHitKey(KEY_INPUT_RIGHT)) {
 					if ((point % 10) + 1 < 6) {
@@ -109,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 							ClearDrawScreen();
 							redraw_battle(stage, &slime, &allen);
 							draw_attackable_area(allen, slime);
-							draw_attack_area(point);
+							draw_attack_area(point, allen);
 						}
 					}
 					while (CheckHitKey(KEY_INPUT_RIGHT)) {}
@@ -121,7 +121,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 							ClearDrawScreen();
 							redraw_battle(stage, &slime, &allen);
 							draw_attackable_area(allen, slime);
-							draw_attack_area(point);
+							draw_attack_area(point, allen);
 						}
 					}
 					while (CheckHitKey(KEY_INPUT_LEFT)) {}
@@ -133,7 +133,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 							ClearDrawScreen();
 							redraw_battle(stage, &slime, &allen);
 							draw_attackable_area(allen, slime);
-							draw_attack_area(point);
+							draw_attack_area(point, allen);
 						}
 					}
 					while (CheckHitKey(KEY_INPUT_UP)) {}
@@ -145,7 +145,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 							ClearDrawScreen();
 							redraw_battle(stage, &slime, &allen);
 							draw_attackable_area(allen, slime);
-							draw_attack_area(point);
+							draw_attack_area(point, allen);
 						}
 					}
 					while (CheckHitKey(KEY_INPUT_DOWN)) {}
