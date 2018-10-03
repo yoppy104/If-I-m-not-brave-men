@@ -1,7 +1,7 @@
 #include "Equipment.h"
 
 Equipment::Equipment() {
-
+	 
 }
 
 Equipment::Equipment(int type, int point, int price, int weight, int attackable, int attack_area) {
@@ -11,6 +11,10 @@ Equipment::Equipment(int type, int point, int price, int weight, int attackable,
 	this->weight = weight;
 	this->attackable = attackable;
 	this->attack_area = attack_area;
+}
+
+int Equipment::getPoint() {
+	return this->point;
 }
 
 int Equipment::getAttackable() {

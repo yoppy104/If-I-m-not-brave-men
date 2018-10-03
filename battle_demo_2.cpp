@@ -54,11 +54,11 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
-	Equipment iron_sword(true, 5, 50, 1, 2, 41 ); // 装備のクラス
+	Equipment iron_sword(true, 10, 50, 1, -1, 42 ); // 装備のクラス
 
 	Player allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
 
-	Enemy slime("slime", 50, battlemap_left + 160 * 0, battlemap_top + 160 * 0, 2, 1, enemy_image); // スライムの構造体定義
+	Enemy slime("slime", 50, battlemap_left + 160 * 2, battlemap_top + 160 * 3, 2, 1, enemy_image); // スライムの構造体定義
 
 	redraw_battle(stage, &slime, &allen); // 再描画
 
@@ -98,7 +98,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 		redraw_battle(stage, &slime, &allen);
 
-		if (select == 0) {
+		if (select == 0) { //通常攻撃
 			int point = draw_attackable_area(allen, slime);
 			draw_attack_area(point, allen);
 			while(CheckHitKey(KEY_INPUT_SPACE) == 0){
@@ -152,8 +152,10 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 				}
 			}
 			while(CheckHitKey(KEY_INPUT_SPACE)){}
+
+			allen.battle(point, &allen, &slime);
 		}
-		else if (select == 1) {
+		else if (select == 1) { //移動
 
 			int movelimit = allen.getDex();
 
@@ -191,6 +193,11 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 					while (CheckHitKey(KEY_INPUT_LEFT)) {}
 				}
 			}
+		}
+		if (slime.getHp() < 0) {
+			DrawFormatString(100, 100, GetColor(0, 0, 0), "end");
+			WaitTimer(150);
+			return 0;
 		}
 	}
 

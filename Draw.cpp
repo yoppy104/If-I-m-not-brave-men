@@ -98,7 +98,7 @@ int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 
 void draw_attack_area(int point, Player me) {
 	int x = point % 10; //カーソルのx座標
-	int y = (point - x) / 10; //カーソルのy座標
+	int y = point / 10; //カーソルのy座標
 	int attack_area = LoadGraph("attackpanel.png"); //攻撃パネル
 	int frame = LoadGraph("battleframe.png"); //フレーム
 
@@ -106,7 +106,7 @@ void draw_attack_area(int point, Player me) {
 	int area = me.getEquipment().getAttackArea();
 
 	if (496 + 160 * x != me.getX() || 136 + 160 * y != me.getY()) {
-		int style = (area - area % 10) / 10;
+		int style = area / 10;
 		int len = area % 10;
 		if (style == 1) { //武器の攻撃範囲が1の時に
 			DrawGraph(496 + 160 * x, 136 + 160 * y, attack_area, TRUE);

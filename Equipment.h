@@ -1,9 +1,5 @@
 #pragma once
 
-#include <iostream>
-
-using namespace std;
-
 class Equipment{ // 装備の構造体
 	int type; // 0:武器, 1:頭, 2:胴, 3:足, 4:アクセサリー
 	int point; // 変動する値
@@ -26,6 +22,7 @@ public:
 	Equipment(int type, int point, int price, int weight, int attackable, int attack_area);
 
 	//パラメータ取り出し用の関数群
+	int getPoint();
 	int getAttackable();
 	int getAttackArea();
 };

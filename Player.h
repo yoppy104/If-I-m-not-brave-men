@@ -10,7 +10,8 @@ typedef unsigned long long stagedata;
 
 class Player { // プレイヤーの構造体、味方もこれで管理
 	char name[10]; // 名前。これで個体を管理する
-	int hp; // 体力
+	int hp_max; // 体力
+	int hp;
 	int x; // キャラのx座標
 	int y; // キャラのy座標
 	int attack; // キャラの攻撃力
@@ -24,7 +25,7 @@ public:
 
 	bool move(int dx, int dy, stagedata data, Enemy enemy, Player player);
 
-	void battle(stagedata data);
+	void battle(int attack_point, Player *p, Enemy *e);
 
 	bool is_attackable(int point);
 
@@ -32,6 +33,9 @@ public:
 	int getX();
 	int getY();
 	int getImage();
+	int getDiffence();
+	int getHp();
+	void plusHp(int point);
 	Equipment getEquipment();
 
 };

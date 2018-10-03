@@ -4,12 +4,14 @@
 #include "Equipment.h"
 #include "draw.h"
 #include "DxLib.h"
+#include "Mathematic.h"
 
 typedef unsigned long long stagedata;
 
 Player::Player(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Equipment _equipment, int _image, int dex) {
 	strcpy(this->name, _name); //名前
-	this->hp = _hp; //HP
+	this->hp_max = _hp; //HP
+	this->hp = _hp;
 	this->x = _x; //x座標
 	this->y = _y; //y座標
 	this->attack = _attack; //攻撃力
@@ -43,17 +45,106 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy enemy, Player player) {
 	else return false;
 }
 
-void Player::battle(stagedata stage) {
+void Player::battle(int attack_point, Player *p, Enemy *e) {
+	int point_x = attack_point % 10; //カーソルのx座標
+	int point_y = attack_point / 10; //カーソルのy座標
+	int attack_area = this->equipment.getAttackArea() / 10; //攻撃範囲
+	int len = this->equipment.getAttackArea() % 10; //攻撃の長さ(1では無効)
+	if (attack_area == 1) { //攻撃範囲が一点のみの場合
+		// 味方へのダメージ
+		if (496 + 160 * point_x == p->getX() && 136 + 160 * point_y == p->getY()) {
+			int d = damage(this->attack + this->equipment.getPoint(), p->getDiffence(), 1); //ダメージ計算
+			p->plusHp(-d); //体力を減少
+			DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+			WaitTimer(150);
+		}
+		// 敵へのダメージ
+		if (496 + 160 * point_x == e->getX() && 136 + 160 * point_y == e->getY()) {
+			int d = damage(this->attack + this->equipment.getPoint(), e->getDiffence(), 1); //ダメージ計算
+			e->plusHp(-d); //体力を減少
+			DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d",d); //ダメージを表記
 
+			WaitTimer(150);
+		}
+	} 
+	else if (attack_area == 2) {
+		// x軸の正規方向ベクトル
+		int delta_x = (-this->x + (496 + 160 * point_x) == 0) ? 0 : (-this->x + (496 + 160 * point_x)) / abs(-this->x + (496 + 160 * point_x));
+		// y軸の正規方向ベクトル
+		int delta_y = (-this->y + (136 + 160 * point_y) == 0) ? 0 : (-this->y + (136 + 160 * point_y)) / abs(-this->y + (136 + 160 * point_y));
+		for (int i = 0; i < len + 1; i++) {
+			//味方へのダメージ
+			if (496 + 160 * (point_x + delta_x * i) == p->getX() && 136 + 160 * (point_y + delta_y * i) == p->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), p->getDiffence(), 1); //ダメージ計算
+				p->plusHp(-d); //体力を減少
+				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+			//敵へのダメージ
+			if (496 + 160 * (point_x + delta_x * i) == e->getX() && 136 + 160 * (point_y + delta_y * i) == e->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), e->getDiffence(), 1); //ダメージ計算
+				e->plusHp(-d); //体力を減少
+				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+		}
+	}
+	else if (attack_area == 3) {
+		//x軸の正規方向ベクトル,y軸の正規方向ベクトル
+		int delta_x = this->y + (136 + 160 * point_y);
+		int delta_y = this->x + (496 + 160 * point_x);
+		if (delta_x == 0) delta_y = 1;
+		if (delta_y == 0) delta_x = 1;
+		if ((delta_x < 0 && delta_y < 0) || (delta_x > 0 && delta_y > 0)) {
+			delta_x = 1;
+			delta_y = -1;
+		}
+		else if ((delta_x < 0 && delta_y > 0) || (delta_x > 0 && delta_y < 0)) {
+			delta_x = 1;
+			delta_y = 1;
+		}
+		for (int i = 0; i < len + 1; i++) {
+			//味方へのダメージ
+			if (496 + 160 * (point_x + delta_x * i) == p->getX() && 136 + 160 * (point_y + delta_y * i) == p->getY() || 496 + 160 * (point_x - delta_x * i) == p->getX() && 136 + 160 * (point_y - delta_y * i) == p->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), p->getDiffence(), 1); //ダメージ計算
+				p->plusHp(-d); //体力を減少
+				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+			//敵へのダメージ
+			if (496 + 160 * (point_x + delta_x * i) == e->getX() && 136 + 160 * (point_y + delta_y * i) == e->getY() || 496 + 160 * (point_x - delta_x * i) == e->getX() && 136 + 160 * (point_y - delta_y * i) == e->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), e->getDiffence(), 1); //ダメージ計算
+				e->plusHp(-d); //体力を減少
+				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+		}
+	}
+	else if (attack_area == 4) {
+		// 味方へのダメージ
+		if (496 + 160 * (point_x - len) <= p->getX() && 496 + 160 * (point_x + len) >= p->getX()) {
+			if (136 + 160 * (point_y - len) <= p->getY() && 136 + 160 * (point_y + len) >= p->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), p->getDiffence(), 1); //ダメージ計算
+				p->plusHp(-d); //体力を減少
+				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+		}
+		// 敵へのダメージ
+		if (496 + 160 * (point_x - len) <= e->getX() && 496 + 160 * (point_x + len) >= e->getX()) {
+			if (136  + 160 * (point_y - len) <= e->getY() && 136 + 160 * (point_y + len) >= e->getY()) {
+				int d = damage(this->attack + this->equipment.getPoint(), e->getDiffence(), 1); //ダメージ計算
+				e->plusHp(-d); //体力を減少
+				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
+		}
+	}
 }
 
 bool Player::is_attackable(int point) {
 	int is_x = 496 + 160 * (point % 10);
 	int is_y = 136 + 160 * (point / 10);
-	/*
-	DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", is_y);
-	WaitTimer(100);
-	*/
 
 	if (this->equipment.getAttackable() == -1) {
 		if (! (is_x == this->x && is_y == this->y)) {
@@ -65,10 +156,6 @@ bool Player::is_attackable(int point) {
 	}
 	else if ((is_x >= (this->x - 160 * this->equipment.getAttackable())) && (is_x <= (this->x + 160 * this->equipment.getAttackable()))) {
 		if ((is_y >= (this->y - 160 * this->equipment.getAttackable())) && (is_y <= (this->y + 160 * this->equipment.getAttackable()))) {
-			/*
-			DrawFormatString(100, 300, GetColor(0, 0, 0), "test");
-			WaitTimer(100);
-			*/
 			if (is_x != this->x || is_y != this->y) {
 				return true;
 			}
@@ -88,6 +175,18 @@ int Player::getY() {
 }
 int Player::getImage() {
 	return this->image;
+}
+
+int Player::getDiffence() {
+	return this->diffence;
+}
+
+int Player::getHp() {
+	return this->hp;
+}
+
+void Player::plusHp(int point) {
+	this->hp += point;
 }
 
 Equipment Player::getEquipment() {
