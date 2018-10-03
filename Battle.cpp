@@ -1,5 +1,5 @@
 #include "DxLib.h"
-#include <iostream>
+#include "Battle.h"
 #include <math.h>
 #include <cstdlib>
 #include <ctime>
@@ -8,28 +8,12 @@
 #include "Enemy.h"
 #include "draw.h"
 
-using namespace std;
-
 typedef uint8_t datatable;
 typedef unsigned long long stagedata;
-//komenntokakuyo
 
 //本文
-int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
+int Battle()
 {
-
-	SRand(time(NULL));
-
-	ChangeWindowMode(true); // ウインドウモードに変更
-	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
-	SetMainWindowText("NotBraveman"); // ウィンドウタイトルを指定
-	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
-
-	if (DxLib_Init() == -1) // DXライブラリの初期化
-	{
-		return -1; // エラーを吐いたら終了
-	}
-
 	int enemy_image = LoadGraph("enemy.png"); // 敵の画像
 	int player_image = LoadGraph("プレイヤー.png"); // プレイヤーの画像
 	int frame_image = LoadGraph("battleframe.png"); // 攻撃範囲の選択用
@@ -202,8 +186,6 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	}
 
 	InitGraph();
-	DxLib_End(); // ＤＸライブラリ使用の終了処理
-	return 0; // ソフトの終了
 }
 
 
