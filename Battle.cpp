@@ -33,8 +33,6 @@ int Battle()
 		stage = ~(stage & test);
 	}
 
-
-
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
@@ -45,10 +43,6 @@ int Battle()
 	Enemy slime("slime", 50, battlemap_left + 160 * 2, battlemap_top + 160 * 3, 2, 1, enemy_image); // スライムの構造体定義
 
 	redraw_battle(stage, &slime, &allen); // 再描画
-
-	SetFontSize(32); // フォントサイズの指定
-
-	ProcessMessage(); // 割り込み処理をするときに必須
 
 	int select;
 	while (CheckHitKey(KEY_INPUT_ESCAPE) == 0) { // escapeを入力したらゲーム終了

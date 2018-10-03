@@ -13,6 +13,10 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 		return -1; // エラーを吐いたら終了
 	}
 
+	SetFontSize(32); // フォントサイズの指定
+
+	ProcessMessage(); // 割り込み処理をするときに必須
+
 	Battle();
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理
