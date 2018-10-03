@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Equipment.h"
+#include "Weapon.h"
 
 typedef uint64_t stagedata;
 
@@ -59,7 +59,7 @@ void draw_command(int sele) { //コマンド描画の関数
 int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 	int player_x = me.getX(); // 対象プレイヤーのx座標
 	int player_y = me.getY(); // 対象プレイヤーのy座標
-	Equipment arm = me.getEquipment();
+	Weapon arm = me.getWeapon();
 	int attackable_image = LoadGraph("not_battlepanel.png");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
@@ -103,7 +103,7 @@ void draw_attack_area(int point, Player me) {
 	int frame = LoadGraph("battleframe.png"); //フレーム
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 184);
-	int area = me.getEquipment().getAttackArea();
+	int area = me.getWeapon().getAttackArea();
 
 	if (496 + 160 * x != me.getX() || 136 + 160 * y != me.getY()) {
 		int style = area / 10;

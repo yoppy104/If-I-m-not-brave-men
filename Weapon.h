@@ -1,7 +1,6 @@
 #pragma once
 
-class Equipment{ // 装備の構造体
-	int type; // 0:武器, 1:頭, 2:胴, 3:足, 4:アクセサリー
+class Weapon{ // 装備の構造体
 	int point; // 変動する値
 	int price; // 購入時の値段
 	int weight; // 重量。これによって装備できたりが変わる。
@@ -18,8 +17,8 @@ class Equipment{ // 装備の構造体
 	*/
 	
 public:
-	Equipment();
-	Equipment(int type, int point, int price, int weight, int attackable, int attack_area);
+	Weapon();
+	Weapon(int point, int price, int weight, int attackable, int attack_area);
 
 	//パラメータ取り出し用の関数群
 	int getPoint();

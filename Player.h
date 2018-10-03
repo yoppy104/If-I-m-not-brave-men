@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Equipment.h"
+#include "Weapon.h"
 
 class Enemy;
 
@@ -17,11 +17,11 @@ class Player { // プレイヤーの構造体、味方もこれで管理
 	int attack; // キャラの攻撃力
 	int diffence; // キャラの防御力
 	int dex;
-	Equipment equipment; // 装備の配列
+	Weapon weapon; // 装備の配列
 	int image; // 画像
 
 public:
-	Player(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Equipment _equipment, int _image, int dex);
+	Player(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Weapon _weapon, int _image, int dex);
 
 	bool move(int dx, int dy, stagedata data, Enemy enemy, Player player);
 
@@ -36,6 +36,6 @@ public:
 	int getDiffence();
 	int getHp();
 	void plusHp(int point);
-	Equipment getEquipment();
+	Weapon getWeapon();
 
 };

@@ -148,7 +148,7 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Equipment.cpp" />
+    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mathematic.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -157,7 +157,7 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Equipment.h" />
+    <ClInclude Include="Weapon.h" />
     <ClInclude Include="Mathematic.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>

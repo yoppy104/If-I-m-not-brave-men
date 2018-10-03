@@ -3,7 +3,7 @@
 #include <math.h>
 #include <cstdlib>
 #include <ctime>
-#include "Equipment.h"
+#include "Weapon.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "draw.h"
@@ -36,7 +36,7 @@ int Battle()
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
-	Equipment iron_sword(true, 10, 50, 1, -1, 42 ); // 装備のクラス
+	Weapon iron_sword(10, 50, 1, -1, 42 ); // 装備のクラス
 
 	Player allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
 
