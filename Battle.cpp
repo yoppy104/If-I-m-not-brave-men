@@ -5,6 +5,10 @@
 #include <ctime>
 #include "Weapon.h"
 #include "Player.h"
+#include "Allen.h"
+#include "Craig.h"
+#include "Imitia.h"
+#include "Rain.h"
 #include "Enemy.h"
 #include "draw.h"
 
@@ -38,7 +42,13 @@ int Battle()
 
 	Weapon iron_sword(10, 50, 1, -1, 42 ); // 装備のクラス
 
-	Player allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
+	//後でメインの方に移す
+	Allen allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50, 5); // アレンの構造体定義
+	Rain rain("rain", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
+	Craig craig("craig", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
+	Imitia imitia("imitia", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
+	Player players[4] = { allen, rain, craig, imitia };
+	//ここまで
 
 	Enemy slime("slime", 50, battlemap_left + 160 * 2, battlemap_top + 160 * 3, 2, 1, enemy_image); // スライムの構造体定義
 
