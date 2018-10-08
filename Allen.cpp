@@ -2,6 +2,6 @@
 #include "Allen.h"
 #include "Weapon.h"
 
-Allen::Allen(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Weapon _weapon, int _image, int dex, int mp) :Player(_name, _hp, _x, _y, _attack, _diffence, _weapon, _image, dex){
+Allen::Allen(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image, int mp) :Player(name, x, y, hp, attack, diffence, magic_power, dex, _weapon, _image){
 	this->mp = mp;
 }

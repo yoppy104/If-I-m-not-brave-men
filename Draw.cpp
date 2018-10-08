@@ -38,7 +38,10 @@ void redraw_battle(stagedata stage, Enemy *_enemy, Player *_player) {
 	DrawGraph(0, 0, background, TRUE);
 	battle_stage(stage);
 	DrawGraph(_enemy->getX(), _enemy->getY(), _enemy->getImage(), TRUE);
-	DrawGraph(_player->getX(), _player->getY(), _player->getImage(), TRUE);
+	for (int i = 0; i < sizeof(_player); i++) {
+		DrawGraph(_player->getX(), _player->getY(), _player->getImage(), TRUE);
+		_player++;
+	}
 
 	DeleteGraph(background);
 }
@@ -56,10 +59,23 @@ void draw_command(int sele) { //コマンド描画の関数
 	DeleteGraph(point);
 }
 
-int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
-	int player_x = me.getX(); // 対象プレイヤーのx座標
-	int player_y = me.getY(); // 対象プレイヤーのy座標
-	Weapon arm = me.getWeapon();
+void draw_command_do(int sele) {
+	int command = LoadGraph("command.png"); // コマンドパネル
+	int point = LoadGraph("pointer.png"); // コマンド選択用のポインタ画像
+
+	DrawRotaGraph(200, 400, 2.0, 0, command, TRUE); //コマンドフレームの描画
+	DrawRotaGraph(120, 220 + 200 * sele, 1.5, 0, point, TRUE); // 選択用ポインタの描画
+	DrawFormatString(150, 200, GetColor(0, 0, 0), "せんとう");
+	DrawFormatString(150, 400, GetColor(0, 0, 0), "とうそう");
+
+	DeleteGraph(command);
+	DeleteGraph(point);
+}
+
+int draw_attackable_area(Player* me, Enemy* enemy) { // 後に配列に変更
+	int player_x = me->getX(); // 対象プレイヤーのx座標
+	int player_y = me->getY(); // 対象プレイヤーのy座標
+	Weapon arm = me->getWeapon();
 	int attackable_image = LoadGraph("not_battlepanel.png");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
@@ -69,10 +85,10 @@ int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 				if (! (x == player_x && y == player_y)) {
 					DrawGraph(x, y, attackable_image, TRUE);
 					if (player_x == x && player_y == y) {
-						DrawGraph(me.getX(), me.getY(), me.getImage(), TRUE);
+						DrawGraph(me->getX(), me->getY(), me->getImage(), TRUE);
 					}
-					if (enemy.getX() == x && enemy.getY() == y) {
-						DrawGraph(enemy.getX(), enemy.getY(), enemy.getImage(), TRUE);
+					if (enemy->getX() == x && enemy->getY() == y) {
+						DrawGraph(enemy->getX(), enemy->getY(), enemy->getImage(), TRUE);
 					}
 				}
 			}
@@ -96,24 +112,24 @@ int draw_attackable_area(Player me, Enemy enemy) { // 後に配列に変更
 	return result;
 }
 
-void draw_attack_area(int point, Player me) {
+void draw_attack_area(int point, Player* me) {
 	int x = point % 10; //カーソルのx座標
 	int y = point / 10; //カーソルのy座標
 	int attack_area = LoadGraph("attackpanel.png"); //攻撃パネル
 	int frame = LoadGraph("battleframe.png"); //フレーム
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 184);
-	int area = me.getWeapon().getAttackArea();
+	int area = me->getWeapon().getAttackArea();
 
-	if (496 + 160 * x != me.getX() || 136 + 160 * y != me.getY()) {
+	if (496 + 160 * x != me->getX() || 136 + 160 * y != me->getY()) {
 		int style = area / 10;
 		int len = area % 10;
 		if (style == 1) { //武器の攻撃範囲が1の時に
 			DrawGraph(496 + 160 * x, 136 + 160 * y, attack_area, TRUE);
 		}
 		else if (style == 2) {
-			int delta_x = (-me.getX() + (496 + 160 * x) == 0) ? 0 : (-me.getX() + (496 + 160 * x)) / abs(-me.getX() + (496 + 160 * x));
-			int delta_y = (-me.getY() + (136 + 160 * y) == 0) ? 0 : (-me.getY() + (136 + 160 * y)) / abs(-me.getY() + (136 + 160 * y));
+			int delta_x = (-me->getX() + (496 + 160 * x) == 0) ? 0 : (-me->getX() + (496 + 160 * x)) / abs(-me->getX() + (496 + 160 * x));
+			int delta_y = (-me->getY() + (136 + 160 * y) == 0) ? 0 : (-me->getY() + (136 + 160 * y)) / abs(-me->getY() + (136 + 160 * y));
 			/*
 			DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", delta_y);
 			WaitTimer(100);
@@ -124,8 +140,8 @@ void draw_attack_area(int point, Player me) {
 		}
 		else if (style == 3) {
 			//攻撃範囲を伸ばす方向を決定
-			int delta_x = -me.getY() + (136 + 160 * y);
-			int delta_y = -me.getX() + (496 + 160 * x);
+			int delta_x = -me->getY() + (136 + 160 * y);
+			int delta_y = -me->getX() + (496 + 160 * x);
 			if (delta_x == 0) delta_y = 1;
 			if (delta_y == 0) delta_x = 1;
 			if ((delta_x < 0 && delta_y < 0) || (delta_x > 0 && delta_y > 0)) {

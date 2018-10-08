@@ -14,6 +14,8 @@ void redraw_battle(stagedata stage, Enemy *_enemy, Player *_player);
 
 void draw_command(int sele);
 
-int draw_attackable_area(Player me, Enemy enemy);
+void draw_command_do(int sele);
 
-void draw_attack_area(int point, Player me);
+int draw_attackable_area(Player* me, Enemy* enemy);
+
+void draw_attack_area(int point, Player* me);

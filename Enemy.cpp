@@ -1,5 +1,6 @@
-
+#include "Character.h"
 #include "Enemy.h"
+#include "Character.h"
 #include "Player.h"
 #include "DxLib.h"
 #include "draw.h"
@@ -8,44 +9,14 @@
 
 using namespace std;
 
-Enemy::Enemy(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, int _image) { // ‰Šú‰»
-	strcpy(this->name, _name);
-	this->hp = _hp;
-	this->hp_max = _hp;
-	this->x = _x;
-	this->y = _y;
-	this->attack = _attack;
-	this->diffence = _diffence;
-	this->image = _image;
+Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) :Character(name, x, y, hp, attack, diffence, magic_power, dex){ // ‰Šú‰»
+	this->image = image;
 }
 
 void Enemy::move(Player* p, Enemy* e, int background_image, stagedata stage) { // “G‚ÌˆÚ“®
 	
 }
 
-int Enemy::getX() {
-	return this->x;
-}
-
-int Enemy::getY() {
-	return this->y;
-}
-
-int Enemy::getAttack() {
-	return this->attack;
-}
-
-int Enemy::getDiffence() {
-	return this->diffence;
-}
-
-int Enemy::getHp() {
-	return this->hp;
-}
-
-void Enemy::plusHp(int dp) {
-	this->hp += dp;
-}
 
 int Enemy::getImage() {
 	return this->image;

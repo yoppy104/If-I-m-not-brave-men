@@ -4,189 +4,231 @@
 #include <cstdlib>
 #include <ctime>
 #include "Weapon.h"
+#include "Character.h"
 #include "Player.h"
-#include "Allen.h"
-#include "Craig.h"
-#include "Imitia.h"
-#include "Rain.h"
 #include "Enemy.h"
 #include "draw.h"
+#include "Mathematic.h"
 
 typedef uint8_t datatable;
 typedef unsigned long long stagedata;
 
 //本文
-int Battle()
+void Battle(Player* players)
 {
 	int enemy_image = LoadGraph("enemy.png"); // 敵の画像
-	int player_image = LoadGraph("プレイヤー.png"); // プレイヤーの画像
-	int frame_image = LoadGraph("battleframe.png"); // 攻撃範囲の選択用
+	int frame_image = LoadGraph("battleframe->png"); // 攻撃範囲の選択用
 
 	//ステージのデータ値
 	stagedata stage = 0b1111111111111111111011111111111111111;
 
-	//障害物の設定
-	int block = 0;
-	if (block != 0) {
-		stagedata test = 1;
-		for (int i = 0; i < block; i++) {
-			int r = rand() % 36;
-			stagedata key = pow(2, r);
-			test |= key;
-		}
-		stage = ~(stage & test);
-	}
-
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
-	Weapon iron_sword(10, 50, 1, -1, 42 ); // 装備のクラス
+	Enemy a("スライム", 496 + 160 * 2, 136 + 160 * 2, 5, 2, 100, 2, 4, enemy_image); // スライムの構造体定義
+	Enemy* slime;
+	slime = &a;
 
-	//後でメインの方に移す
-	Allen allen("allen", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50, 5); // アレンの構造体定義
-	Rain rain("rain", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
-	Craig craig("craig", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
-	Imitia imitia("imitia", 100, battlemap_left + 160 * 5, battlemap_top + 160 * 5, 10, 2, iron_sword, player_image, 50); // アレンの構造体定義
-	Player players[4] = { allen, rain, craig, imitia };
-	//ここまで
+	redraw_battle(stage, slime, players); // 再描画
 
-	Enemy slime("slime", 50, battlemap_left + 160 * 2, battlemap_top + 160 * 3, 2, 1, enemy_image); // スライムの構造体定義
-
-	redraw_battle(stage, &slime, &allen); // 再描画
-
-	int select;
-	while (CheckHitKey(KEY_INPUT_ESCAPE) == 0) { // escapeを入力したらゲーム終了
-		select = 0; // 0:攻撃 1:いどう 2:アイテム 3:防御
+	int select_do; //グループ全体での行動選択
+	int select; //個人での行動選択
+	bool is_loop = true;
+	while (is_loop && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
+		select_do = 0; //0:行動,　1:逃げる
 		ClearDrawScreen();
-		redraw_battle(stage, &slime, &allen);
-		draw_command(select); //コマンド枠を描画
-
-		// 行動の選択
-		while (CheckHitKey(KEY_INPUT_SPACE) == 0) { // spaceを押したら決定
-			if (CheckHitKey(KEY_INPUT_DOWN)) { // 下を押したらselectを+1
-				if (select == 0) {
-					select++;
+		redraw_battle(stage, slime, players);
+		draw_command_do(select_do); //コマンド枠を描画
+		while (CheckHitKey(KEY_INPUT_SPACE) == 0) {
+			if (CheckHitKey(KEY_INPUT_UP)) {
+				if (select_do == 1) {
+					select_do--;
 					ClearDrawScreen();
-					redraw_battle(stage, &slime, &allen);
-					draw_command(select);
+					redraw_battle(stage, slime, players);
+					draw_command_do(select_do);
 				}
-				while(CheckHitKey(KEY_INPUT_DOWN)){}
+				while (CheckHitKey(KEY_INPUT_UP)) {}
 			}
-			else if (CheckHitKey(KEY_INPUT_UP)) { // 上を押したらselectを―1
-				if (select == 1) {
-					select--;
+			else if (CheckHitKey(KEY_INPUT_DOWN)) {
+				if (select_do == 0) {
+					select_do++;
 					ClearDrawScreen();
-					redraw_battle(stage, &slime, &allen);
-					draw_command(select);
+					redraw_battle(stage, slime, players);
+					draw_command_do(select_do);
 				}
-				while(CheckHitKey(KEY_INPUT_UP)){}
+				while (CheckHitKey(KEY_INPUT_DOWN)) {}
 			}
 		}
-		while (CheckHitKey(KEY_INPUT_SPACE)) {}
+		while (CheckHitKey(KEY_INPUT_SPACE)){}
 
-		redraw_battle(stage, &slime, &allen);
+		if (select_do == 0) { //戦闘を行う場合
 
-		if (select == 0) { //通常攻撃
-			int point = draw_attackable_area(allen, slime);
-			draw_attack_area(point, allen);
-			while(CheckHitKey(KEY_INPUT_SPACE) == 0){
-				if (CheckHitKey(KEY_INPUT_RIGHT)) {
-					if ((point % 10) + 1 < 6) {
-						if (allen.is_attackable(point + 1)) {
-							point += 1;
-							ClearDrawScreen();
-							redraw_battle(stage, &slime, &allen);
-							draw_attackable_area(allen, slime);
-							draw_attack_area(point, allen);
+			//行動決定
+
+
+
+			//ここまで
+
+
+			for (int i = 0; i < 1; i++) {
+
+				int side = 0 / 10; //どっちサイドか
+				int person = 0 % 10; //各サイドのどの人か
+
+				if (side == 0) { //味方サイドの行動
+					Player *me = &players[person];
+					select = 0; // 0:攻撃 1:いどう 2:アイテム 3:防御
+					ClearDrawScreen();
+					redraw_battle(stage, slime, players);
+					draw_command(select); //コマンド枠を描画
+
+					// 行動の選択
+					while (CheckHitKey(KEY_INPUT_SPACE) == 0 && CheckHitKey(KEY_INPUT_B) == 0) { // spaceを押したら決定
+						if (CheckHitKey(KEY_INPUT_DOWN)) { // 下を押したらselectを+1
+							if (select == 0) {
+								select++;
+								ClearDrawScreen();
+								redraw_battle(stage, slime, players);
+								draw_command(select);
+							}
+							while (CheckHitKey(KEY_INPUT_DOWN)) {}
+						}
+						else if (CheckHitKey(KEY_INPUT_UP)) { // 上を押したらselectを―1
+							if (select == 1) {
+								select--;
+								ClearDrawScreen();
+								redraw_battle(stage, slime, players);
+								draw_command(select);
+							}
+							while (CheckHitKey(KEY_INPUT_UP)) {}
 						}
 					}
-					while (CheckHitKey(KEY_INPUT_RIGHT)) {}
+					while (CheckHitKey(KEY_INPUT_B)) {
+						select = -1;
+					}
+					while (CheckHitKey(KEY_INPUT_SPACE)) {}
+
+					redraw_battle(stage, slime, players);
+
+					if (select == 0) { //通常攻撃
+						int point = draw_attackable_area(me, slime);
+						draw_attack_area(point, me);
+						while (CheckHitKey(KEY_INPUT_SPACE) == 0) {
+							if (CheckHitKey(KEY_INPUT_RIGHT)) {
+								if ((point % 10) + 1 < 6) {
+									if (me->is_attackable(point + 1)) {
+										point += 1;
+										ClearDrawScreen();
+										redraw_battle(stage, slime, players);
+										draw_attackable_area(me, slime);
+										draw_attack_area(point, me);
+									}
+								}
+								while (CheckHitKey(KEY_INPUT_RIGHT)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_LEFT)) {
+								if ((point % 10) - 1 >= 0) {
+									if (me->is_attackable(point - 1)) {
+										point -= 1;
+										ClearDrawScreen();
+										redraw_battle(stage, slime, players);
+										draw_attackable_area(me, slime);
+										draw_attack_area(point, me);
+									}
+								}
+								while (CheckHitKey(KEY_INPUT_LEFT)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_UP)) {
+								if ((point / 10) - 1 >= 0) {
+									if (me->is_attackable(point - 10)) {
+										point -= 10;
+										ClearDrawScreen();
+										redraw_battle(stage, slime, players);
+										draw_attackable_area(me, slime);
+										draw_attack_area(point, me);
+									}
+								}
+								while (CheckHitKey(KEY_INPUT_UP)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_DOWN)) {
+								if ((point / 10) + 1 < 6) {
+									if (me->is_attackable(point + 10)) {
+										point += 10;
+										ClearDrawScreen();
+										redraw_battle(stage, slime, players);
+										draw_attackable_area(me, slime);
+										draw_attack_area(point, me);
+									}
+								}
+								while (CheckHitKey(KEY_INPUT_DOWN)) {}
+							}
+						}
+						while (CheckHitKey(KEY_INPUT_SPACE)) {}
+
+						me->battle(point, me, slime);
+					}
+					else if (select == 1) { //移動
+
+						int movelimit = me->getDex();
+
+						while (movelimit > 0 && CheckHitKey(KEY_INPUT_A) == 0) {
+							if (CheckHitKey(KEY_INPUT_UP)) {
+								if (me->move(0, -160, stage, slime, me)) {
+									movelimit--;
+									ClearDrawScreen();
+									redraw_battle(stage, slime, players);
+								}
+								while (CheckHitKey(KEY_INPUT_UP)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_DOWN)) {
+								if (me->move(0, 160, stage, slime, me)) {
+									movelimit--;
+									ClearDrawScreen();
+									redraw_battle(stage, slime, players);
+								}
+								while (CheckHitKey(KEY_INPUT_DOWN)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_RIGHT)) {
+								if (me->move(160, 0, stage, slime, me)) {
+									movelimit--;
+									ClearDrawScreen();
+									redraw_battle(stage, slime, players);
+								}
+								while (CheckHitKey(KEY_INPUT_RIGHT)) {}
+							}
+							else if (CheckHitKey(KEY_INPUT_LEFT)) {
+								if (me->move(-160, 0, stage, slime, me)) {
+									movelimit--;
+									ClearDrawScreen();
+									redraw_battle(stage, slime, players);
+								}
+								while (CheckHitKey(KEY_INPUT_LEFT)) {}
+							}
+						}
+					}
 				}
-				else if (CheckHitKey(KEY_INPUT_LEFT)) {
-					if ((point % 10) - 1 >= 0) {
-						if (allen.is_attackable(point - 1)) {
-							point -= 1;
-							ClearDrawScreen();
-							redraw_battle(stage, &slime, &allen);
-							draw_attackable_area(allen, slime);
-							draw_attack_area(point, allen);
-						}
-					}
-					while (CheckHitKey(KEY_INPUT_LEFT)) {}
-				}
-				else if (CheckHitKey(KEY_INPUT_UP)) {
-					if ((point / 10) - 1 >= 0) {
-						if (allen.is_attackable(point - 10)) {
-							point -= 10;
-							ClearDrawScreen();
-							redraw_battle(stage, &slime, &allen);
-							draw_attackable_area(allen, slime);
-							draw_attack_area(point, allen);
-						}
-					}
-					while (CheckHitKey(KEY_INPUT_UP)) {}
-				}
-				else if (CheckHitKey(KEY_INPUT_DOWN)) {
-					if ((point / 10) + 1 < 6) {
-						if (allen.is_attackable(point + 10)) {
-							point += 10;
-							ClearDrawScreen();
-							redraw_battle(stage, &slime, &allen);
-							draw_attackable_area(allen, slime);
-							draw_attack_area(point, allen);
-						}
-					}
-					while (CheckHitKey(KEY_INPUT_DOWN)) {}
+				else if (side == 1) {
+					DrawFormatString(100, 100, GetColor(0, 0, 0), "enemy_turn");
+					WaitTimer(300);
 				}
 			}
-			while(CheckHitKey(KEY_INPUT_SPACE)){}
-
-			allen.battle(point, &allen, &slime);
 		}
-		else if (select == 1) { //移動
-
-			int movelimit = allen.getDex();
-
-			while (movelimit > 0 && CheckHitKey(KEY_INPUT_A) == 0) {
-				if (CheckHitKey(KEY_INPUT_UP)) {
-					if (allen.move(0, -160, stage, slime, allen)) {
-						movelimit--;
-						ClearDrawScreen();
-						redraw_battle(stage, &slime, &allen);
-					} 
-					while (CheckHitKey(KEY_INPUT_UP)){}
-				}
-				else if (CheckHitKey(KEY_INPUT_DOWN)) {
-					if (allen.move(0, 160, stage, slime, allen)) {
-						movelimit--;
-						ClearDrawScreen();
-						redraw_battle(stage, &slime, &allen);
-					}
-					while (CheckHitKey(KEY_INPUT_DOWN)) {}
-				}
-				else if (CheckHitKey(KEY_INPUT_RIGHT)) {
-					if (allen.move(160, 0, stage, slime, allen)) {
-						movelimit--;
-						ClearDrawScreen();
-						redraw_battle(stage, &slime, &allen);
-					}
-					while (CheckHitKey(KEY_INPUT_RIGHT)) {}
-				}
-				else if (CheckHitKey(KEY_INPUT_LEFT)) {
-					if (allen.move(-160, 0, stage, slime, allen)) {
-						movelimit--;
-						ClearDrawScreen();
-						redraw_battle(stage, &slime, &allen);
-					}
-					while (CheckHitKey(KEY_INPUT_LEFT)) {}
-				}
+		else if (select_do == 1) { //逃げる場合
+			if (GetRand(100) < 50) {
+				DrawFormatString(100, 100, GetColor(0, 0, 0), "run");
+				WaitTimer(150);
+				is_loop = false;
+			}
+			else {
+				DrawFormatString(100, 100, GetColor(0, 0, 0), "don't run");
+				WaitTimer(150);
 			}
 		}
-		if (slime.getHp() < 0) {
-			DrawFormatString(100, 100, GetColor(0, 0, 0), "end");
-			WaitTimer(150);
-			return 0;
-		}
+	}
+	if (slime->getHp() < 0) {
+		DrawFormatString(100, 100, GetColor(0, 0, 0), "end");
+		WaitTimer(150);
+		is_loop = false;
 	}
 
 	InitGraph();

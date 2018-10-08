@@ -1,6 +1,6 @@
 #include "Imitia.h"
 #include "Weapon.h"
 
-Imitia::Imitia(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Weapon _weapon, int _image, int dex) :Player(_name, _hp, _x, _y, _attack, _diffence, _weapon, _image, dex){
+Imitia::Imitia(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image) :Player(name, x, y, hp, attack, diffence, magic_power, dex, _weapon, _image){
 
 }
