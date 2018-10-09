@@ -65,7 +65,7 @@ void Battle(Player* players)
 
 			//s“®Œˆ’è
 
-
+			//test
 
 			//‚±‚±‚Ü‚Å
 
