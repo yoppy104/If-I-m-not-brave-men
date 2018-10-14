@@ -32,13 +32,16 @@ void battle_stage(stagedata stage) {
 	DeleteGraph(image_stagenot);
 }
 
-void redraw_battle(stagedata stage, Enemy *_enemy, Player *_player) {
+void redraw_battle(stagedata stage, Enemy *_enemy, int size_enemy, Player *_player, int size_player) {
 	int background = LoadGraph("bg_natural_sougen.jpg"); // 背景画像
 
 	DrawGraph(0, 0, background, TRUE);
 	battle_stage(stage);
-	DrawGraph(_enemy->getX(), _enemy->getY(), _enemy->getImage(), TRUE);
-	for (int i = 0; i < sizeof(_player); i++) {
+	for (int i = 0; i < size_enemy; i++) {
+		DrawGraph(_enemy->getX(), _enemy->getY(), _enemy->getImage(), TRUE);
+		_enemy++;
+	}
+	for (int i = 0; i < size_player; i++) {
 		DrawGraph(_player->getX(), _player->getY(), _player->getImage(), TRUE);
 		_player++;
 	}
@@ -72,7 +75,7 @@ void draw_command_do(int sele) {
 	DeleteGraph(point);
 }
 
-int draw_attackable_area(Player* me, Enemy* enemy) { // 後に配列に変更
+int draw_attackable_area(Player* me, Player* players, int size_players, Enemy* enemy, int size_enemy) { // 後に配列に変更
 	int player_x = me->getX(); // 対象プレイヤーのx座標
 	int player_y = me->getY(); // 対象プレイヤーのy座標
 	Weapon arm = me->getWeapon();
@@ -84,12 +87,6 @@ int draw_attackable_area(Player* me, Enemy* enemy) { // 後に配列に変更
 			for (int y = 136; y <= 936; y += 160) {
 				if (! (x == player_x && y == player_y)) {
 					DrawGraph(x, y, attackable_image, TRUE);
-					if (player_x == x && player_y == y) {
-						DrawGraph(me->getX(), me->getY(), me->getImage(), TRUE);
-					}
-					if (enemy->getX() == x && enemy->getY() == y) {
-						DrawGraph(enemy->getX(), enemy->getY(), enemy->getImage(), TRUE);
-					}
 				}
 			}
 		}
@@ -130,10 +127,6 @@ void draw_attack_area(int point, Player* me) {
 		else if (style == 2) {
 			int delta_x = (-me->getX() + (496 + 160 * x) == 0) ? 0 : (-me->getX() + (496 + 160 * x)) / abs(-me->getX() + (496 + 160 * x));
 			int delta_y = (-me->getY() + (136 + 160 * y) == 0) ? 0 : (-me->getY() + (136 + 160 * y)) / abs(-me->getY() + (136 + 160 * y));
-			/*
-			DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", delta_y);
-			WaitTimer(100);
-			*/
 			for (int i = 0; i < len + 1; i++) {
 				DrawGraph(496 + 160 * (x + delta_x * i), 136 + 160 * (y + delta_y * i), attack_area, TRUE);
 			}

@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "DxLib.h"
 #include <string.h>
 
 Character::Character() {
@@ -17,8 +18,8 @@ Character::Character(char name[], int x, int y, int hp, int attack, int diffence
 	this->dex = dex;
 }
 
-void Character::getName(char* result) {
-	strcpy(result, this->name);
+void Character::getName(int x, int y) {
+	DrawFormatString(x, y, GetColor(0,0,0), this->name);
 }
 
 int Character::getX() {

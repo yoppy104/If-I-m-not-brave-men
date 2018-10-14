@@ -23,16 +23,16 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	ProcessMessage(); // 割り込み処理をするときに必須
 
-	Weapon iron_sword(10, 50, 1, 1, 21); // 装備のクラス
+	Weapon iron_sword(10, 50, 1, 1, 11); // 装備のクラス
 	int player_image = LoadGraph("プレイヤー.png"); // プレイヤーの画像
 
 	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 7, 3, 6, 5, iron_sword, player_image, 10); // アレンの構造体定義
 	Rain rain("レイン", 496 + 160 * 4, 136 + 160 * 5, 15, 4, 2, 10, 3, iron_sword, player_image); // レインの構造体定義
 	Craig craig("クレイグ", 496 + 160 * 0, 136 + 160 * 5, 25, 10, 10, 0, 2, iron_sword, player_image); // クレイグの構造体定義
 	Imitia imitia("イミティア", 496 + 160 * 1, 136 + 160 * 5, 20, 6, 8, 7, 6, iron_sword, player_image); // イミティアの構造体定義
-	Player players[4] = { allen, rain, craig, imitia };
+	Player players[] = { allen, rain, craig, imitia };
 
-	Battle(players);
+	Battle(players, sizeof(players)/sizeof(players[0]));
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理
 	return 0; // ソフトの終了

@@ -14,7 +14,7 @@ typedef uint8_t datatable;
 typedef unsigned long long stagedata;
 
 //本文
-void Battle(Player* players)
+void Battle(Player* players, int size_players)
 {
 	int enemy_image = LoadGraph("enemy.png"); // 敵の画像
 	int frame_image = LoadGraph("battleframe->png"); // 攻撃範囲の選択用
@@ -25,11 +25,12 @@ void Battle(Player* players)
 	int battlemap_left = 496; // マップの左の座標
 	int battlemap_top = 136; // マップの上の座標
 
-	Enemy a("スライム", 496 + 160 * 2, 136 + 160 * 2, 5, 2, 100, 2, 4, enemy_image); // スライムの構造体定義
-	Enemy* slime;
-	slime = &a;
+	Enemy enemy_a("スライム", 496 + 160 * 2, 136 + 160 * 0, 5, 2, 100, 2, 4, enemy_image); // スライムの構造体定義
+	Enemy enemy_b("スライム", 496 + 160 * 0, 136 + 160 * 0, 5, 2, 100, 2, 4, enemy_image); // スライムの構造体定義
+	Enemy enemy_c("スライム", 496 + 160 * 1, 136 + 160 * 0, 5, 2, 100, 2, 4, enemy_image); // スライムの構造体定義
+	Enemy enemy[3] = { enemy_a, enemy_b, enemy_c };
 
-	redraw_battle(stage, slime, players); // 再描画
+	int size_enemy = sizeof(enemy) / sizeof(enemy[0]);
 
 	int select_do; //グループ全体での行動選択
 	int select; //個人での行動選択
@@ -37,14 +38,14 @@ void Battle(Player* players)
 	while (is_loop && CheckHitKey(KEY_INPUT_ESCAPE) == 0){
 		select_do = 0; //0:行動,　1:逃げる
 		ClearDrawScreen();
-		redraw_battle(stage, slime, players);
+		redraw_battle(stage, enemy, size_enemy, players, size_players);
 		draw_command_do(select_do); //コマンド枠を描画
 		while (CheckHitKey(KEY_INPUT_SPACE) == 0) {
 			if (CheckHitKey(KEY_INPUT_UP)) {
 				if (select_do == 1) {
 					select_do--;
 					ClearDrawScreen();
-					redraw_battle(stage, slime, players);
+					redraw_battle(stage, enemy, size_enemy, players, size_players);
 					draw_command_do(select_do);
 				}
 				while (CheckHitKey(KEY_INPUT_UP)) {}
@@ -53,7 +54,7 @@ void Battle(Player* players)
 				if (select_do == 0) {
 					select_do++;
 					ClearDrawScreen();
-					redraw_battle(stage, slime, players);
+					redraw_battle(stage, enemy, size_enemy, players, size_players);
 					draw_command_do(select_do);
 				}
 				while (CheckHitKey(KEY_INPUT_DOWN)) {}
@@ -64,8 +65,6 @@ void Battle(Player* players)
 		if (select_do == 0) { //戦闘を行う場合
 
 			//行動決定
-
-			//test
 
 			//ここまで
 
@@ -79,7 +78,7 @@ void Battle(Player* players)
 					Player *me = &players[person];
 					select = 0; // 0:攻撃 1:いどう 2:アイテム 3:防御
 					ClearDrawScreen();
-					redraw_battle(stage, slime, players);
+					redraw_battle(stage, enemy, size_enemy, players, size_players);
 					draw_command(select); //コマンド枠を描画
 
 					// 行動の選択
@@ -88,7 +87,7 @@ void Battle(Player* players)
 							if (select == 0) {
 								select++;
 								ClearDrawScreen();
-								redraw_battle(stage, slime, players);
+								redraw_battle(stage, enemy, size_enemy, players, size_players);
 								draw_command(select);
 							}
 							while (CheckHitKey(KEY_INPUT_DOWN)) {}
@@ -97,7 +96,7 @@ void Battle(Player* players)
 							if (select == 1) {
 								select--;
 								ClearDrawScreen();
-								redraw_battle(stage, slime, players);
+								redraw_battle(stage, enemy, size_enemy, players, size_players);
 								draw_command(select);
 							}
 							while (CheckHitKey(KEY_INPUT_UP)) {}
@@ -108,10 +107,10 @@ void Battle(Player* players)
 					}
 					while (CheckHitKey(KEY_INPUT_SPACE)) {}
 
-					redraw_battle(stage, slime, players);
+					redraw_battle(stage, enemy, size_enemy, players, size_players);
 
 					if (select == 0) { //通常攻撃
-						int point = draw_attackable_area(me, slime);
+						int point = draw_attackable_area(me, players, size_players, enemy, size_enemy);
 						draw_attack_area(point, me);
 						while (CheckHitKey(KEY_INPUT_SPACE) == 0) {
 							if (CheckHitKey(KEY_INPUT_RIGHT)) {
@@ -119,8 +118,8 @@ void Battle(Player* players)
 									if (me->is_attackable(point + 1)) {
 										point += 1;
 										ClearDrawScreen();
-										redraw_battle(stage, slime, players);
-										draw_attackable_area(me, slime);
+										redraw_battle(stage, enemy, size_enemy, players, size_players);
+										draw_attackable_area(me, players, size_players, enemy, size_enemy);
 										draw_attack_area(point, me);
 									}
 								}
@@ -131,8 +130,8 @@ void Battle(Player* players)
 									if (me->is_attackable(point - 1)) {
 										point -= 1;
 										ClearDrawScreen();
-										redraw_battle(stage, slime, players);
-										draw_attackable_area(me, slime);
+										redraw_battle(stage, enemy, size_enemy, players, size_players);
+										draw_attackable_area(me, players, size_players, enemy, size_enemy);
 										draw_attack_area(point, me);
 									}
 								}
@@ -143,8 +142,8 @@ void Battle(Player* players)
 									if (me->is_attackable(point - 10)) {
 										point -= 10;
 										ClearDrawScreen();
-										redraw_battle(stage, slime, players);
-										draw_attackable_area(me, slime);
+										redraw_battle(stage, enemy, size_enemy, players, size_players);
+										draw_attackable_area(me, players, size_players, enemy, size_enemy);
 										draw_attack_area(point, me);
 									}
 								}
@@ -155,8 +154,8 @@ void Battle(Player* players)
 									if (me->is_attackable(point + 10)) {
 										point += 10;
 										ClearDrawScreen();
-										redraw_battle(stage, slime, players);
-										draw_attackable_area(me, slime);
+										redraw_battle(stage, enemy, size_enemy, players, size_players);
+										draw_attackable_area(me, players, size_players, enemy, size_enemy);
 										draw_attack_area(point, me);
 									}
 								}
@@ -165,7 +164,7 @@ void Battle(Player* players)
 						}
 						while (CheckHitKey(KEY_INPUT_SPACE)) {}
 
-						me->battle(point, me, slime);
+						me->battle(point, me,size_players, enemy, size_enemy);
 					}
 					else if (select == 1) { //移動
 
@@ -173,34 +172,34 @@ void Battle(Player* players)
 
 						while (movelimit > 0 && CheckHitKey(KEY_INPUT_A) == 0) {
 							if (CheckHitKey(KEY_INPUT_UP)) {
-								if (me->move(0, -160, stage, slime, me)) {
+								if (me->move(0, -160, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
 									ClearDrawScreen();
-									redraw_battle(stage, slime, players);
+									redraw_battle(stage, enemy, size_enemy, players, size_players);
 								}
 								while (CheckHitKey(KEY_INPUT_UP)) {}
 							}
 							else if (CheckHitKey(KEY_INPUT_DOWN)) {
-								if (me->move(0, 160, stage, slime, me)) {
+								if (me->move(0, -160, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
 									ClearDrawScreen();
-									redraw_battle(stage, slime, players);
+									redraw_battle(stage, enemy, size_enemy, players, size_players);
 								}
 								while (CheckHitKey(KEY_INPUT_DOWN)) {}
 							}
 							else if (CheckHitKey(KEY_INPUT_RIGHT)) {
-								if (me->move(160, 0, stage, slime, me)) {
+								if (me->move(160, 0, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
 									ClearDrawScreen();
-									redraw_battle(stage, slime, players);
+									redraw_battle(stage, enemy, size_enemy, players, size_players);
 								}
 								while (CheckHitKey(KEY_INPUT_RIGHT)) {}
 							}
 							else if (CheckHitKey(KEY_INPUT_LEFT)) {
-								if (me->move(-160, 0, stage, slime, me)) {
+								if (me->move(-160, 0, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
 									ClearDrawScreen();
-									redraw_battle(stage, slime, players);
+									redraw_battle(stage, enemy, size_enemy, players, size_players);
 								}
 								while (CheckHitKey(KEY_INPUT_LEFT)) {}
 							}
@@ -225,7 +224,7 @@ void Battle(Player* players)
 			}
 		}
 	}
-	if (slime->getHp() < 0) {
+	if (enemy->getHp() < 0) {
 		DrawFormatString(100, 100, GetColor(0, 0, 0), "end");
 		WaitTimer(150);
 		is_loop = false;

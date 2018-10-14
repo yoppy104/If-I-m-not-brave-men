@@ -13,7 +13,7 @@ Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int 
 	this->image = image; //画像
 }
 
-bool Player::move(int dx, int dy, stagedata stage, Enemy* enemy, Player* player) {
+bool Player::move(int dx, int dy, stagedata stage, Enemy* enemy, int size_enemy, Player* player, int size_player) {
 	stagedata test = 1; //移動後の位置座標
 	int test_x = dx + this->getX();
 	int test_y = dy + this->getY();
@@ -29,14 +29,19 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy* enemy, Player* player)
 	is_p = false;
 	is_e = false;
 
-	for (int i = 0; i < sizeof(player); i++) {
-		if (test_x == player->getX() && test_y == player->getY()) {
+	for (int i = 0; i < size_player; i++) {
+		if (test_x == player[i].getX() && test_y == player[i].getY()) {
 			is_p = true;
 		}
-		player++;
 	}
 
-	if ((test_x == enemy->getX() && test_y == enemy->getY()) || is_p) {
+	for (int i = 0; i < size_enemy; i++) {
+		if (test_x == enemy[i].getX() && test_y == player[i].getY()) {
+			is_e = true;
+		}
+	}
+
+	if (is_e || is_p) {
 		test = 0;
 	}
 
@@ -48,26 +53,29 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy* enemy, Player* player)
 	else return false;
 }
 
-void Player::battle(int attack_point, Player *p, Enemy *e) {
+void Player::battle(int attack_point, Player *p, int size_p, Enemy *e, int size_e) {
 	int point_x = attack_point % 10; //カーソルのx座標
 	int point_y = attack_point / 10; //カーソルのy座標
 	int attack_area = this->weapon.getAttackArea() / 10; //攻撃範囲
 	int len = this->weapon.getAttackArea() % 10; //攻撃の長さ(1では無効)
 	if (attack_area == 1) { //攻撃範囲が一点のみの場合
 		// 味方へのダメージ
-		if (496 + 160 * point_x == p->getX() && 136 + 160 * point_y == p->getY()) {
-			int d = damage(this->getAttack() + this->weapon.getPoint(), p->getDiffence(), 1); //ダメージ計算
-			p->plusHp(-d); //体力を減少
-			DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-			WaitTimer(150);
+		for (int i = 0; i < size_p; i++) {
+			if (496 + 160 * point_x == p[i].getX() && 136 + 160 * point_y == p[i].getY()) {
+				int d = damage(this->getAttack() + this->weapon.getPoint(), p[i].getDiffence(), 1); //ダメージ計算
+				p[i].plusHp(-d); //体力を減少
+				DrawFormatString(p[i].getX() + 50, p[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
 		}
 		// 敵へのダメージ
-		if (496 + 160 * point_x == e->getX() && 136 + 160 * point_y == e->getY()) {
-			int d = damage(this->getAttack() + this->weapon.getPoint(), e->getDiffence(), 1); //ダメージ計算
-			e->plusHp(-d); //体力を減少
-			DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d",d); //ダメージを表記
-
-			WaitTimer(150);
+		for (int i = 0; i < size_e; i++) {
+			if (496 + 160 * point_x == e[i].getX() && 136 + 160 * point_y == e[i].getY()) {
+				int d = damage(this->getAttack() + this->weapon.getPoint(), e[i].getDiffence(), 1); //ダメージ計算
+				e[i].plusHp(-d); //体力を減少
+				DrawFormatString(e[i].getX() + 50, e[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+				WaitTimer(150);
+			}
 		}
 	} 
 	else if (attack_area == 2) {
@@ -77,18 +85,22 @@ void Player::battle(int attack_point, Player *p, Enemy *e) {
 		int delta_y = (-this->getY() + (136 + 160 * point_y) == 0) ? 0 : (-this->getY() + (136 + 160 * point_y)) / abs(-this->getY() + (136 + 160 * point_y));
 		for (int i = 0; i < len + 1; i++) {
 			//味方へのダメージ
-			if (496 + 160 * (point_x + delta_x * i) == p->getX() && 136 + 160 * (point_y + delta_y * i) == p->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), p->getDiffence(), 1); //ダメージ計算
-				p->plusHp(-d); //体力を減少
-				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+			for (int i = 0; i < size_p; i++) {
+				if (496 + 160 * (point_x + delta_x * i) == p[i].getX() && 136 + 160 * (point_y + delta_y * i) == p[i].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), p[i].getDiffence(), 1); //ダメージ計算
+					p[i].plusHp(-d); //体力を減少
+					DrawFormatString(p[i].getX() + 50, p[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 			//敵へのダメージ
-			if (496 + 160 * (point_x + delta_x * i) == e->getX() && 136 + 160 * (point_y + delta_y * i) == e->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), e->getDiffence(), 1); //ダメージ計算
-				e->plusHp(-d); //体力を減少
-				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+			for (int i = 0; i < size_e; i++) {
+				if (496 + 160 * (point_x + delta_x * i) == e[i].getX() && 136 + 160 * (point_y + delta_y * i) == e[i].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), e[i].getDiffence(), 1); //ダメージ計算
+					e[i].plusHp(-d); //体力を減少
+					DrawFormatString(e[i].getX() + 50, e[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 		}
 	}
@@ -107,39 +119,47 @@ void Player::battle(int attack_point, Player *p, Enemy *e) {
 			delta_y = 1;
 		}
 		for (int i = 0; i < len + 1; i++) {
-			//味方へのダメージ
-			if (496 + 160 * (point_x + delta_x * i) == p->getX() && 136 + 160 * (point_y + delta_y * i) == p->getY() || 496 + 160 * (point_x - delta_x * i) == p->getX() && 136 + 160 * (point_y - delta_y * i) == p->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), p->getDiffence(), 1); //ダメージ計算
-				p->plusHp(-d); //体力を減少
-				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+			for (int j = 0; j < size_p; j++) {
+				//味方へのダメージ
+				if (496 + 160 * (point_x + delta_x * i) == p[j].getX() && 136 + 160 * (point_y + delta_y * i) == p[j].getY() || 496 + 160 * (point_x - delta_x * i) == p[j].getX() && 136 + 160 * (point_y - delta_y * i) == p[j].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), p[j].getDiffence(), 1); //ダメージ計算
+					p[j].plusHp(-d); //体力を減少
+					DrawFormatString(p[j].getX() + 50, p[j].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 			//敵へのダメージ
-			if (496 + 160 * (point_x + delta_x * i) == e->getX() && 136 + 160 * (point_y + delta_y * i) == e->getY() || 496 + 160 * (point_x - delta_x * i) == e->getX() && 136 + 160 * (point_y - delta_y * i) == e->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), e->getDiffence(), 1); //ダメージ計算
-				e->plusHp(-d); //体力を減少
-				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+			for (int j = 0; j < size_e; j++) {
+				if (496 + 160 * (point_x + delta_x * i) == e[j].getX() && 136 + 160 * (point_y + delta_y * i) == e[j].getY() || 496 + 160 * (point_x - delta_x * i) == e[j].getX() && 136 + 160 * (point_y - delta_y * i) == e[j].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), e[j].getDiffence(), 1); //ダメージ計算
+					e[j].plusHp(-d); //体力を減少
+					DrawFormatString(e[j].getX() + 50, e[j].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 		}
 	}
 	else if (attack_area == 4) {
 		// 味方へのダメージ
-		if (496 + 160 * (point_x - len) <= p->getX() && 496 + 160 * (point_x + len) >= p->getX()) {
-			if (136 + 160 * (point_y - len) <= p->getY() && 136 + 160 * (point_y + len) >= p->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), p->getDiffence(), 1); //ダメージ計算
-				p->plusHp(-d); //体力を減少
-				DrawFormatString(p->getX() + 50, p->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+		for (int i = 0; i < size_p; i++) {
+			if (496 + 160 * (point_x - len) <= p[i].getX() && 496 + 160 * (point_x + len) >= p[i].getX()) {
+				if (136 + 160 * (point_y - len) <= p[i].getY() && 136 + 160 * (point_y + len) >= p[i].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), p[i].getDiffence(), 1); //ダメージ計算
+					p[i].plusHp(-d); //体力を減少
+					DrawFormatString(p[i].getX() + 50, p[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 		}
 		// 敵へのダメージ
-		if (496 + 160 * (point_x - len) <= e->getX() && 496 + 160 * (point_x + len) >= e->getX()) {
-			if (136  + 160 * (point_y - len) <= e->getY() && 136 + 160 * (point_y + len) >= e->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), e->getDiffence(), 1); //ダメージ計算
-				e->plusHp(-d); //体力を減少
-				DrawFormatString(e->getX() + 50, e->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
+		for (int i = 0; i < size_e; i++) {
+			if (496 + 160 * (point_x - len) <= e[i].getX() && 496 + 160 * (point_x + len) >= e[i].getX()) {
+				if (136 + 160 * (point_y - len) <= e[i].getY() && 136 + 160 * (point_y + len) >= e[i].getY()) {
+					int d = damage(this->getAttack() + this->weapon.getPoint(), e[i].getDiffence(), 1); //ダメージ計算
+					e[i].plusHp(-d); //体力を減少
+					DrawFormatString(e[i].getX() + 50, e[i].getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+					WaitTimer(150);
+				}
 			}
 		}
 	}

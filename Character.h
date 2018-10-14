@@ -15,7 +15,7 @@ private:
 public:
 	Character();
 	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex);
-	void getName(char* name);
+	void getName(int x, int y);
 	int getX();
 	void setX(int dx);
 	int getY();
