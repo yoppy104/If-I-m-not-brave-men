@@ -36,7 +36,7 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy* enemy, int size_enemy,
 	}
 
 	for (int i = 0; i < size_enemy; i++) {
-		if (test_x == enemy[i].getX() && test_y == player[i].getY()) {
+		if (test_x == enemy[i].getX() && test_y == enemy[i].getY()) {
 			is_e = true;
 		}
 	}

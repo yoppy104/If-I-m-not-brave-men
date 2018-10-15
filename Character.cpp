@@ -65,3 +65,25 @@ int Character::getMagicPower() {
 int Character::getDex() {
 	return this->dex;
 }
+
+//Allen用
+void Character::getMp() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}
+
+//Player用
+void Character::move() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}
+void Character::battle() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}
+void Character::is_attackable() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}
+void Character::getImage() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}
+void Character::getWeapon() {
+	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+}

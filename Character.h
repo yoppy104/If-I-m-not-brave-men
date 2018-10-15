@@ -27,4 +27,14 @@ public:
 	int getDiffence();
 	int getMagicPower();
 	int getDex();
+
+	//Allen—p
+	void getMp();
+
+	//player—p
+	void move();
+	void battle();
+	void is_attackable();
+	void getImage();
+	void getWeapon();
 };

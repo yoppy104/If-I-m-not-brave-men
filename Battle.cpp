@@ -17,7 +17,6 @@ typedef unsigned long long stagedata;
 void Battle(Player* players, int size_players)
 {
 	int enemy_image = LoadGraph("enemy.png"); // 敵の画像
-	int frame_image = LoadGraph("battleframe->png"); // 攻撃範囲の選択用
 
 	//ステージのデータ値
 	stagedata stage = 0b1111111111111111111011111111111111111;
@@ -65,9 +64,8 @@ void Battle(Player* players, int size_players)
 		if (select_do == 0) { //戦闘を行う場合
 
 			//行動決定
-
+		
 			//ここまで
-
 
 			for (int i = 0; i < 1; i++) {
 
@@ -170,7 +168,7 @@ void Battle(Player* players, int size_players)
 
 						int movelimit = me->getDex();
 
-						while (movelimit > 0 && CheckHitKey(KEY_INPUT_A) == 0) {
+						while (movelimit > 0 && CheckHitKey(KEY_INPUT_SPACE) == 0) {
 							if (CheckHitKey(KEY_INPUT_UP)) {
 								if (me->move(0, -160, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
@@ -180,7 +178,7 @@ void Battle(Player* players, int size_players)
 								while (CheckHitKey(KEY_INPUT_UP)) {}
 							}
 							else if (CheckHitKey(KEY_INPUT_DOWN)) {
-								if (me->move(0, -160, stage, enemy, size_enemy, players, size_players)) {
+								if (me->move(0, 160, stage, enemy, size_enemy, players, size_players)) {
 									movelimit--;
 									ClearDrawScreen();
 									redraw_battle(stage, enemy, size_enemy, players, size_players);
@@ -203,6 +201,7 @@ void Battle(Player* players, int size_players)
 								}
 								while (CheckHitKey(KEY_INPUT_LEFT)) {}
 							}
+							while(CheckHitKey(KEY_INPUT_SPACE)){}
 						}
 					}
 				}

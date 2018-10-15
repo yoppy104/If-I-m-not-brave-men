@@ -17,13 +17,13 @@ class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 public:
 	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image);
 
-	bool move(int dx, int dy, stagedata stage, Enemy* enemy, int size_enemy, Player* player, int size_player);
+	virtual bool move(int dx, int dy, stagedata stage, Enemy* enemy, int size_enemy, Player* player, int size_player);
 
-	void battle(int attack_point, Player *p, int size_p, Enemy *e, int size_e);
+	virtual void battle(int attack_point, Player *p, int size_p, Enemy *e, int size_e);
 
-	bool is_attackable(int point);
+	virtual bool is_attackable(int point);
 
-	int getImage();
-	Weapon getWeapon();
+	virtual int getImage();
+	virtual Weapon getWeapon();
 
 };
