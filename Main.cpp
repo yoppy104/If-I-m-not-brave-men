@@ -31,8 +31,16 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	Craig craig("クレイグ", 496 + 160 * 0, 136 + 160 * 5, 25, 10, 10, 0, 2, iron_sword, player_image); // クレイグの構造体定義
 	Imitia imitia("イミティア", 496 + 160 * 1, 136 + 160 * 5, 20, 6, 8, 7, 6, iron_sword, player_image); // イミティアの構造体定義
 	Player players[] = { allen, rain, craig, imitia };
-
-	Battle(players, sizeof(players)/sizeof(players[0]));
+	int size_players = sizeof(players) / sizeof(players[0]);
+	for (int i = 1; i < size_players; i++) {
+		int j = i;
+		while (j > 0 && players[j].getDex() > players[j - 1].getDex()) {
+			Player t = players[j - 1];
+			players[j - 1] = players[j];
+			players[j] = t;
+		}
+	}
+	Battle(players, size_players);
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理
 	return 0; // ソフトの終了

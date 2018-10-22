@@ -31,6 +31,15 @@ void Battle(Player* players, int size_players)
 
 	int size_enemy = sizeof(enemy) / sizeof(enemy[0]);
 
+	for (int i = 1; i < size_enemy; i++) {
+		int j = i;
+		while (j > 0 && enemy[j].getDex() > enemy[j - 1].getDex()) {
+			Enemy t = enemy[j - 1];
+			enemy[j - 1] = enemy[j];
+			enemy[j] = t;
+		}
+	}
+
 	int select_do; //グループ全体での行動選択
 	int select; //個人での行動選択
 	bool is_loop = true;
@@ -63,16 +72,42 @@ void Battle(Player* players, int size_players)
 
 		if (select_do == 0) { //戦闘を行う場合
 
-			//行動決定
-		
-			//ここまで
+			int count_player = 0; //playerの行動回数
+			int count_enemy = 0; //enemyの行動回数
 
-			for (int i = 0; i < 1; i++) {
+			for (int i = 0; i < size_enemy+size_players; i++) {
 
-				int side = 0 / 10; //どっちサイドか
-				int person = 0 % 10; //各サイドのどの人か
+				DrawFormatString(100, 100, GetColor(0, 0, 0), "%d", i);
+				WaitTimer(200);
+				//行動者を決定する
+
+				int side = -1; //どっちサイドか,0=player, 1=enemy, -1=NULL
+				int person; //各サイドのどの人か
+				if (count_enemy >= size_enemy) {
+					side = 0;
+					person = count_player;
+				}
+				else if (count_player >= size_players) {
+					side = 1;
+					person = count_enemy;
+				}
+				else if (players[count_player].getDex() >= enemy[count_enemy].getDex()) {
+					side = 0;
+					person = count_player;
+				}
+				else {
+					side = 1;
+					person = count_enemy;
+				}
+
+				if (side == -1) { //例外処理。両方に行動可能なキャラがいなかったら、for文を終了させる.
+					break;
+				}
+
+				//ここまで
 
 				if (side == 0) { //味方サイドの行動
+					count_player++;
 					Player *me = &players[person];
 					select = 0; // 0:攻撃 1:いどう 2:アイテム 3:防御
 					ClearDrawScreen();
@@ -201,11 +236,12 @@ void Battle(Player* players, int size_players)
 								}
 								while (CheckHitKey(KEY_INPUT_LEFT)) {}
 							}
-							while(CheckHitKey(KEY_INPUT_SPACE)){}
 						}
+						while (CheckHitKey(KEY_INPUT_SPACE)) {}
 					}
 				}
 				else if (side == 1) {
+					count_enemy++;
 					DrawFormatString(100, 100, GetColor(0, 0, 0), "enemy_turn");
 					WaitTimer(300);
 				}
