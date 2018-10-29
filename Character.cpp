@@ -6,7 +6,7 @@ Character::Character() {
 
 }
 
-Character::Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex) {
+Character::Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) {
 	strcpy(this->name, name);
 	this->x = x;
 	this->y = y;
@@ -16,6 +16,8 @@ Character::Character(char name[], int x, int y, int hp, int attack, int diffence
 	this->diffence = diffence;
 	this->magic_power = magic_power;
 	this->dex = dex;
+	this->has_mp = true;
+	this->image = image;
 }
 
 void Character::getName(int x, int y) {
@@ -66,9 +68,18 @@ int Character::getDex() {
 	return this->dex;
 }
 
+bool Character::getHasMp() {
+	return this->has_mp;
+}
+
+void Character::setHasMp(bool d) {
+	this->has_mp = d;
+}
+
 //Allen用
-void Character::getMp() {
+int Character::getMp() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+	return 0;
 }
 
 //Player用
@@ -78,12 +89,16 @@ void Character::move() {
 void Character::battle() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
 }
-void Character::is_attackable() {
+bool Character::is_attackable() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+	return false;
 }
-void Character::getImage() {
-	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+int Character::getImage() {
+	return this->image;
 }
-void Character::getWeapon() {
+
+Weapon Character::getWeapon() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
+	Weapon none;
+	return none;
 }

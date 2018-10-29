@@ -9,15 +9,10 @@
 
 using namespace std;
 
-Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) :Character(name, x, y, hp, attack, diffence, magic_power, dex){ // ‰Šú‰»
-	this->image = image;
+Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) :Character(name, x, y, hp, attack, diffence, magic_power, dex, image){ // ‰Šú‰»
+	
 }
 
 void Enemy::move(Player* p, Enemy* e, int background_image, stagedata stage) { // “G‚ÌˆÚ“®
 	
-}
-
-
-int Enemy::getImage() {
-	return this->image;
 }

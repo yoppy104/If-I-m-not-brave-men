@@ -10,12 +10,14 @@ typedef unsigned long long stagedata;
 
 void battle_stage(stagedata stage);
 
-void redraw_battle(stagedata stage, Enemy *_enemy, int size_enemy, Player *_player, int size_player);
+void redraw_battle(stagedata stage, Enemy **_enemy, int size_enemy, Player **_player, int size_player);
 
 void draw_command(int sele);
 
 void draw_command_do(int sele);
 
-int draw_attackable_area(Player* me, Player* players, int size_players, Enemy* enemy, int size_enemy);
+int draw_attackable_area(Player* me, Player** players, int size_players, Enemy** enemy, int size_enemy, int is_weapon);
 
 void draw_attack_area(int point, Player* me);
+
+void draw_magic_select(int select);

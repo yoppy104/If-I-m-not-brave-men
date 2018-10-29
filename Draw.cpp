@@ -32,18 +32,16 @@ void battle_stage(stagedata stage) {
 	DeleteGraph(image_stagenot);
 }
 
-void redraw_battle(stagedata stage, Enemy *_enemy, int size_enemy, Player *_player, int size_player) {
+void redraw_battle(stagedata stage, Enemy **_enemy, int size_enemy, Player **_player, int size_player) {
 	int background = LoadGraph("bg_natural_sougen.jpg"); // 背景画像
 
 	DrawGraph(0, 0, background, TRUE);
 	battle_stage(stage);
 	for (int i = 0; i < size_enemy; i++) {
-		DrawGraph(_enemy->getX(), _enemy->getY(), _enemy->getImage(), TRUE);
-		_enemy++;
+		DrawGraph(_enemy[i]->getX(), _enemy[i]->getY(), _enemy[i]->getImage(), TRUE);
 	}
 	for (int i = 0; i < size_player; i++) {
-		DrawGraph(_player->getX(), _player->getY(), _player->getImage(), TRUE);
-		_player++;
+		DrawGraph(_player[i]->getX(), _player[i]->getY(), _player[i]->getImage(), TRUE);
 	}
 
 	DeleteGraph(background);
@@ -54,9 +52,10 @@ void draw_command(int sele) { //コマンド描画の関数
 	int point = LoadGraph("pointer.png"); // コマンド選択用のポインタ画像
 
 	DrawRotaGraph(200, 400, 2.0, 0, command, TRUE); //コマンドフレームの描画
-	DrawRotaGraph(120, 220 + 200 * sele, 1.5, 0, point, TRUE); // 選択用ポインタの描画
+	DrawRotaGraph(120, 220 + 100 * sele, 1.5, 0, point, TRUE); // 選択用ポインタの描画
 	DrawFormatString(150, 200, GetColor(0, 0, 0), "たたかう");
-	DrawFormatString(150, 400, GetColor(0, 0, 0), "いどう");
+	DrawFormatString(150, 300, GetColor(0, 0, 0), "いどう");
+	DrawFormatString(150, 400, GetColor(0, 0, 0), "魔術");
 
 	DeleteGraph(command);
 	DeleteGraph(point);
@@ -75,14 +74,21 @@ void draw_command_do(int sele) {
 	DeleteGraph(point);
 }
 
-int draw_attackable_area(Player* me, Player* players, int size_players, Enemy* enemy, int size_enemy) { // 後に配列に変更
+int draw_attackable_area(Player* me, Player** players, int size_players, Enemy** enemy, int size_enemy, int is_weapon) { // 後に配列に変更
 	int player_x = me->getX(); // 対象プレイヤーのx座標
 	int player_y = me->getY(); // 対象プレイヤーのy座標
 	Weapon arm = me->getWeapon();
+	int attackable_area;
+	if (is_weapon == 0) {
+		attackable_area = arm.getAttackable();
+	}
+	else {
+		attackable_area = is_weapon;
+	}
 	int attackable_image = LoadGraph("not_battlepanel.png");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
-	if (arm.getAttackable()  == -1) {
+	if (attackable_area  == -1) {
 		for (int x = 496; x <= 1296; x += 160) {
 			for (int y = 136; y <= 936; y += 160) {
 				if (! (x == player_x && y == player_y)) {
@@ -92,8 +98,8 @@ int draw_attackable_area(Player* me, Player* players, int size_players, Enemy* e
 		}
 	}
 	else {
-		for (int x = -1 * (arm.getAttackable()); x <= arm.getAttackable(); x++) {
-			for (int y = -1 * (arm.getAttackable()); y <= arm.getAttackable(); y++) {
+		for (int x = -1 * (attackable_area); x <= attackable_area; x++) {
+			for (int y = -1 * (attackable_area); y <= attackable_area; y++) {
 				if ((x != 0 || y != 0) && (player_x + 160 * x >= 496 && player_x + 160*x <= 1296) && (player_y + 160*y >= 136 && player_y +160*y <= 936)) {
 					DrawGraph(player_x + 160 * x, player_y + 160 * y, attackable_image, TRUE);
 				}
@@ -171,4 +177,10 @@ void draw_attack_area(int point, Player* me) {
 
 	DeleteGraph(frame);
 	DeleteGraph(attack_area);
+}
+
+void draw_magic_select(int select) {
+	int pointa_image = LoadGraph("pointer.png");
+	int x = (select > 8) ? 1 : 0;
+	DrawGraph(510 + 300 * x, 200 + 50 * (select % 9), pointa_image, TRUE);
 }

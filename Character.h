@@ -1,4 +1,5 @@
 #pragma once
+#include "Weapon.h"
 
 // キャラクターを定義するクラス
 class Character {
@@ -12,9 +13,11 @@ private:
 	int diffence; //防御力
 	int magic_power; //魔力
 	int dex; //敏捷性
+	bool has_mp; //MPのステータスを持っているか
+	int image;
 public:
 	Character();
-	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex);
+	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image);
 	void getName(int x, int y);
 	int getX();
 	void setX(int dx);
@@ -27,14 +30,16 @@ public:
 	int getDiffence();
 	int getMagicPower();
 	int getDex();
+	bool getHasMp();
+	void setHasMp(bool);
+	int getImage();
 
 	//Allen用
-	void getMp();
+	virtual int getMp();
 
 	//player用
-	void move();
-	void battle();
-	void is_attackable();
-	void getImage();
-	void getWeapon();
+	virtual void move();
+	virtual void battle();
+	virtual bool is_attackable();
+	virtual Weapon getWeapon();
 };
