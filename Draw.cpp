@@ -85,7 +85,7 @@ int draw_attackable_area(Player* me, Player** players, int size_players, Enemy**
 	else {
 		attackable_area = is_weapon;
 	}
-	int attackable_image = LoadGraph("not_battlepanel.png");
+	int attackable_image = LoadGraph("attackpanel.png");
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 128);
 	if (attackable_area  == -1) {
@@ -118,7 +118,7 @@ int draw_attackable_area(Player* me, Player** players, int size_players, Enemy**
 void draw_attack_area(int point, Player* me) {
 	int x = point % 10; //カーソルのx座標
 	int y = point / 10; //カーソルのy座標
-	int attack_area = LoadGraph("attackpanel.png"); //攻撃パネル
+	int attack_area = LoadGraph("frame.png"); //攻撃パネル
 	int frame = LoadGraph("battleframe.png"); //フレーム
 
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 184);

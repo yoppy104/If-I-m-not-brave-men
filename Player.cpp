@@ -8,6 +8,10 @@
 
 typedef unsigned long long stagedata;
 
+Player::Player() {
+
+}
+
 Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image):Character(name, x, y, hp, attack, diffence, magic_power, dex, image){
 	this->weapon = weapon; //‘•”õ
 	this->num_magics = 0;

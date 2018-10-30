@@ -12,5 +12,6 @@ private:
 public:
 	Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image); //–¼‘O,x,y,hp,UŒ‚—Í,–hŒä—Í,–‚—Í,•q·
 
-	void move(Player* p, Enemy* e, int background_image, stagedata stage);
+	virtual bool move(int dx, int dy, Player** p, int size_p, Enemy** e, int size_e, stagedata stage);
+	virtual void battle(int x, int y, Player** players, int size_players);
 };

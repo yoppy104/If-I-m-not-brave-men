@@ -338,9 +338,52 @@ void Battle(Player** players, int size_players)
 					}
 				}
 				else if (side == 1) {
+					redraw_battle(stage, enemy, size_enemy, players, size_players);
+					Enemy* now = enemy[count_enemy];
+					int attackpoint_x = 0;
+					int attackpoint_y = 0;
+					for (int i = 0; i < size_players; i++) {
+						if (now->getX() - 160 == players[i]->getX() || now->getX() == players[i]->getX() || now->getX() + 160 == players[i]->getX()) {
+							if (now->getY() - 160 == players[i]->getY() || now->getY() == players[i]->getY() || now->getY() + 160 == players[i]->getY()) {
+								DrawFormatString(100, 100, GetColor(0, 0, 0), "test");
+								WaitTimer(200);
+								if (attackpoint_x == 0 && attackpoint_y == 0) {								
+										attackpoint_x = players[i]->getX() - now->getX();
+										attackpoint_y = players[i]->getY() - now->getY();
+								}
+								else {
+									if (GetRand(1) % 2 == 0) {
+										attackpoint_x = players[i]->getX() - now->getX();
+										attackpoint_y = players[i]->getY() - now->getY();
+									}
+								}
+							}
+						}
+					}
 
+					if (attackpoint_x == 0 && attackpoint_y == 0) {
+						int move_limit = move_range(now->getDex());
+						int dx, dy;
+						while (move_limit > 0) {
+							SRand(time(NULL));
+							dx = 0;
+							dy = 0;
+							if (GetRand(1) % 2 == 0) {
+								dx = (GetRand(2) - 1) * 160;
+							}
+							else {
+								dy = (GetRand(2) - 1) * 160;
+							}
+							if (now->move(dx, dy, players, size_players, enemy, size_enemy, stage)) {
+								move_limit--;
+							}
+						}
+					}
+					else {
+						now->battle(attackpoint_x, attackpoint_y, players, size_players);
+					}
 					count_enemy++;
-					DrawFormatString(100, 100, GetColor(0, 0, 0), "enemy_turn");
+					//DrawFormatString(100, 100, GetColor(0, 0, 0), "enemy_turn");
 					WaitTimer(300);
 				}
 			}
