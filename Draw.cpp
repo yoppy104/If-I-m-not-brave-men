@@ -1,3 +1,5 @@
+#define PI 3.14159263
+
 #include "draw.h"
 #include <math.h>
 #include "DxLib.h"
@@ -32,19 +34,57 @@ void battle_stage(stagedata stage) {
 	DeleteGraph(image_stagenot);
 }
 
+void draw_param(int x, int y, Player* player, int image) {
+	DrawGraph(x, y, image, TRUE);
+	int col = GetColor(255, 255, 255);
+	player->getName(x + 10, y + 10, col);
+	DrawFormatString(x + 10, y + 50, col, "HP : %d / %d", (player->getHp() > 0) ? player->getHp() : 0, player->getHpMax());
+	if (player->getHasMp()) {
+		DrawFormatString(x + 10, y + 90, col, "MP : %d", player->getMp());
+	}
+	else {
+		DrawFormatString(x + 10, y + 90, col, "MP : %d", player->getMagicStone());
+	}
+}
+
+
 void redraw_battle(stagedata stage, Enemy **_enemy, int size_enemy, Player **_player, int size_player) {
-	int background = LoadGraph("bg_natural_sougen.jpg"); // îwåiâÊëú
+	/*
+	int background = LoadGraph("êÌì¨îwåi_ëêå¥.jpg"); // îwåiâÊëú
 
 	DrawGraph(0, 0, background, TRUE);
 	battle_stage(stage);
-	for (int i = 0; i < size_enemy; i++) {
-		DrawGraph(_enemy[i]->getX(), _enemy[i]->getY(), _enemy[i]->getImage(), TRUE);
+	for (auto itr_p = players.begin; i < size_enemy; i++) {
+		if (_enemy[i]->getIsMoveable()) {
+			DrawGraph(_enemy[i]->getX(), _enemy[i]->getY(), _enemy[i]->getImage(), TRUE);
+		}
+		else {
+			DrawGraph(_enemy[i]->getX(), _enemy[i]->getY(), _enemy[i]->getImageDead(), TRUE);
+		}
 	}
+
+	int image;
 	for (int i = 0; i < size_player; i++) {
-		DrawGraph(_player[i]->getX(), _player[i]->getY(), _player[i]->getImage(), TRUE);
+		if (_player[i]->getIsMoveable()) {
+			DrawGraph(_player[i]->getX(), _player[i]->getY(), _player[i]->getImage(), TRUE);
+			if ((_player[i]->getHp() / _player[i]->getHpMax()) > 0.2) {
+				image = LoadGraph("playerdata_blue.png");
+				draw_param(1500, 100 + 150 * i, _player[i], image);
+			}
+			else {
+				image = LoadGraph("playerdata_red.png");
+				draw_param(1500, 100 + 150 * i, _player[i], image);
+			}
+		}
+		else {
+			DrawGraph(_player[i]->getX(), _player[i]->getY(), _player[i]->getImageDead(), TRUE);
+			image = LoadGraph("playerdata_gray.png");
+			draw_param(1500, 100 + 150 * i, _player[i], image);
+		}
 	}
 
 	DeleteGraph(background);
+	*/
 }
 
 void draw_command(int sele) { //ÉRÉ}ÉìÉhï`âÊÇÃä÷êî
@@ -115,14 +155,19 @@ int draw_attackable_area(Player* me, Player** players, int size_players, Enemy**
 	return result;
 }
 
-void draw_attack_area(int point, Player* me) {
+void draw_attack_area(int point, Player* me, int is_magic) {
 	int x = point % 10; //ÉJÅ[É\ÉãÇÃxç¿ïW
 	int y = point / 10; //ÉJÅ[É\ÉãÇÃyç¿ïW
 	int attack_area = LoadGraph("frame.png"); //çUåÇÉpÉlÉã
 	int frame = LoadGraph("battleframe.png"); //ÉtÉåÅ[ÉÄ
-
+	int area;
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 184);
-	int area = me->getWeapon().getAttackArea();
+	if (is_magic) {
+		area = is_magic;
+	}
+	else {
+		area = me->getWeapon().getAttackArea();
+	}
 
 	if (496 + 160 * x != me->getX() || 136 + 160 * y != me->getY()) {
 		int style = area / 10;
@@ -183,4 +228,74 @@ void draw_magic_select(int select) {
 	int pointa_image = LoadGraph("pointer.png");
 	int x = (select > 8) ? 1 : 0;
 	DrawGraph(510 + 300 * x, 200 + 50 * (select % 9), pointa_image, TRUE);
+}
+
+
+void draw_attack_animation(int attack_x, int attack_y, int pos_x, int pos_y, int type, int frame) {
+	if (type == 0) {
+		int image = LoadGraph("slash7.png");
+		DrawGraph(attack_x + 20 - 10 * frame, attack_y - 20 + 10 * frame, image, TRUE);
+	}
+	else if (type == 1) {
+		int image = LoadGraph("slash7.png");
+		double rota = 0;
+		int dx = attack_x - pos_x;
+		int dy = attack_y - pos_y;
+
+		if (dx == 0) {
+			rota = - PI / 4;
+		}
+		else if (dy == 0) {
+			rota = PI / 4;
+		}
+		else if ((dx < 0 && dy < 0) || (dx > 0 && dy > 0)) {
+			rota = PI / 2;
+		}
+
+		DrawRotaGraph(pos_x + (dx / 4) * 2 * frame + 64, pos_y + (dy / 4) * 2 * frame + 64, 1.0, rota, image, TRUE, FALSE);
+	}
+	else if (type == 2) {
+		int image = LoadGraph("arrow.png");
+		double rota = 0;
+		int dx = attack_x - pos_x;
+		int dy = attack_y - pos_y;
+
+		if (dx == 0) {
+			if (dy > 0) {
+				rota = -PI / 4 * 3;
+			}
+			else {
+				rota = PI / 4;
+			}
+		}
+		else if (dy == 0) {
+			if (dx > 0) {
+				rota = PI / 4 * 3;
+			}
+			else {
+				rota = -PI / 4;
+			}
+		}
+		else if (dx > 0 && dy < 0) {
+			rota = -PI / 2;
+		}
+		else if (dx > 0 && dy > 0) {
+			rota = PI;
+		}
+		else if (dx < 0 && dy > 0) {
+			rota = PI / 2;
+		}
+
+		DrawRotaGraph(pos_x + (dx / 4) * frame + 64, pos_y + (dy / 4) * frame + 64, 1.0, rota, image, TRUE, FALSE);
+	}
+	else if (type == 3) {
+		int image = LoadGraph("slash7.png");
+		DrawRotaGraph(attack_x + 64, attack_y + 20 - 20 + 10 * frame, 1.0, PI / 4 * 3, image, TRUE, FALSE);
+	}
+	else if (type == 4) {
+		int image = LoadGraph("fireball.png");
+		int dx = attack_x - pos_x;
+		int dy = attack_y - pos_y;
+		DrawGraph(pos_x + (dx / 4) * frame, pos_y + (dy / 4) * frame, image, TRUE);
+	}
 }

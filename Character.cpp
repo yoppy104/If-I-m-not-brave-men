@@ -6,7 +6,7 @@ Character::Character() {
 
 }
 
-Character::Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) {
+Character::Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead) {
 	strcpy(this->name, name);
 	this->x = x;
 	this->y = y;
@@ -18,10 +18,24 @@ Character::Character(char name[], int x, int y, int hp, int attack, int diffence
 	this->dex = dex;
 	this->has_mp = true;
 	this->image = image;
+	this->image_dead = image_dead;
+	this->is_moveable = true;
 }
 
-void Character::getName(int x, int y) {
-	DrawFormatString(x, y, GetColor(0,0,0), this->name);
+void Character::down() {
+	this->is_moveable = false;
+}
+
+void Character::alive() {
+	this->is_moveable = true;
+}
+
+int Character::getIsMoveable() {
+	return this->is_moveable;
+}
+
+void Character::getName(int x, int y, int col) {
+	DrawFormatString(x, y, col, this->name);
 }
 
 int Character::getX() {
@@ -96,7 +110,9 @@ bool Character::is_attackable() {
 int Character::getImage() {
 	return this->image;
 }
-
+int Character::getImageDead() {
+	return this->image_dead;
+}
 Weapon Character::getWeapon() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
 	Weapon none;

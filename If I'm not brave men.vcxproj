@@ -152,6 +152,7 @@
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="FireBall.cpp" />
+    <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Imitia.cpp" />
     <ClCompile Include="Magic.cpp" />
     <ClCompile Include="Rain.cpp" />
@@ -169,8 +170,10 @@
     <ClInclude Include="draw.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="FireBall.h" />
+    <ClInclude Include="Heal.h" />
     <ClInclude Include="Imitia.h" />
     <ClInclude Include="Magic.h" />
+    <ClInclude Include="IDs.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="UseMagic.h" />
     <ClInclude Include="Weapon.h" />

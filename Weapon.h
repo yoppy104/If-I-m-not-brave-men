@@ -15,14 +15,16 @@ class Weapon{ // 装備の構造体
 	4は同心円、1の位で半径を定義
 	斜め方向の攻撃は定義しない
 	*/
+	int sound;
 	
 public:
 	Weapon();
-	Weapon(int point, int price, int weight, int attackable, int attack_area);
+	Weapon(int point, int price, int weight, int attackable, int attack_area, int sound);
 
 	//パラメータ取り出し用の関数群
 	int getPoint();
 	int getAttackable();
 	int getAttackArea();
+	int getSound();
 };
 

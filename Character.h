@@ -15,10 +15,12 @@ private:
 	int dex; //敏捷性
 	bool has_mp; //MPのステータスを持っているか
 	int image;
+	int image_dead;
+	bool is_moveable;
 public:
 	Character();
-	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image);
-	void getName(int x, int y);
+	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead);
+	void getName(int x, int y, int col);
 	int getX();
 	void setX(int dx);
 	int getY();
@@ -33,6 +35,10 @@ public:
 	bool getHasMp();
 	void setHasMp(bool);
 	int getImage();
+	int getImageDead();
+	void down();
+	void alive();
+	int getIsMoveable();
 
 	//Allen用
 	virtual int getMp();

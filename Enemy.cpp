@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image) :Character(name, x, y, hp, attack, diffence, magic_power, dex, image){ // ‰Šú‰»
+Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead) :Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){ // ‰Šú‰»
 	
 }
 
@@ -59,10 +59,12 @@ bool Enemy::move(int dx, int dy, Player** p, int size_p, Enemy** e, int size_e, 
 }
 
 void Enemy::battle(int x, int y, Player** players, int size_players) {
+	int image = LoadGraph("damage.png");
 	for (int i = 0; i < size_players; i++) {
 		if (this->getX() + x == players[i]->getX() && this->getY() + y == players[i]->getY()) {
 			int d = damage(this->getAttack(), players[i]->getDiffence(), 1);
-			players[i]->plusHp(d);
+			players[i]->plusHp(-d);
+			DrawGraph(players[i]->getX() + 40, players[i]->getY() - 35, image, TRUE);
 			DrawFormatString(players[i]->getX() + 64, players[i]->getY() - 20, GetColor(255, 0, 0), "%d", d);
 			WaitTimer(200);
 		}

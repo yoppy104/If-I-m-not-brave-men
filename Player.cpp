@@ -12,10 +12,10 @@ Player::Player() {
 
 }
 
-Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image):Character(name, x, y, hp, attack, diffence, magic_power, dex, image){
+Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
 	this->weapon = weapon; //装備
 	this->num_magics = 0;
-	this->magics = 0b1;
+	this->magics = 0b11;
 }
 
 void Player::addMagic(int new_magic) {
@@ -83,107 +83,120 @@ void Player::battle(int attack_point, Player **p, int size_p, Enemy **e, int siz
 	int point_y = attack_point / 10; //カーソルのy座標
 	int attack_area = this->weapon.getAttackArea() / 10; //攻撃範囲
 	int len = this->weapon.getAttackArea() % 10; //攻撃の長さ(1では無効)
-	if (attack_area == 1) { //攻撃範囲が一点のみの場合
-		// 味方へのダメージ
-		for (int i = 0; i < size_p; i++) {
-			if (496 + 160 * point_x == p[i]->getX() && 136 + 160 * point_y == p[i]->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), p[i]->getDiffence(), 1); //ダメージ計算
-				p[i]->plusHp(-d); //体力を減少
-				DrawFormatString(p[i]->getX() + 50, p[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
-			}
-		}
-		// 敵へのダメージ
-		for (int i = 0; i < size_e; i++) {
-			if (496 + 160 * point_x == e[i]->getX() && 136 + 160 * point_y == e[i]->getY()) {
-				int d = damage(this->getAttack() + this->weapon.getPoint(), e[i]->getDiffence(), 1); //ダメージ計算
-				e[i]->plusHp(-d); //体力を減少
-				DrawFormatString(e[i]->getX() + 50, e[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-				WaitTimer(150);
-			}
-		}
-	} 
-	else if (attack_area == 2) {
-		// x軸の正規方向ベクトル
-		int delta_x = (-this->getX() + (496 + 160 * point_x) == 0) ? 0 : (-this->getX() + (496 + 160 * point_x)) / abs(-this->getX() + (496 + 160 * point_x));
-		// y軸の正規方向ベクトル
-		int delta_y = (-this->getY() + (136 + 160 * point_y) == 0) ? 0 : (-this->getY() + (136 + 160 * point_y)) / abs(-this->getY() + (136 + 160 * point_y));
-		for (int j = 0; j < len + 1; j++) {
-			//味方へのダメージ
+	int image = LoadGraph("damage.png");
+
+	if (496 + 160 * point_x != this->getX() || 136 + 160 * point_y != this->getY()) {
+		if (attack_area == 1) { //攻撃範囲が一点のみの場合
+			// 味方へのダメージ
 			for (int i = 0; i < size_p; i++) {
-				if (496 + 160 * (point_x + delta_x * j) == p[i]->getX() && 136 + 160 * (point_y + delta_y * j) == p[i]->getY()) {
+				if (496 + 160 * point_x == p[i]->getX() && 136 + 160 * point_y == p[i]->getY()) {
 					int d = damage(this->getAttack() + this->weapon.getPoint(), p[i]->getDiffence(), 1); //ダメージ計算
 					p[i]->plusHp(-d); //体力を減少
+					DrawGraph(p[i]->getX() + 32, p[i]->getY() - 48, image, TRUE);
 					DrawFormatString(p[i]->getX() + 50, p[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
 					WaitTimer(150);
 				}
 			}
-			//敵へのダメージ
+			// 敵へのダメージ
 			for (int i = 0; i < size_e; i++) {
-				if (496 + 160 * (point_x + delta_x * j) == e[i]->getX() && 136 + 160 * (point_y + delta_y * j) == e[i]->getY()) {
+				if (496 + 160 * point_x == e[i]->getX() && 136 + 160 * point_y == e[i]->getY()) {
 					int d = damage(this->getAttack() + this->weapon.getPoint(), e[i]->getDiffence(), 1); //ダメージ計算
 					e[i]->plusHp(-d); //体力を減少
+					DrawGraph(e[i]->getX() + 32, e[i]->getY() - 48, image, TRUE);
 					DrawFormatString(e[i]->getX() + 50, e[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
 					WaitTimer(150);
 				}
 			}
 		}
-	}
-	else if (attack_area == 3) {
-		//x軸の正規方向ベクトル,y軸の正規方向ベクトル
-		int delta_x = this->getY() + (136 + 160 * point_y);
-		int delta_y = this->getX() + (496 + 160 * point_x);
-		if (delta_x == 0) delta_y = 1;
-		if (delta_y == 0) delta_x = 1;
-		if ((delta_x < 0 && delta_y < 0) || (delta_x > 0 && delta_y > 0)) {
-			delta_x = 1;
-			delta_y = -1;
-		}
-		else if ((delta_x < 0 && delta_y > 0) || (delta_x > 0 && delta_y < 0)) {
-			delta_x = 1;
-			delta_y = 1;
-		}
-		for (int i = 0; i < len + 1; i++) {
-			for (int j = 0; j < size_p; j++) {
+		else if (attack_area == 2) {
+			// x軸の正規方向ベクトル
+			int delta_x = (-this->getX() + (496 + 160 * point_x) == 0) ? 0 : (-this->getX() + (496 + 160 * point_x)) / abs(-this->getX() + (496 + 160 * point_x));
+			// y軸の正規方向ベクトル
+			int delta_y = (-this->getY() + (136 + 160 * point_y) == 0) ? 0 : (-this->getY() + (136 + 160 * point_y)) / abs(-this->getY() + (136 + 160 * point_y));
+			for (int j = 0; j < len + 1; j++) {
 				//味方へのダメージ
-				if (496 + 160 * (point_x + delta_x * i) == p[j]->getX() && 136 + 160 * (point_y + delta_y * i) == p[j]->getY() || 496 + 160 * (point_x - delta_x * i) == p[j]->getX() && 136 + 160 * (point_y - delta_y * i) == p[j]->getY()) {
-					int d = damage(this->getAttack() + this->weapon.getPoint(), p[j]->getDiffence(), 1); //ダメージ計算
-					p[j]->plusHp(-d); //体力を減少
-					DrawFormatString(p[j]->getX() + 50, p[j]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-					WaitTimer(150);
+
+				for (int i = 0; i < size_p; i++) {
+					if (496 + 160 * (point_x + delta_x * j) == p[i]->getX() && 136 + 160 * (point_y + delta_y * j) == p[i]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), p[i]->getDiffence(), 1); //ダメージ計算
+						p[i]->plusHp(-d); //体力を減少
+						DrawGraph(p[i]->getX() + 32, p[i]->getY() - 48, image, TRUE);
+						DrawFormatString(p[i]->getX() + 50, p[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
 				}
-			}
-			//敵へのダメージ
-			for (int j = 0; j < size_e; j++) {
-				if (496 + 160 * (point_x + delta_x * i) == e[j]->getX() && 136 + 160 * (point_y + delta_y * i) == e[j]->getY() || 496 + 160 * (point_x - delta_x * i) == e[j]->getX() && 136 + 160 * (point_y - delta_y * i) == e[j]->getY()) {
-					int d = damage(this->getAttack() + this->weapon.getPoint(), e[j]->getDiffence(), 1); //ダメージ計算
-					e[j]->plusHp(-d); //体力を減少
-					DrawFormatString(e[j]->getX() + 50, e[j]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-					WaitTimer(150);
-				}
-			}
-		}
-	}
-	else if (attack_area == 4) {
-		// 味方へのダメージ
-		for (int i = 0; i < size_p; i++) {
-			if (496 + 160 * (point_x - len) <= p[i]->getX() && 496 + 160 * (point_x + len) >= p[i]->getX()) {
-				if (136 + 160 * (point_y - len) <= p[i]->getY() && 136 + 160 * (point_y + len) >= p[i]->getY()) {
-					int d = damage(this->getAttack() + this->weapon.getPoint(), p[i]->getDiffence(), 1); //ダメージ計算
-					p[i]->plusHp(-d); //体力を減少
-					DrawFormatString(p[i]->getX() + 50, p[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-					WaitTimer(150);
+				//敵へのダメージ
+				for (int i = 0; i < size_e; i++) {
+					if (496 + 160 * (point_x + delta_x * j) == e[i]->getX() && 136 + 160 * (point_y + delta_y * j) == e[i]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), e[i]->getDiffence(), 1); //ダメージ計算
+						e[i]->plusHp(-d); //体力を減少
+						DrawGraph(e[i]->getX() + 32, e[i]->getY() - 48, image, TRUE);
+						DrawFormatString(e[i]->getX() + 50, e[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
 				}
 			}
 		}
-		// 敵へのダメージ
-		for (int i = 0; i < size_e; i++) {
-			if (496 + 160 * (point_x - len) <= e[i]->getX() && 496 + 160 * (point_x + len) >= e[i]->getX()) {
-				if (136 + 160 * (point_y - len) <= e[i]->getY() && 136 + 160 * (point_y + len) >= e[i]->getY()) {
-					int d = damage(this->getAttack() + this->weapon.getPoint(), e[i]->getDiffence(), 1); //ダメージ計算
-					e[i]->plusHp(-d); //体力を減少
-					DrawFormatString(e[i]->getX() + 50, e[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
-					WaitTimer(150);
+		else if (attack_area == 3) {
+			//x軸の正規方向ベクトル,y軸の正規方向ベクトル
+			int delta_x = this->getY() + (136 + 160 * point_y);
+			int delta_y = this->getX() + (496 + 160 * point_x);
+			if (delta_x == 0) delta_y = 1;
+			if (delta_y == 0) delta_x = 1;
+			if ((delta_x < 0 && delta_y < 0) || (delta_x > 0 && delta_y > 0)) {
+				delta_x = 1;
+				delta_y = -1;
+			}
+			else if ((delta_x < 0 && delta_y > 0) || (delta_x > 0 && delta_y < 0)) {
+				delta_x = 1;
+				delta_y = 1;
+			}
+			for (int i = 0; i < len + 1; i++) {
+				for (int j = 0; j < size_p; j++) {
+					//味方へのダメージ
+					if (496 + 160 * (point_x + delta_x * i) == p[j]->getX() && 136 + 160 * (point_y + delta_y * i) == p[j]->getY() || 496 + 160 * (point_x - delta_x * i) == p[j]->getX() && 136 + 160 * (point_y - delta_y * i) == p[j]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), p[j]->getDiffence(), 1); //ダメージ計算
+						p[j]->plusHp(-d); //体力を減少
+						DrawGraph(p[i]->getX() + 32, p[i]->getY() - 48, image, TRUE);
+						DrawFormatString(p[j]->getX() + 50, p[j]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
+				}
+				//敵へのダメージ
+				for (int j = 0; j < size_e; j++) {
+					if (496 + 160 * (point_x + delta_x * i) == e[j]->getX() && 136 + 160 * (point_y + delta_y * i) == e[j]->getY() || 496 + 160 * (point_x - delta_x * i) == e[j]->getX() && 136 + 160 * (point_y - delta_y * i) == e[j]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), e[j]->getDiffence(), 1); //ダメージ計算
+						e[j]->plusHp(-d); //体力を減少
+						DrawGraph(e[i]->getX() + 32, e[i]->getY() - 48, image, TRUE);
+						DrawFormatString(e[j]->getX() + 50, e[j]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
+				}
+			}
+		}
+		else if (attack_area == 4) {
+			// 味方へのダメージ
+			for (int i = 0; i < size_p; i++) {
+				if (496 + 160 * (point_x - len) <= p[i]->getX() && 496 + 160 * (point_x + len) >= p[i]->getX()) {
+					if (136 + 160 * (point_y - len) <= p[i]->getY() && 136 + 160 * (point_y + len) >= p[i]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), p[i]->getDiffence(), 1); //ダメージ計算
+						p[i]->plusHp(-d); //体力を減少
+						DrawGraph(p[i]->getX() + 32, p[i]->getY() - 48, image, TRUE);
+						DrawFormatString(p[i]->getX() + 50, p[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
+				}
+			}
+			// 敵へのダメージ
+			for (int i = 0; i < size_e; i++) {
+				if (496 + 160 * (point_x - len) <= e[i]->getX() && 496 + 160 * (point_x + len) >= e[i]->getX()) {
+					if (136 + 160 * (point_y - len) <= e[i]->getY() && 136 + 160 * (point_y + len) >= e[i]->getY()) {
+						int d = damage(this->getAttack() + this->weapon.getPoint(), e[i]->getDiffence(), 1); //ダメージ計算
+						e[i]->plusHp(-d); //体力を減少
+						DrawGraph(e[i]->getX() + 32, e[i]->getY() - 48, image, TRUE);
+						DrawFormatString(e[i]->getX() + 50, e[i]->getY() - 32, GetColor(150, 0, 40), "%d", d); //ダメージを表記
+						WaitTimer(150);
+					}
 				}
 			}
 		}

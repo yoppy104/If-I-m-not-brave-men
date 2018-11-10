@@ -4,12 +4,13 @@ Weapon::Weapon() {
 	 
 }
 
-Weapon::Weapon(int point, int price, int weight, int attackable, int attack_area) {
+Weapon::Weapon(int point, int price, int weight, int attackable, int attack_area, int sound) {
 	this->point = point;
 	this->price = price;
 	this->weight = weight;
 	this->attackable = attackable;
 	this->attack_area = attack_area;
+	this->sound = sound;
 }
 
 int Weapon::getPoint() {
@@ -22,4 +23,8 @@ int Weapon::getAttackable() {
 
 int Weapon::getAttackArea() {
 	return this->attack_area;
+}
+
+int Weapon::getSound() {
+	return this->sound;
 }

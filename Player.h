@@ -18,7 +18,7 @@ class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 
 public:
 	Player();
-	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image);
+	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image, int image_dead);
 
 	void addMagic(int);
 

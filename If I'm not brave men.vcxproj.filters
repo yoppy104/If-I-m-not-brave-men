@@ -19,6 +19,9 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{e78fa0d7-fd26-4192-a9de-9a17aa01cd3e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Material">
+      <UniqueIdentifier>{79e89454-1e52-4153-ac29-f09880fb6f73}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Draw.cpp">
@@ -66,6 +69,9 @@
     <ClCompile Include="UseMagic.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -109,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="UseMagic.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="IDs.h">
+      <Filter>ヘッダー ファイル\Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
