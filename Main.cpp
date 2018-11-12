@@ -11,6 +11,9 @@
 #include "FireBall.h"
 #include "IDs.h"
 
+#include <iostream>
+#include "Mathematic.h"
+
 using namespace std;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
@@ -30,6 +33,11 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	ProcessMessage(); // 割り込み処理をするときに必須
 
 	SRand(time(NULL));
+
+
+
+	createMap();
+
 
 	Weapon iron_sword(12, 50, 1, 1, 11, LoadSoundMem("刀剣・斬る07.mp3")); // 装備のクラス
 	Weapon wood_bow(8, 50, 1, 2, 11, LoadSoundMem("弓矢・矢が生き物に刺さる03.mp3")); // 装備のクラス
