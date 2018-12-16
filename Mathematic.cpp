@@ -20,7 +20,7 @@ int move_range(int dex) {
 	int t = dex / 50;
 	return t + 3;
 }
-
+/*
 void createMap() {
 	ifstream stream("world_map.csv");
 	string line;
@@ -54,3 +54,4 @@ void createMap() {
 
 	WaitKey();
 }
+*/

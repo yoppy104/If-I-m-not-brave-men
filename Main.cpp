@@ -13,6 +13,8 @@
 
 #include <iostream>
 #include "Mathematic.h"
+#include "MapControl.h"
+#include "WoodSword.h"
 
 using namespace std;
 
@@ -36,13 +38,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 
 
-	createMap();
+	//createMap();
 
 
-	Weapon iron_sword(12, 50, 1, 1, 11, LoadSoundMem("刀剣・斬る07.mp3")); // 装備のクラス
-	Weapon wood_bow(8, 50, 1, 2, 11, LoadSoundMem("弓矢・矢が生き物に刺さる03.mp3")); // 装備のクラス
-	Weapon big_axe(15, 50, 1, 1, 11, LoadSoundMem("刀剣・斬る07.mp3")); // 装備のクラス
-	Weapon iron_spear(10, 50, 1, 1, 21, LoadSoundMem("刀剣・刺す03.mp3")); // 装備のクラス
+	WoodSword* iron_sword(); // 装備のクラス
+
+	MapControl mapc(5, 5, 1);
 	
 	//画像ファイルの読み込み
 	int allen_image = LoadGraph("剣士アレン立ち.png"); //アレンの画像
@@ -67,10 +68,10 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	int main = LoadSoundMem("main(仮)4_17.wav"); //メインテーマ
 
 
-	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 6, 3, 6, 5, iron_sword, allen_image, 10, allen_image_dead); // アレンの構造体定義
-	Rain rain("レイン", 496 + 160 * 4, 136 + 160 * 5, 15, 4, 4, 10, 3, iron_spear, rain_image, rain_image_dead); // レインの構造体定義
-	Craig craig("クレイグ", 496 + 160 * 0, 136 + 160 * 5, 25, 10, 7, 0, 2, big_axe, craig_image, craig_image_dead); // クレイグの構造体定義
-	Imitia imitia("イミティア", 496 + 160 * 1, 136 + 160 * 5, 20, 6, 8, 7, 6, wood_bow, imitia_image, imitia_image_dead); // イミティアの構造体定義
+	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 6, 3, 6, 5, WoodSword(), allen_image, 10, allen_image_dead); // アレンの構造体定義
+	Rain rain("レイン", 496 + 160 * 4, 136 + 160 * 5, 15, 4, 4, 10, 3, WoodSword(), rain_image, rain_image_dead); // レインの構造体定義
+	Craig craig("クレイグ", 496 + 160 * 0, 136 + 160 * 5, 25, 10, 7, 0, 2, WoodSword(), craig_image, craig_image_dead); // クレイグの構造体定義
+	Imitia imitia("イミティア", 496 + 160 * 1, 136 + 160 * 5, 20, 6, 8, 7, 6, WoodSword(), imitia_image, imitia_image_dead); // イミティアの構造体定義
 	vector <Player*> players = { &allen, &rain, &craig, &imitia };
 	for (int i = 1; i < players.size(); i++) {
 		int j = i;
@@ -108,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			if (!CheckSoundMem(main)) {
 				PlaySoundMem(main, DX_PLAYTYPE_LOOP, TRUE); //メインテーマをループ再生
 			}
-			DrawGraph(0, 0, title_image, TRUE);
+			DrawGraph(-100, 0, title_image, TRUE);
 		}
 		else if (mode == BATTLE_START) { //バトル開始時の処理
 			PlaySoundMem(battle_bgm, DX_PLAYTYPE_LOOP, TRUE); //バトルBGMをループ再生
@@ -124,7 +125,10 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 		if (click_stepframe < 30) { //クリック可能になるまでの時間を加算する
 			click_stepframe++;
 		}
-
+		else {
+			int temp[2] = {1920, 1200};
+			mapc.show(temp, players[0]);
+		}
 
 		//描画処理
 		if (drawmode == DRAW_BATTLE) {
@@ -173,7 +177,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 				click_stepframe = 0;
 				if (mode == TITLE) {
 					StopSoundMem(main);
-					mode = BATTLE_START;
+					mode = 0;
 				}
 				else if (mode == BATTLE_DO_SELECT) {
 					switch (battle->select_do_player()) {

@@ -12,22 +12,19 @@ Player::Player() {
 
 }
 
-Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
+Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
 	this->weapon = weapon; //装備
-	this->num_magics = 0;
-	this->magics = 0b11;
 }
 
-void Player::addMagic(int new_magic) {
-	this->magics | new_magic;
-	this->num_magics++;
+void Player::addMagic(Magic* new_magic) {
+	this->magics.push_back(new_magic);
 }
 
 int Player::getNumMagics() {
-	return this->num_magics;
+	return this->magics.size();
 }
 
-int Player::getMagics() {
+vector<Magic*> Player::getMagics() {
 	return this->magics;
 }
 
@@ -79,6 +76,7 @@ bool Player::move(int dx, int dy, stagedata stage, Enemy** enemy, int size_enemy
 }
 
 void Player::battle(int attack_point, Player **p, int size_p, Enemy **e, int size_e) {
+	/*
 	int point_x = attack_point % 10; //カーソルのx座標
 	int point_y = attack_point / 10; //カーソルのy座標
 	int attack_area = this->weapon.getAttackArea() / 10; //攻撃範囲
@@ -200,10 +198,11 @@ void Player::battle(int attack_point, Player **p, int size_p, Enemy **e, int siz
 				}
 			}
 		}
-	}
+	}*/
 }
 
 bool Player::is_attackable(int point) {
+	/*
 	int is_x = 496 + 160 * (point % 10);
 	int is_y = 136 + 160 * (point / 10);
 
@@ -222,10 +221,11 @@ bool Player::is_attackable(int point) {
 			}
 		}
 	}
-	return false;
+	return false;*/
+	return 0;
 }
 
-Weapon Player::getWeapon() {
+Weapon* Player::getWeapon() {
 	return this->weapon;
 }
 
@@ -235,4 +235,21 @@ void Player::plusMp(int point) {
 
 int Player::getMp() {
 	return 3;
+}
+
+void Player::draw_map(int x, int y, int frame, int direction) {
+	switch (direction) {
+	case 0:
+		DrawGraph(x, y, this->image_map_front[frame], TRUE);
+		break;
+	case 1:
+		DrawGraph(x, y, this->image_map_back[frame], TRUE);
+		break;
+	case 2:
+		DrawGraph(x, y, this->image_map_left[frame], TRUE);
+		break;
+	case 3:
+		DrawGraph(x, y, this->image_map_right[frame], TRUE);
+		break;
+	}
 }

@@ -115,6 +115,7 @@ void draw_command_do(int sele) {
 }
 
 int draw_attackable_area(Player* me, Player** players, int size_players, Enemy** enemy, int size_enemy, int is_weapon) { // 後に配列に変更
+	/*
 	int player_x = me->getX(); // 対象プレイヤーのx座標
 	int player_y = me->getY(); // 対象プレイヤーのy座標
 	Weapon arm = me->getWeapon();
@@ -152,10 +153,12 @@ int draw_attackable_area(Player* me, Player** players, int size_players, Enemy**
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	DeleteGraph(attackable_image);
 
-	return result;
+	return result;*/
+	return 0;
 }
 
 void draw_attack_area(int point, Player* me, int is_magic) {
+	/*
 	int x = point % 10; //カーソルのx座標
 	int y = point / 10; //カーソルのy座標
 	int attack_area = LoadGraph("frame.png"); //攻撃パネル
@@ -221,7 +224,7 @@ void draw_attack_area(int point, Player* me, int is_magic) {
 	DrawGraph(496 + 160 * x, 136 + 160 * y, frame, TRUE);
 
 	DeleteGraph(frame);
-	DeleteGraph(attack_area);
+	DeleteGraph(attack_area);*/
 }
 
 void draw_magic_select(int select) {
