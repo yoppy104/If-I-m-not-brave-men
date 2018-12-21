@@ -10,6 +10,7 @@ Map::Map(int data, bool is_event, bool is_npc, int table, NPC npc) {
 	// ƒf[ƒ^‚É‚æ‚Á‚Ä§Œä
 	this->encount_rate = 0;
 	this->encount_table = table;
+	this->inf = data;
 
 	switch (data) {
 	case 0: // ‘Œ´
@@ -86,6 +87,7 @@ int Map::getTable() {
 }
 
 void Map::setData(int data) {
+	this->inf = data;
 	switch (data) {
 	case 0: // ‘Œ´
 		this->is_move = true;
@@ -142,6 +144,16 @@ void Map::setNpc(NPC* npc) {
 	this->is_npc = true;
 	this->npc = *npc;
 }
+
+void Map::setEvent(bool isnt) {
+	this->is_event = isnt;
+	this->has_event = NULL;
+}
+void Map::setEvent(Event* myevent) {
+	this->is_event = true;
+	this->has_event = *myevent;
+}
+
 
 void Map::setTable(int table) {
 	this->encount_table = table;

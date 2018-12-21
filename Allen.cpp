@@ -7,7 +7,7 @@ Allen::Allen(char name[], int x, int y, int hp, int attack, int diffence, int ma
 	this->mp = mp;
 	this->setHasMp(true);
 	LoadDivGraph("キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, this->image_map_front);
-	LoadDivGraph("キャラチップ_アレン_背面.jpg", 2, 2, 1, 64, 64, this->image_map_back);
+	LoadDivGraph("キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, this->image_map_back);
 	LoadDivGraph("キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, this->image_map_right);
 	LoadDivGraph("キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, this->image_map_left);
 }

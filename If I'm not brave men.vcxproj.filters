@@ -60,6 +60,12 @@
     <Filter Include="ソース ファイル\NPC">
       <UniqueIdentifier>{7290e23f-b41d-471d-bc7e-798b2bf6a289}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダーファイル\Event">
+      <UniqueIdentifier>{719849c0-686e-433f-ad1d-02f7f26864af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Event">
+      <UniqueIdentifier>{ff013572-ac97-48c3-ad4a-4800c1d12f87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Draw.cpp">
@@ -122,6 +128,9 @@
     <ClCompile Include="MapControl.cpp">
       <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>ソース ファイル\Event</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -183,6 +192,9 @@
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>ヘッダーファイル\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>ヘッダーファイル\Event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

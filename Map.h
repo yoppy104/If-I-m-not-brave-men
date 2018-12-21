@@ -1,5 +1,6 @@
 #pragma once
 #include "NPC.h"
+#include "Event.h"
 
 //マップ一つ一つのクラス
 class Map {
@@ -12,6 +13,7 @@ private:
 	double	encount_rate;	// 敵との遭遇率
 	int		encount_table;	// この場所でエンカウントする敵のテーブルを指定するid
 	NPC		npc;			// この場所にいるnpcの情報。
+	Event	has_event;			// この場所で発生するイベント
 
 public:
 	//コンストラクタ
@@ -27,6 +29,8 @@ public:
 	void setIsEvent(bool is);
 	void setNpc(bool isnt);
 	void setNpc(NPC* npc);
+	void setEvent(bool isnt);
+	void setEvent(Event* myevent);
 	void setTable(int table);
 	double getRate();
 	int getTable();

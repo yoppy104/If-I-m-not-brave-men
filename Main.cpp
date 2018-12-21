@@ -42,8 +42,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 
 	WoodSword* iron_sword(); // 装備のクラス
-
-	MapControl mapc(5, 5, 1);
+	MapControl mapc;
 	
 	//画像ファイルの読み込み
 	int allen_image = LoadGraph("剣士アレン立ち.png"); //アレンの画像
@@ -121,13 +120,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			battle->~Battle(); //バトルクラスのデストラクタ
 			delete battle; //バトルクラスのメモリを解放
 		}
+		else if (mode == MAP_NORMAL) {
+			mapc.show(1960, 1200, players[0]);
+		}
 
 		if (click_stepframe < 30) { //クリック可能になるまでの時間を加算する
 			click_stepframe++;
-		}
-		else {
-			int temp[2] = {1920, 1200};
-			mapc.show(temp, players[0]);
 		}
 
 		//描画処理
@@ -138,7 +136,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 		//キー入力処理
 
-		if (click_stepframe >= 30) {
+		if (click_stepframe >= 10) {
 			char input_key[256];
 			GetHitKeyStateAll(input_key); //入力値を取得
 			if (input_key[KEY_INPUT_UP] == 1) { // 上キー
@@ -152,6 +150,9 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 						PlaySoundMem(sound_cancel, DX_PLAYTYPE_BACK, TRUE); //エラー音
 					}
 				}
+				else if (mode == MAP_NORMAL) {
+					mapc.Update(1);
+				}
 			}
 			if (input_key[KEY_INPUT_DOWN] == 1) { //下キー
 				click_stepframe = 0;
@@ -164,20 +165,30 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 						PlaySoundMem(sound_cancel, DX_PLAYTYPE_BACK, TRUE); //エラー音
 					}
 				}
+				else if (mode == MAP_NORMAL) {
+					mapc.Update(0);
+				}
 			}
 			if (input_key[KEY_INPUT_RIGHT] == 1) { //右キー
 				click_stepframe = 0;
 
+				if (mode == MAP_NORMAL) {
+					mapc.Update(3);
+				}
 			}
 			if (input_key[KEY_INPUT_LEFT] == 1) { //左キー
 				click_stepframe = 0;
 
+				if (mode == MAP_NORMAL) {
+					mapc.Update(2);
+				}
 			}
 			if (input_key[KEY_INPUT_SPACE] == 1) { //スペースキー
 				click_stepframe = 0;
 				if (mode == TITLE) {
 					StopSoundMem(main);
-					mode = 0;
+					mode = MAP_NORMAL;
+					mapc = MapControl(6, 5, 1);
 				}
 				else if (mode == BATTLE_DO_SELECT) {
 					switch (battle->select_do_player()) {
