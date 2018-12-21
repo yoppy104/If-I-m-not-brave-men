@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Equipment.h"
+#include "Weapon.h"
+#include "Character.h"
+#include <vector>
+#include "Magic.h"
 
 class Enemy;
 
@@ -8,30 +11,39 @@ using namespace std;
 
 typedef unsigned long long stagedata;
 
-class Player { // プレイヤーの構造体、味方もこれで管理
+class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 	char name[10]; // 名前。これで個体を管理する
-	int hp; // 体力
-	int x; // キャラのx座標
-	int y; // キャラのy座標
-	int attack; // キャラの攻撃力
-	int diffence; // キャラの防御力
-	int dex;
-	Equipment equipment; // 装備の配列
-	int image; // 画像
+	Weapon* weapon; // 装備の配列
+	vector <Magic*> magics;
 
 public:
-	Player(char _name[], int _hp, int _x, int _y, int _attack, int _diffence, Equipment _equipment, int _image, int dex);
+	int image_map_front[2];
+	int image_map_back[2];
+	int image_map_right[4];
+	int image_map_left[4];
 
-	bool move(int dx, int dy, stagedata data, Enemy enemy, Player player);
+	Player();
+	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, int _image, int image_dead);
 
-	void battle(stagedata data);
+	void addMagic(Magic* new_magic);
 
-	bool is_attackable(int point);
+	int getNumMagics();
+	vector<Magic*> getMagics();
 
-	int getDex();
-	int getX();
-	int getY();
-	int getImage();
-	Equipment getEquipment();
+	virtual void plusMp(int);
+	virtual int getMp();
+
+	virtual int getMagicStone();
+	virtual void plusMagicStone(int);
+
+	virtual bool move(int dx, int dy, stagedata stage, Enemy** enemy, int size_enemy, Player** player, int size_player);
+
+	virtual void battle(int attack_point, Player **p, int size_p, Enemy **e, int size_e);
+
+	virtual bool is_attackable(int point);
+
+	virtual Weapon* getWeapon();
+
+	void draw_map(int x, int y, int frame, int direction);
 
 };
