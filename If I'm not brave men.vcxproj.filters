@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{e78fa0d7-fd26-4192-a9de-9a17aa01cd3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Item">
+      <UniqueIdentifier>{9673241a-4d0e-4e77-aec6-442ccceeffde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Material">
+      <UniqueIdentifier>{ca8651bd-745e-4978-a912-ff018f1a4c16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Magic">
+      <UniqueIdentifier>{4ab5153d-5bbc-434e-b35e-71773a613e40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Enemy">
+      <UniqueIdentifier>{fb3130a5-60b5-4b87-ac3f-e0dc1c77a16c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Battle">
+      <UniqueIdentifier>{b836b47d-8763-4d0a-b64c-01dd72c1ae75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Map">
+      <UniqueIdentifier>{56047fc9-d669-4623-823a-89416721ee49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル">
+      <UniqueIdentifier>{bf64c439-831a-47ec-974b-eb08d3fa1cdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Player">
+      <UniqueIdentifier>{419cb1cf-52a3-4c13-a510-9042d4611f8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Enemy">
+      <UniqueIdentifier>{ab22c75e-821d-4e05-9288-fed43be7c1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Item">
+      <UniqueIdentifier>{6b257637-c3c6-418f-997e-9f657d2e8b35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Magic">
+      <UniqueIdentifier>{05c8155c-d669-461c-9c7e-afaa5cbbb14c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Battle">
+      <UniqueIdentifier>{94e755bd-620d-452c-a514-e896f2a130bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Material">
+      <UniqueIdentifier>{06906d16-196a-45cc-a0bd-1d5bd04a1bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Map">
+      <UniqueIdentifier>{92e2217a-aebe-4d78-a87a-bc222ccec447}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\NPC">
+      <UniqueIdentifier>{16f2254f-cf36-47b7-a32f-2955088379ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\NPC">
+      <UniqueIdentifier>{7290e23f-b41d-471d-bc7e-798b2bf6a289}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Draw.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Allen.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Craig.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Rain.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Imitia.cpp">
+      <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Mathematic.cpp">
+      <Filter>ソース ファイル\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Weapon.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>ソース ファイル\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Heal.cpp">
+      <Filter>ソース ファイル\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Magic.cpp">
+      <Filter>ソース ファイル\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle.cpp">
+      <Filter>ソース ファイル\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="WoodSword.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>ソース ファイル\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="MapControl.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Character.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="draw.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Allen.h">
+      <Filter>ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Rain.h">
+      <Filter>ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Imitia.h">
+      <Filter>ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Craig.h">
+      <Filter>ヘッダーファイル\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Weapon.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>ヘッダーファイル\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Heal.h">
+      <Filter>ヘッダーファイル\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle.h">
+      <Filter>ヘッダーファイル\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Mathematic.h">
+      <Filter>ヘッダーファイル\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="IDs.h">
+      <Filter>ヘッダーファイル\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Magic.h">
+      <Filter>ヘッダーファイル\Magic</Filter>
+    </ClInclude>
+    <ClInclude Include="WoodSword.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MapControl.h">
+      <Filter>ヘッダーファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>ヘッダーファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>ヘッダーファイル\NPC</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
