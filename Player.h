@@ -45,6 +45,6 @@ public:
 
 	virtual Weapon* getWeapon();
 
-	void draw_map(int x, int y, int frame, int direction);
+	void draw_map(int x, int y, int frame, int direction, double disp_rate);
 
 };

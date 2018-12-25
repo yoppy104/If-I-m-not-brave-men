@@ -131,6 +131,9 @@
     <ClCompile Include="Event.cpp">
       <Filter>ソース ファイル\Event</Filter>
     </ClCompile>
+    <ClCompile Include="M_Functions.cpp">
+      <Filter>ソース ファイル\Material</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -195,6 +198,9 @@
     </ClInclude>
     <ClInclude Include="Event.h">
       <Filter>ヘッダーファイル\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="M_Functions.h">
+      <Filter>ヘッダーファイル\Material</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

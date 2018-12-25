@@ -237,19 +237,19 @@ int Player::getMp() {
 	return 3;
 }
 
-void Player::draw_map(int x, int y, int frame, int direction) {
+void Player::draw_map(int x, int y, int frame, int direction, double disp_rate) {
 	switch (direction) {
 	case 0:
-		DrawGraph(x, y, this->image_map_front[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64 * disp_rate, y + 64 * disp_rate, this->image_map_front[frame], TRUE);
 		break;
 	case 1:
-		DrawGraph(x, y, this->image_map_back[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64 * disp_rate, y + 64 * disp_rate, this->image_map_back[frame], TRUE);
 		break;
 	case 2:
-		DrawGraph(x, y, this->image_map_left[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64 * disp_rate, y + 64 * disp_rate, this->image_map_left[frame], TRUE);
 		break;
 	case 3:
-		DrawGraph(x, y, this->image_map_right[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64 * disp_rate, y + 64 * disp_rate, this->image_map_right[frame], TRUE);
 		break;
 	}
 }

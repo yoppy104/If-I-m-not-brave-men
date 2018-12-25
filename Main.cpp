@@ -10,7 +10,7 @@
 #include "Weapon.h"
 #include "FireBall.h"
 #include "IDs.h"
-
+#include "M_Functions.h"
 #include <iostream>
 #include "Mathematic.h"
 #include "MapControl.h"
@@ -21,7 +21,7 @@ using namespace std;
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
 	ChangeWindowMode(true); // ウインドウモードに変更
-	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
+	SetGraphMode(960, 600, 32); // ウィンドウサイズを指定
 	SetMainWindowText("NotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 
@@ -100,118 +100,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	int click_stepframe = 30;
 
+	mapc = MapControl(960, 600, 6, 5, 1, players[0]);
 	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
-
-		//各種処理
-		if (mode == TITLE) { //タイトル画面時の処理
-			if (!CheckSoundMem(main)) {
-				PlaySoundMem(main, DX_PLAYTYPE_LOOP, TRUE); //メインテーマをループ再生
-			}
-			DrawGraph(-100, 0, title_image, TRUE);
-		}
-		else if (mode == BATTLE_START) { //バトル開始時の処理
-			PlaySoundMem(battle_bgm, DX_PLAYTYPE_LOOP, TRUE); //バトルBGMをループ再生
-			battle = new Battle(players); //バトルクラスを生成
-			drawmode = DRAW_BATTLE; //描画モードをバトルに移行
-			mode = BATTLE_DO_SELECT; //プレイヤーの行動選択に移行
-		}
-		else if (mode == BATTLE_END) { //バトル終了時の処理
-			battle->~Battle(); //バトルクラスのデストラクタ
-			delete battle; //バトルクラスのメモリを解放
-		}
-		else if (mode == MAP_NORMAL) {
-			mapc.show(1960, 1200, players[0]);
-		}
-
-		if (click_stepframe < 30) { //クリック可能になるまでの時間を加算する
-			click_stepframe++;
-		}
-
-		//描画処理
-		if (drawmode == DRAW_BATTLE) {
-			battle->Update(mode); //バトルの描画を更新
-		}
-
-
-		//キー入力処理
-
-		if (click_stepframe >= 10) {
-			char input_key[256];
-			GetHitKeyStateAll(input_key); //入力値を取得
-			if (input_key[KEY_INPUT_UP] == 1) { // 上キー
-				click_stepframe = 0;
-				if (mode == BATTLE_DO_SELECT) { //バトル中のプレイヤー全体の行動決定時
-					if (battle->getSelect() - 1 >= 0) {
-						PlaySoundMem(button_se, DX_PLAYTYPE_BACK, TRUE); //カーソルの移動音
-						battle->minusSelect();
-					}
-					else {
-						PlaySoundMem(sound_cancel, DX_PLAYTYPE_BACK, TRUE); //エラー音
-					}
-				}
-				else if (mode == MAP_NORMAL) {
-					mapc.Update(1);
-				}
-			}
-			if (input_key[KEY_INPUT_DOWN] == 1) { //下キー
-				click_stepframe = 0;
-				if (mode == BATTLE_DO_SELECT) { //バトル中のプレイヤー全体の行動決定時
-					if (battle->getSelect() + 1 <= 1) {
-						PlaySoundMem(button_se, DX_PLAYTYPE_BACK, TRUE); //カーソルの移動音
-						battle->plusSelect();
-					}
-					else {
-						PlaySoundMem(sound_cancel, DX_PLAYTYPE_BACK, TRUE); //エラー音
-					}
-				}
-				else if (mode == MAP_NORMAL) {
-					mapc.Update(0);
-				}
-			}
-			if (input_key[KEY_INPUT_RIGHT] == 1) { //右キー
-				click_stepframe = 0;
-
-				if (mode == MAP_NORMAL) {
-					mapc.Update(3);
-				}
-			}
-			if (input_key[KEY_INPUT_LEFT] == 1) { //左キー
-				click_stepframe = 0;
-
-				if (mode == MAP_NORMAL) {
-					mapc.Update(2);
-				}
-			}
-			if (input_key[KEY_INPUT_SPACE] == 1) { //スペースキー
-				click_stepframe = 0;
-				if (mode == TITLE) {
-					StopSoundMem(main);
-					mode = MAP_NORMAL;
-					mapc = MapControl(6, 5, 1);
-				}
-				else if (mode == BATTLE_DO_SELECT) {
-					switch (battle->select_do_player()) {
-					case 0:
-						mode = BATTLE_DO_PLAYER;
-						break;
-					case 1:
-						mode = TITLE;//後で変更
-						break;
-					case 2:
-						mode = BATTLE_ENEMY_TURN;
-						mode = TITLE;
-						break;
-					}
-				}
-			}
-			if (input_key[KEY_INPUT_B] == 1) { // Bキー
-				click_stepframe = 0;
-
-			}
-		}
+		gpUpdateKey();
+		mapc.Update();
 	}
-	StopSoundMem(main);
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理
 	return 0; // ソフトの終了

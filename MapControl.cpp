@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include "IDs.h"
+#include "M_Functions.h"
 
 using namespace std;
 
@@ -10,10 +11,14 @@ MapControl::MapControl() {
 
 }
 
-MapControl::MapControl(int x, int y, int map) {
+MapControl::MapControl(int width, int height, int x, int y, int map, Player* allen) {
+	this->allen = allen;
 	this->countFrame = 0;
 	this->directionPlayer = 0;
 	this->position_player[0] = x;
+	this->dispsize_h = height;
+	this->dispsize_w = width;
+	this->disp_rate = dispsize_h / 1920.0;
 	this->position_player[1] = y;
 	switch (map) {
 	case 0:
@@ -52,15 +57,15 @@ int MapControl::getY() {
 	return this->position_player[1];
 }
 
-void MapControl::show(int width, int height, Player* allen) {
-	int x = -this->position_player[0]*64 + width/2;
-	int y = -this->position_player[1]*64 + height/2;
-	DrawGraph(x, y, this->image, TRUE);
+void MapControl::show() {
+	int x = (-this->position_player[0]*64 * this->disp_rate + this->dispsize_w/2);
+	int y = (-this->position_player[1]*64 * this->disp_rate + this->dispsize_h/2);
+	DrawExtendGraph(x, y, x + (64 * this->mapsize_w) * this->disp_rate, y + (64 * this->mapsize_h) * this->disp_rate, this->image, TRUE);
 	if (this->directionPlayer == 1 || this->directionPlayer == 0) {
-		allen->draw_map(width/ 2, height / 2, (this->countFrame/10) % 2, this->directionPlayer);
+		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 2, this->directionPlayer, this->disp_rate);
 	}
 	else {
-		allen->draw_map(width / 2, height / 2, (this->countFrame/10) % 4, this->directionPlayer);
+		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 4, this->directionPlayer, this->disp_rate);
 	}
 	this->countFrame++;
 }
@@ -106,31 +111,30 @@ void MapControl::createMap() {
 	}
 }
 
-void MapControl::Update(int code) {
-	switch (code) {
-	case 0:
-		if ((this->position_player[1]+1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1]+1]->getIsMove()){
+void MapControl::Update() {
+	if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+		if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
 			this->position_player[1] += 1;
 		}
 		this->directionPlayer = 0;
-		break;
-	case 1:
+	}
+	else if (Button(KEY_INPUT_UP) % 15 == 1) {
 		if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
 			this->position_player[1] -= 1;
 		}
 		this->directionPlayer = 1;
-		break;
-	case 2:
-		if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0]-1][position_player[1]]->getIsMove()) {
+	}
+	else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
+		if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
 			this->position_player[0] -= 1;
 		}
 		this->directionPlayer = 2;
-		break;
-	case 3:
+	}
+	else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
 		if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
 			this->position_player[0] += 1;
 		}
 		this->directionPlayer = 3;
-		break;
 	}
+	this->show();
 }
