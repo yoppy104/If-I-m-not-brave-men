@@ -17,6 +17,8 @@ private:
 	int directionPlayer;
 	std::vector <std::vector<Map*>> maps;
 	Player* allen;
+	Event now;
+	bool is_move;
 	int image;
 
 public:

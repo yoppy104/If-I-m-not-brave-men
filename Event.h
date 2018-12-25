@@ -8,5 +8,5 @@ public:
 	Event();
 	Event(int id);
 	virtual void message(int type);
-	virtual void Update();
+	virtual bool Update();
 };

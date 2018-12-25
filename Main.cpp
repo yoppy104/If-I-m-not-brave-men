@@ -21,7 +21,7 @@ using namespace std;
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
 	ChangeWindowMode(true); // ウインドウモードに変更
-	SetGraphMode(960, 600, 32); // ウィンドウサイズを指定
+	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
 	SetMainWindowText("NotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 
@@ -100,7 +100,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	int click_stepframe = 30;
 
-	mapc = MapControl(960, 600, 6, 5, 1, players[0]);
+	mapc = MapControl(1920, 1200, 6, 5, 1, players[0]);
 	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();

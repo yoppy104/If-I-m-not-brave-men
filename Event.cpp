@@ -1,4 +1,5 @@
 #include "Event.h"
+#include "M_Functions.h"
 #include "DxLib.h"
 
 Event::Event() {
@@ -11,9 +12,15 @@ Event::Event(int id) {
 }
 
 void Event::message(int type) {
-	DrawFormatString(100, 100, GetColor(0, 0, 0), "Test Event");
+	DrawFormatString(100, 100, GetColor(255, 255, 255), "Test Event");
 }
 
-void Event::Update() {
+bool Event::Update() {
 	this->message(0);
+	if (Button(KEY_INPUT_SPACE)) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }

@@ -31,6 +31,8 @@ public:
 	void setNpc(NPC* npc);
 	void setEvent(bool isnt);
 	void setEvent(Event* myevent);
+	Event getEvent();
+	void delEvent();
 	void setTable(int table);
 	double getRate();
 	int getTable();

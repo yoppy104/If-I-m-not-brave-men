@@ -154,6 +154,19 @@ void Map::setEvent(Event* myevent) {
 	this->has_event = *myevent;
 }
 
+Event Map::getEvent() {
+	if (this->is_event) {
+		return this->has_event;
+	}
+	else {
+		return NULL;
+	}
+}
+
+void Map::delEvent() {
+	this->is_event = false;
+	this->has_event = NULL;
+}
 
 void Map::setTable(int table) {
 	this->encount_table = table;

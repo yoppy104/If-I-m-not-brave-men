@@ -20,6 +20,8 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	this->dispsize_w = width;
 	this->disp_rate = dispsize_h / 1920.0;
 	this->position_player[1] = y;
+	this->now = NULL;
+	this->is_move = true;
 	switch (map) {
 	case 0:
 		this->image = LoadGraph("");
@@ -97,6 +99,10 @@ void MapControl::createMap() {
 			else {
 				this->maps[col][row]->setNpc(false);
 			}
+			if (col == 10 && row == 5) {
+				is_event = true;
+				events = Event();
+			}
 			if (is_event) {
 				this->maps[col][row]->setEvent(&events);
 			}
@@ -105,36 +111,50 @@ void MapControl::createMap() {
 			}
 			this->maps[col][row]->setTable(table);
 			col++;
-				
+			is_event = false;
+			events = NULL;
 		}
 		++row;
 	}
 }
 
 void MapControl::Update() {
-	if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-		if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
-			this->position_player[1] += 1;
+	if (this->is_move) {
+		if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+			if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
+				this->position_player[1] += 1;
+			}
+			this->directionPlayer = 0;
 		}
-		this->directionPlayer = 0;
-	}
-	else if (Button(KEY_INPUT_UP) % 15 == 1) {
-		if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
-			this->position_player[1] -= 1;
+		else if (Button(KEY_INPUT_UP) % 15 == 1) {
+			if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
+				this->position_player[1] -= 1;
+			}
+			this->directionPlayer = 1;
 		}
-		this->directionPlayer = 1;
-	}
-	else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
-		if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
-			this->position_player[0] -= 1;
+		else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
+			if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
+				this->position_player[0] -= 1;
+			}
+			this->directionPlayer = 2;
 		}
-		this->directionPlayer = 2;
-	}
-	else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
-		if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
-			this->position_player[0] += 1;
+		else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
+			if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
+				this->position_player[0] += 1;
+			}
+			this->directionPlayer = 3;
 		}
-		this->directionPlayer = 3;
+		if (this->maps[this->position_player[0]][this->position_player[1]]->getIsEvent()) {
+			this->now = this->maps[this->position_player[0]][this->position_player[1]]->getEvent();
+			this->is_move = false;
+		}
+		this->show();
 	}
-	this->show();
+	else {
+		if (this->now.Update()) {
+			this->is_move = true;
+			this->now = NULL;
+			this->maps[this->position_player[0]][this->position_player[1]]->delEvent();
+		}
+	}
 }
