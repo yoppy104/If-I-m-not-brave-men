@@ -5,11 +5,14 @@
 Menu::Menu() {
 	this->mode = 0;
 	this->step = 5;
+	this->main_select = 1;
 	this->window_image = LoadGraph("menu.png");
+	this->pointer_image = LoadGraph("pointer.png");
 }
 
 bool Menu::Update() {
 	if (this->step <= 0) {
+		DrawExtendGraph(50, 50, 868, 612, this->window_image, TRUE);
 		switch (this->mode) {
 		case 0:
 			return this->updateMain();
@@ -41,9 +44,23 @@ bool Menu::Update() {
 }
 
 bool Menu::updateMain() {
-	DrawExtendGraph(50, 50, 868, 612, this->window_image, TRUE);
+	DrawFormatString(125, 100, GetColor(0, 0, 0), "アイテム");
+	DrawFormatString(125, 200, GetColor(0, 0, 0), "装備");
+	DrawFormatString(125, 300, GetColor(0, 0, 0), "魔術");
+	DrawFormatString(125, 400, GetColor(0, 0, 0), "セーブ");
+	DrawGraph(80, 100 * this->main_select, this->pointer_image, TRUE);
 	if (Button(KEY_INPUT_M) == 1) {
 		this->mode = 5;
+	}
+	else if (Button(KEY_INPUT_UP) == 1) {
+		if (this->main_select - 1 > 0) {
+			this->main_select--;
+		}
+	}
+	else if (Button(KEY_INPUT_DOWN) == 1) {
+		if (this->main_select + 1 < 5) {
+			this->main_select++;
+		}
 	}
 	return false;
 }
