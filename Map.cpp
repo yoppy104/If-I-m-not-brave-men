@@ -63,7 +63,7 @@ Map::Map(int data, bool is_event, bool is_npc, int table, NPC npc) {
 
 //Žæ“¾ƒƒ\ƒbƒh
 bool Map::getIsMove() {
-	return this->is_move;
+	return this->is_move && !this->is_npc;
 }
 
 bool Map::getIsEvent() {
@@ -143,6 +143,14 @@ void Map::setNpc(bool isnt) {
 void Map::setNpc(NPC* npc) {
 	this->is_npc = true;
 	this->npc = *npc;
+}
+
+NPC Map::getNPC() {
+	return this->npc;
+}
+
+void Map::chatNPC() {
+	this->npc.chat();
 }
 
 void Map::setEvent(bool isnt) {

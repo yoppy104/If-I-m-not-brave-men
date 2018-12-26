@@ -18,8 +18,12 @@ private:
 	std::vector <std::vector<Map*>> maps;
 	Player* allen;
 	Event now;
+	std::vector<NPC> npcs;
 	bool is_move;
+	bool is_event;
+	bool is_chat;
 	int image;
+	NPC now_chat;
 
 public:
 	MapControl();

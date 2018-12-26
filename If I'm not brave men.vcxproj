@@ -165,6 +165,7 @@
     <ClCompile Include="Magic.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapControl.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="M_Functions.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Rain.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapControl.h" />
     <ClInclude Include="Mathematic.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="M_Functions.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />

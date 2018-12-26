@@ -66,6 +66,12 @@
     <Filter Include="ソース ファイル\Event">
       <UniqueIdentifier>{ff013572-ac97-48c3-ad4a-4800c1d12f87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Menu">
+      <UniqueIdentifier>{095debbd-3238-41de-88cf-1a810520b4d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Menu">
+      <UniqueIdentifier>{4a52f212-92a6-455b-bc23-3651cca24adf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Draw.cpp">
@@ -134,6 +140,9 @@
     <ClCompile Include="M_Functions.cpp">
       <Filter>ソース ファイル\Material</Filter>
     </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>ソース ファイル\Menu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -201,6 +210,9 @@
     </ClInclude>
     <ClInclude Include="M_Functions.h">
       <Filter>ヘッダーファイル\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>ヘッダーファイル\Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

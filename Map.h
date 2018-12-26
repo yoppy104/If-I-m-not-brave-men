@@ -29,6 +29,8 @@ public:
 	void setIsEvent(bool is);
 	void setNpc(bool isnt);
 	void setNpc(NPC* npc);
+	NPC getNPC();
+	void chatNPC();
 	void setEvent(bool isnt);
 	void setEvent(Event* myevent);
 	Event getEvent();

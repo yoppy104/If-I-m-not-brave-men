@@ -1,12 +1,18 @@
 #pragma once
 
 class NPC {
-private:
-	char name[128];
+protected:
+	char name[15];
+	int x;
+	int y;
+	int image;
 	
 public:
 	NPC();
-	NPC(char name[]);
+	NPC(int pos_x, int pos_y, char name[]);
 	void getName(int x, int y);
-	virtual void chat();
+	void draw(int x, int y, double disp_rate);
+	int getX();
+	int getY();
+	virtual bool chat();
 };
