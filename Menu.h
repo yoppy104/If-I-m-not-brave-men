@@ -8,6 +8,7 @@ private:
 	2 : equipment
 	3 : magic
 	4 : save
+	5 : close
 	*/
 	int mode;
 
@@ -15,15 +16,17 @@ private:
 	0 : start
 	*/
 	int step;
+
+	int window_image;
 	
 
 public:
 	Menu();
 	bool Update();
-	void updateMain();
-	void updateItem();
-	void updateEquipment();
-	void updateMagic();
-	void updateSave();
-	void closeWindow();
+	bool updateMain();
+	bool updateItem();
+	bool updateEquipment();
+	bool updateMagic();
+	bool updateSave();
+	bool closeWindow();
 };

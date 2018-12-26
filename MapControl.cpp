@@ -25,6 +25,8 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	this->is_move = true;
 	this->is_chat = false;
 	this->is_event = false;
+	this->is_menu = false;
+	this->menu = Menu();
 	switch (map) {
 	case 0:
 		this->image = LoadGraph("");
@@ -132,6 +134,7 @@ void MapControl::createMap() {
 }
 
 void MapControl::Update() {
+	this->show();
 	if (this->is_move) {
 		if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 			if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
@@ -183,12 +186,15 @@ void MapControl::Update() {
 				this->now_chat = this->maps[point_x][point_y]->getNPC();
 			}
 		}
+		else if (Button(KEY_INPUT_M) == 1) {
+			this->is_move = false;
+			this->is_menu = true;
+		}
 		if (this->maps[this->position_player[0]][this->position_player[1]]->getIsEvent()) {
 			this->now = this->maps[this->position_player[0]][this->position_player[1]]->getEvent();
 			this->is_move = false;
 			this->is_event = true;
 		}
-		this->show();
 	}
 	else if (this->is_event){
 		if (this->now.Update()) {
@@ -199,8 +205,14 @@ void MapControl::Update() {
 		}
 	}
 	else if (this->is_chat) {
-		if (now_chat.chat()) {
+		if (this->now_chat.chat()) {
 			this->is_chat = false;
+			this->is_move = true;
+		}
+	}
+	else if (this->is_menu) {
+		if (this->menu.Update()) {
+			this->is_menu = false;
 			this->is_move = true;
 		}
 	}

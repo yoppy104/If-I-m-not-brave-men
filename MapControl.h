@@ -2,6 +2,7 @@
 
 #include "Map.h"
 #include "Player.h"
+#include "Menu.h"
 #include <vector>
 
 //マップ制御用のクラス。Mapクラスを配列として管理する。
@@ -22,8 +23,10 @@ private:
 	bool is_move;
 	bool is_event;
 	bool is_chat;
+	bool is_menu;
 	int image;
 	NPC now_chat;
+	Menu menu;
 
 public:
 	MapControl();
