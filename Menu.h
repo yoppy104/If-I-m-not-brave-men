@@ -1,4 +1,5 @@
 #pragma once
+#include "PartyControl.h"
 
 class Menu {
 private:
@@ -12,13 +13,20 @@ private:
 						5 : close
 						*/
 	int main_select;	//メインでの選択肢を特定する変数
+	int item_select;	//アイテムでの選択肢を特定する変数
+	int equipment_select; //装備での選択肢を特定する変数
+	int magic_select;	//魔術での選択肢を特定する変数
+	int save_select;	//セーブでの選択肢を特定する変数
 	int step;			//描画用のstep変数
 	int window_image;	//ウィンドウの画像
 	int pointer_image;	//ポインターの画像
+	int start;
 	
+	PartyControl pc;
 
 public:
 	Menu();
+	Menu(PartyControl p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム

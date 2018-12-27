@@ -80,6 +80,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			players[j] = t;
 		}
 	}
+	PartyControl pc(players, 0, 100);
 
 	int enemy_image = LoadGraph("スライム.png"); // 敵の画像
 	int enemy_image_dead = LoadGraph("スライムdead.png");
@@ -100,7 +101,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	int click_stepframe = 30;
 
-	mapc = MapControl(1920, 1200, 6, 5, 1, players[0]);
+	mapc = MapControl(1920, 1200, 6, 5, 1, players[0], pc);
 	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();

@@ -168,6 +168,8 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="M_Functions.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="PartyControl.cpp" />
+    <ClCompile Include="Portion.cpp" />
     <ClCompile Include="Rain.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -195,7 +197,9 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="M_Functions.h" />
     <ClInclude Include="NPC.h" />
+    <ClInclude Include="PartyControl.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Portion.h" />
     <ClInclude Include="Rain.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="WoodSword.h" />

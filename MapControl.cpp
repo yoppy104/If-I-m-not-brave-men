@@ -11,7 +11,7 @@ MapControl::MapControl() {
 
 }
 
-MapControl::MapControl(int width, int height, int x, int y, int map, Player* allen) {
+MapControl::MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl pc) {
 	this->allen = allen;
 	this->countFrame = 0;
 	this->directionPlayer = 0;
@@ -26,7 +26,8 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	this->is_chat = false;
 	this->is_event = false;
 	this->is_menu = false;
-	this->menu = Menu();
+	this->pc = pc;
+	this->menu = Menu(pc);
 	switch (map) {
 	case 0:
 		this->image = LoadGraph("");

@@ -27,10 +27,11 @@ private:
 	int image;
 	NPC now_chat;
 	Menu menu;
+	PartyControl pc;
 
 public:
 	MapControl();
-	MapControl(int width, int height, int x, int y, int map, Player* allen);
+	MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl pc);
 	~MapControl();
 	int getX();
 	int getY();
