@@ -12,11 +12,11 @@ Player::Player() {
 
 }
 
-Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
+Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
 	this->weapon = weapon; //‘•”õ
 }
 
-void Player::addMagic(Magic* new_magic) {
+void Player::addMagic(Magic new_magic) {
 	this->magics.push_back(new_magic);
 }
 
@@ -24,7 +24,7 @@ int Player::getNumMagics() {
 	return this->magics.size();
 }
 
-vector<Magic*> Player::getMagics() {
+vector<Magic> Player::getMagics() {
 	return this->magics;
 }
 
@@ -225,7 +225,7 @@ bool Player::is_attackable(int point) {
 	return 0;
 }
 
-Weapon* Player::getWeapon() {
+Weapon Player::getWeapon() {
 	return this->weapon;
 }
 

@@ -15,6 +15,8 @@
 #include "Mathematic.h"
 #include "MapControl.h"
 #include "WoodSword.h"
+#include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -81,7 +83,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 		}
 	}
 	PartyControl pc(players, 0, 100);
-
+	/*
+	fstream file;
+	file.open("savedata.dat", ios::binary | ios::in);
+	file.read((char*)&pc, sizeof(pc));
+	file.close();
+	*/
 	int enemy_image = LoadGraph("スライム.png"); // 敵の画像
 	int enemy_image_dead = LoadGraph("スライムdead.png");
 

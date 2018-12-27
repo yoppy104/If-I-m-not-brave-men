@@ -11,6 +11,7 @@ bool Portion::effectBattle() {
 }
 
 bool Portion::effectMap() {
+
 	return false;
 }
 

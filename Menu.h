@@ -20,7 +20,9 @@ private:
 	int step;			//描画用のstep変数
 	int window_image;	//ウィンドウの画像
 	int pointer_image;	//ポインターの画像
+	int subwindw_image;
 	int start;
+	int sub_select;
 	
 	PartyControl pc;
 

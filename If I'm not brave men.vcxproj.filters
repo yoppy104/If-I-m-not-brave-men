@@ -54,9 +54,6 @@
     <Filter Include="ヘッダーファイル\Map">
       <UniqueIdentifier>{92e2217a-aebe-4d78-a87a-bc222ccec447}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダーファイル\NPC">
-      <UniqueIdentifier>{16f2254f-cf36-47b7-a32f-2955088379ce}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\NPC">
       <UniqueIdentifier>{7290e23f-b41d-471d-bc7e-798b2bf6a289}</UniqueIdentifier>
     </Filter>
@@ -71,6 +68,9 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Menu">
       <UniqueIdentifier>{4a52f212-92a6-455b-bc23-3651cca24adf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\NPC">
+      <UniqueIdentifier>{16f2254f-cf36-47b7-a32f-2955088379ce}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +149,21 @@
     <ClCompile Include="Portion.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Armor.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LeatherCap.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LeatherSheild.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LeatherChest.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="LeatherArm.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -224,6 +239,24 @@
       <Filter>ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="Portion.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Armor.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LetherCap.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LeatherShield.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LeatherChest.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="LeatherArm.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Items.h">
       <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
   </ItemGroup>

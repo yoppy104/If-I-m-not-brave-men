@@ -1,6 +1,10 @@
 #include "M_Functions.h"
 #include "Menu.h"
 #include "DxLib.h"
+#include <fstream>
+#include "Magic.h"
+
+using namespace std;
 
 Menu::Menu() {
 	this->mode = 0;
@@ -12,7 +16,9 @@ Menu::Menu() {
 	this->save_select = 0;
 	this->window_image = LoadGraph("menu.png");
 	this->pointer_image = LoadGraph("pointer.png");
+	this->subwindw_image = LoadGraph("command.png");
 	this->start = 0;
+	this->sub_select = -1;
 }
 
 Menu::Menu(PartyControl p) {
@@ -26,7 +32,9 @@ Menu::Menu(PartyControl p) {
 	this->pc = p;
 	this->window_image = LoadGraph("menu.png");
 	this->pointer_image = LoadGraph("pointer.png");
+	this->subwindw_image = LoadGraph("command.png");
 	this->start = 0;
+	this->sub_select = -1;
 }
 
 bool Menu::Update() {
@@ -76,7 +84,7 @@ bool Menu::updateMain() {
 	}
 	DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc.getNumCoin());
 	DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc.getNumMagicStone());
-	if (Button(KEY_INPUT_M) == 1) {
+	if (Button(KEY_INPUT_M) == 1 || Button(KEY_INPUT_B) == 1) {
 		this->mode = 5;
 	}
 	else if (Button(KEY_INPUT_UP) == 1) {
@@ -91,7 +99,6 @@ bool Menu::updateMain() {
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
 		this->mode = this->main_select;
-		this->main_select = 1;
 	}
 	return false;
 }
@@ -115,6 +122,58 @@ bool Menu::updateItem() {
 
 			DrawGraph(350, 100 + 50 * (this->item_select - this->start), this->pointer_image, TRUE);
 		}
+
+		if (this->sub_select == -1) {
+			if (Button(KEY_INPUT_UP) % 15 == 1) {
+				if (this->item_select - 1 >= 0) {
+					this->item_select--;
+					if (this->item_select < this->start) {
+						this->start--;
+					}
+				}
+			}
+			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+				if (this->item_select + 1 < pc.getNumItem()) {
+					this->item_select++;
+					if (this->item_select > this->start + 9) {
+						this->start++;
+					}
+				}
+			}
+			else if (Button(KEY_INPUT_SPACE) == 1) {
+				this->sub_select = 0;
+			}
+		}
+		else {
+			DrawExtendGraph(850, 400, 1050, 700, this->subwindw_image, TRUE);
+			DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
+			DrawFormatString(900, 500, GetColor(0, 0, 0), "すてる");
+			DrawGraph(860, 450 + 50 * this->sub_select, this->pointer_image, TRUE);
+			if (Button(KEY_INPUT_SPACE) == 1) {
+				switch (this->sub_select) {
+				case 0:
+					this->pc.getItem(this->item_select).effectMap();
+					break;
+				case 1:
+					this->pc.delItem(this->item_select);
+					break;
+				}
+				this->sub_select = -1;
+			}
+			else if (Button(KEY_INPUT_B) == 1) {
+				this->sub_select = -1;
+			}
+			else if (Button(KEY_INPUT_UP) == 1) {
+				if (this->sub_select - 1 >= 0) {
+					this->sub_select--;
+				}
+			}
+			else if (Button(KEY_INPUT_DOWN) == 1) {
+				if (this->sub_select + 1 <= 1) {
+					this->sub_select++;
+				}
+			}
+		}
 	}
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
@@ -126,27 +185,31 @@ bool Menu::updateItem() {
 		this->item_select = 0;
 		this->start = 0;
 	}
-	else if (Button(KEY_INPUT_UP)%20 == 1) {
-		if (this->item_select - 1 >= 0) {
-			this->item_select--;
-			if (this->item_select < this->start) {
-				this->start--;
-			}
-		}
-	}
-	else if (Button(KEY_INPUT_DOWN)%20 == 1) {
-		if (this->item_select + 1 < pc.getNumItem()) {
-			this->item_select++;
-			if (this->item_select > this->start + 9) {
-				this->start++;
-			}
-		}
-	}
 	return false;
 }
 
 bool Menu::updateEquipment() {
-	DrawFormatString(500, 300, GetColor(0, 0, 0), "装備");
+	Player* temp;
+	if (this->sub_select == -1) {
+		for (int i = 0; i < this->pc.getNumMember(); i++) {
+			temp = this->pc.getMember(i);
+			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
+		}
+		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
+		if (Button(KEY_INPUT_UP) % 15 == 1) {
+			if (this->magic_select - 1 >= 0) {
+				this->magic_select--;
+			}
+		}
+		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+			if (this->magic_select + 1 < this->pc.getNumMember()) {
+				this->magic_select++;
+			}
+		}
+		else if (Button(KEY_INPUT_SPACE) == 1) {
+			this->sub_select = 0;
+		}
+	}
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
 	}
@@ -157,7 +220,53 @@ bool Menu::updateEquipment() {
 }
 
 bool Menu::updateMagic() {
-	DrawFormatString(500, 300, GetColor(0, 0, 0), "魔術");
+	Player* temp;
+	if (this->sub_select == -1) {
+		for (int i = 0; i < this->pc.getNumMember(); i++) {
+			temp = this->pc.getMember(i);
+			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
+		}
+		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
+		if (Button(KEY_INPUT_UP) % 15 == 1) {
+			if (this->magic_select - 1 >= 0) {
+				this->magic_select--;
+			}
+		}
+		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+			if (this->magic_select + 1 < this->pc.getNumMember()) {
+				this->magic_select++;
+			}
+		}
+		else if (Button(KEY_INPUT_SPACE) == 1) {
+			this->sub_select = 0;
+		}
+	}
+	else {
+		temp = this->pc.getMember(this->magic_select);
+		vector <Magic> magic = temp->getMagics();
+		for (int i = 0; i < magic.size(); i++) {
+			magic[i].getName(400, 100 + 50 * i);
+		}
+		DrawGraph(350, 100 + 50 * this->sub_select, this->pointer_image, TRUE);
+		if (Button(KEY_INPUT_UP) % 15 == 1) {
+			if (this->sub_select - 1 >= 0) {
+				this->sub_select--;
+			}
+		}
+		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+			if (this->sub_select + 1 < magic.size()) {
+				this->sub_select++;
+			}
+		}
+		else if (Button(KEY_INPUT_SPACE) == 1) {
+			if (magic[this->sub_select].getIsMap()) {
+				magic[this->sub_select].effectMap();
+			}
+			else {
+				DrawFormatString(300, 550, GetColor(0, 0, 0), "これは使えません。");
+			}
+		}
+	}
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
 	}
@@ -168,12 +277,39 @@ bool Menu::updateMagic() {
 }
 
 bool Menu::updateSave() {
-	DrawFormatString(500, 300, GetColor(0, 0, 0), "セーブ");
+	DrawFormatString(400, 150, GetColor(0, 0, 0), "セーブする");
+	DrawFormatString(400, 250, GetColor(0, 0, 0), "セーブしない");
+	DrawGraph(350, 150 + 100 * this->save_select, this->pointer_image, TRUE);
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
 	}
 	else if (Button(KEY_INPUT_M) == 1) {
 		this->mode = 5;
+	}
+	else if (Button(KEY_INPUT_UP) == 1) {
+		if (this->save_select == 1) {
+			this->save_select = 0;
+		}
+	}
+	else if (Button(KEY_INPUT_DOWN) == 1) {
+		if (this->save_select == 0) {
+			this->save_select = 1;
+		}
+	}
+	else if (Button(KEY_INPUT_SPACE) == 1) {
+		if (this->save_select == 0) {
+			/*
+			fstream file;
+			file.open("savedata.dat", ios::binary | ios::out);
+			file.write((char*)&this->pc, sizeof(this->pc));
+			file.close();
+			*/
+			this->mode = 0;
+		}
+		else {
+			this->save_select = 0;
+			this->mode = 0;
+		}
 	}
 	return false;
 }

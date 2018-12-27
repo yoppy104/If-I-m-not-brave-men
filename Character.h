@@ -47,5 +47,5 @@ public:
 	virtual void move();
 	virtual void battle();
 	virtual bool is_attackable();
-	virtual Weapon* getWeapon();
+	virtual Weapon getWeapon();
 };

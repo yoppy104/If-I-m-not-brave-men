@@ -1,7 +1,7 @@
 #pragma once
 
 class Item {
-private:
+protected:
 	char name[128];
 	int id;			//id
 	int price_buy;	//”ƒ‰¿

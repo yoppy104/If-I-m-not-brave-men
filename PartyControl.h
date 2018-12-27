@@ -19,6 +19,7 @@ public:
 	int getNumMember();
 	Item getItem(int index);
 	int getNumItem();
+	void delItem(int index);
 	int getNumMagicStone();
 	int getNumCoin();
 	void addNumMagicStone(int delta);

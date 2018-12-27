@@ -113,8 +113,8 @@ int Character::getImage() {
 int Character::getImageDead() {
 	return this->image_dead;
 }
-Weapon* Character::getWeapon() {
+Weapon Character::getWeapon() {
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドしてください");
-	Weapon* none;
+	Weapon none;
 	return none;
 }

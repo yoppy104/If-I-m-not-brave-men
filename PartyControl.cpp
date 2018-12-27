@@ -1,6 +1,5 @@
 #include "PartyControl.h"
-#include "WoodSword.h"
-#include "Portion.h"
+#include "Items.h"
 
 PartyControl::PartyControl() {
 
@@ -10,9 +9,13 @@ PartyControl::PartyControl(vector <Player*> players, int num, int coin) {
 	this->member = players;
 	this->num_MagicStone = num;
 	this->coin = coin;
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 3; i++) {
 		this->items.push_back(WoodSword());
 		this->items.push_back(Portion());
+		this->items.push_back(LeatherArm());
+		this->items.push_back(LeatherSheild());
+		this->items.push_back(LeatherCap());
+		this->items.push_back(LeatherChest());
 	}
 }
 
@@ -30,6 +33,10 @@ Item PartyControl::getItem(int index){
 
 int PartyControl::getNumItem() {
 	return this->items.size();
+}
+
+void PartyControl::delItem(int index) {
+	this->items.erase(this->items.begin() + index);
 }
 
 int PartyControl::getNumMagicStone() {

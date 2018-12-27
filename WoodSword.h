@@ -4,8 +4,6 @@
 #include "IDs.h"
 
 class WoodSword :public Weapon {
-private:
-
 public:
 	WoodSword();
 	virtual void drawAttackableArea(); //UŒ‚‰Â”\ƒGƒŠƒA‚ğ•`‰æ

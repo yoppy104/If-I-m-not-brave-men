@@ -69,7 +69,11 @@
 /*
 ‘•”õ•i
 */
-#define WOODSWORD	50001	//–ØŒ•‚ÌID
+#define WOODSWORD		50001	//–ØŒ•‚ÌID
+#define LEATHERCAP		51001	//”ç‚Ì–XŽq‚ÌID
+#define LEATHERCHEST	51002	//”ç‚Ì‹¹“–‚Ä‚ÌID
+#define LEATHERSHIELD	51003	//”ç‚Ì‚‚ÌID
+#define LEATHERARM		51004	//”ç‚ÌâÄŽè‚ÌID
 
 /*
 Á–Õ•i

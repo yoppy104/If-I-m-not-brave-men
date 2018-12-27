@@ -212,9 +212,15 @@ void MapControl::Update() {
 		}
 	}
 	else if (this->is_menu) {
-		if (this->menu.Update()) {
-			this->is_menu = false;
-			this->is_move = true;
+		int test = this->menu.Update();
+		if (test) {
+			if (test == 2) {
+
+			}
+			else {
+				this->is_menu = false;
+				this->is_move = true;
+			}
 		}
 	}
 }
