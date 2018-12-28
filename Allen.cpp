@@ -4,7 +4,7 @@
 #include "DxLib.h"
 #include "FireBall.h"
 
-Allen::Allen(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image, int mp, int image_dead) :Player(name, x, y, hp, attack, diffence, magic_power, dex, _weapon, _image, image_dead){
+Allen::Allen(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int mp, int image_dead) :Player(name, x, y, hp, attack, diffence, magic_power, dex, _weapon, head, arm, chest, shield, _image, image_dead){
 	this->mp = mp;
 	this->setHasMp(true);
 	LoadDivGraph("キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, this->image_map_front);
@@ -12,7 +12,7 @@ Allen::Allen(char name[], int x, int y, int hp, int attack, int diffence, int ma
 	LoadDivGraph("キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, this->image_map_right);
 	LoadDivGraph("キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, this->image_map_left);
 
-	this->magics.push_back(FireBall());
+	this->magics.push_back(new FireBall());
 }
 
 int Allen::getMp() {

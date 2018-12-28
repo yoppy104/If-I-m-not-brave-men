@@ -21,7 +21,7 @@ Menu::Menu() {
 	this->sub_select = -1;
 }
 
-Menu::Menu(PartyControl p) {
+Menu::Menu(PartyControl* p) {
 	this->mode = 0;
 	this->step = 5;
 	this->main_select = 1;
@@ -77,13 +77,13 @@ bool Menu::Update() {
 bool Menu::updateMain() {
 	DrawGraph(80, 100 * this->main_select, this->pointer_image, TRUE);
 	Player * temp;
-	for (int i = 0; i < this->pc.getNumMember(); i++) {
-		temp = this->pc.getMember(i);
+	for (int i = 0; i < this->pc->getNumMember(); i++) {
+		temp = this->pc->getMember(i);
 		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
 		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "%d/%d", temp->getHp(), temp->getHpMax());
 	}
-	DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc.getNumCoin());
-	DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc.getNumMagicStone());
+	DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc->getNumCoin());
+	DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc->getNumMagicStone());
 	if (Button(KEY_INPUT_M) == 1 || Button(KEY_INPUT_B) == 1) {
 		this->mode = 5;
 	}
@@ -105,20 +105,20 @@ bool Menu::updateMain() {
 
 bool Menu::updateItem() {
 	int end;
-	if (this->pc.getNumItem() == 0) {
+	if (this->pc->getNumItem() == 0) {
 		DrawFormatString(350, 100, GetColor(0, 0, 0), "アイテムを所持していません");
 	}
 	else {
-		Item temp;
-		if (pc.getNumItem() < 10 || pc.getNumItem() < this->start + 10) {
-			end = pc.getNumItem();
+		Item* temp;
+		if (pc->getNumItem() < 10 || pc->getNumItem() < this->start + 10) {
+			end = pc->getNumItem();
 		}
 		else {
 			end = this->start + 10;
 		}
 		for (int i = this->start; i < end; i++) {
-			temp = pc.getItem(i);
-			temp.getName(400, 100 + 50 * (i - this->start));
+			temp = pc->getItem(i);
+			temp->getName(400, 100 + 50 * (i - this->start));
 
 			DrawGraph(350, 100 + 50 * (this->item_select - this->start), this->pointer_image, TRUE);
 		}
@@ -133,7 +133,7 @@ bool Menu::updateItem() {
 				}
 			}
 			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-				if (this->item_select + 1 < pc.getNumItem()) {
+				if (this->item_select + 1 < pc->getNumItem()) {
 					this->item_select++;
 					if (this->item_select > this->start + 9) {
 						this->start++;
@@ -148,14 +148,22 @@ bool Menu::updateItem() {
 			DrawExtendGraph(850, 400, 1050, 700, this->subwindw_image, TRUE);
 			DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
 			DrawFormatString(900, 500, GetColor(0, 0, 0), "すてる");
+			int limit = 1;
+			if (pc->getItem(this->item_select)->getIsEquip() != 0) {
+				DrawFormatString(900, 550, GetColor(0, 0, 0), "装備");
+				limit ++;
+			}
 			DrawGraph(860, 450 + 50 * this->sub_select, this->pointer_image, TRUE);
 			if (Button(KEY_INPUT_SPACE) == 1) {
 				switch (this->sub_select) {
 				case 0:
-					this->pc.getItem(this->item_select).effectMap();
+					this->pc->getItem(this->item_select)->effectMap();
 					break;
 				case 1:
-					this->pc.delItem(this->item_select);
+					this->pc->delItem(this->item_select);
+					break;
+				case 2:
+					this->pc->setEquipment(0, this->item_select);
 					break;
 				}
 				this->sub_select = -1;
@@ -169,7 +177,7 @@ bool Menu::updateItem() {
 				}
 			}
 			else if (Button(KEY_INPUT_DOWN) == 1) {
-				if (this->sub_select + 1 <= 1) {
+				if (this->sub_select + 1 <= limit) {
 					this->sub_select++;
 				}
 			}
@@ -190,9 +198,10 @@ bool Menu::updateItem() {
 
 bool Menu::updateEquipment() {
 	Player* temp;
+
 	if (this->sub_select == -1) {
-		for (int i = 0; i < this->pc.getNumMember(); i++) {
-			temp = this->pc.getMember(i);
+		for (int i = 0; i < this->pc->getNumMember(); i++) {
+			temp = this->pc->getMember(i);
 			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
 		}
 		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
@@ -202,13 +211,26 @@ bool Menu::updateEquipment() {
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (this->magic_select + 1 < this->pc.getNumMember()) {
+			if (this->magic_select + 1 < this->pc->getNumMember()) {
 				this->magic_select++;
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			this->sub_select = 0;
 		}
+	}
+	else {
+		temp = pc->getMember(this->equipment_select);
+		DrawFormatString(400, 150, GetColor(0, 0, 0), "武器  : ");
+		temp->getWeapon()->getName(600, 150);
+		DrawFormatString(400, 200, GetColor(0, 0, 0), "頭装備: ");
+		temp->getArmor(5)->getName(600, 200);
+		DrawFormatString(400, 250, GetColor(0, 0, 0), "腕装備: ");
+		temp->getArmor(4)->getName(600, 250);
+		DrawFormatString(400, 300, GetColor(0, 0, 0), "胴装備: ");
+		temp->getArmor(3)->getName(600, 300);
+		DrawFormatString(400, 350, GetColor(0, 0, 0), "  盾  : ");
+		temp->getArmor(2)->getName(600, 350);
 	}
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
@@ -222,8 +244,8 @@ bool Menu::updateEquipment() {
 bool Menu::updateMagic() {
 	Player* temp;
 	if (this->sub_select == -1) {
-		for (int i = 0; i < this->pc.getNumMember(); i++) {
-			temp = this->pc.getMember(i);
+		for (int i = 0; i < this->pc->getNumMember(); i++) {
+			temp = this->pc->getMember(i);
 			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
 		}
 		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
@@ -233,7 +255,7 @@ bool Menu::updateMagic() {
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (this->magic_select + 1 < this->pc.getNumMember()) {
+			if (this->magic_select + 1 < this->pc->getNumMember()) {
 				this->magic_select++;
 			}
 		}
@@ -242,10 +264,10 @@ bool Menu::updateMagic() {
 		}
 	}
 	else {
-		temp = this->pc.getMember(this->magic_select);
-		vector <Magic> magic = temp->getMagics();
+		temp = this->pc->getMember(this->magic_select);
+		vector <Magic*> magic = temp->getMagics();
 		for (int i = 0; i < magic.size(); i++) {
-			magic[i].getName(400, 100 + 50 * i);
+			magic[i]->getName(400, 100 + 50 * i);
 		}
 		DrawGraph(350, 100 + 50 * this->sub_select, this->pointer_image, TRUE);
 		if (Button(KEY_INPUT_UP) % 15 == 1) {
@@ -259,8 +281,8 @@ bool Menu::updateMagic() {
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
-			if (magic[this->sub_select].getIsMap()) {
-				magic[this->sub_select].effectMap();
+			if (magic[this->sub_select]->getIsMap()) {
+				magic[this->sub_select]->effectMap();
 			}
 			else {
 				DrawFormatString(300, 550, GetColor(0, 0, 0), "これは使えません。");

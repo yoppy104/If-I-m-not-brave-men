@@ -259,5 +259,8 @@
     <ClInclude Include="Items.h">
       <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Magics.h">
+      <Filter>ヘッダーファイル\Magic</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

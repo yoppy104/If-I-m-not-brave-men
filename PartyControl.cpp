@@ -1,5 +1,6 @@
 #include "PartyControl.h"
 #include "Items.h"
+#include "DxLib.h"
 
 PartyControl::PartyControl() {
 
@@ -10,13 +11,20 @@ PartyControl::PartyControl(vector <Player*> players, int num, int coin) {
 	this->num_MagicStone = num;
 	this->coin = coin;
 	for (int i = 0; i < 3; i++) {
-		this->items.push_back(WoodSword());
-		this->items.push_back(Portion());
-		this->items.push_back(LeatherArm());
-		this->items.push_back(LeatherSheild());
-		this->items.push_back(LeatherCap());
-		this->items.push_back(LeatherChest());
+		this->items.push_back(new WoodSword());
+		this->items.push_back(new Portion());
+		this->items.push_back(new LeatherArm());
+		this->items.push_back(new LeatherSheild());
+		this->items.push_back(new LeatherCap());
+		this->items.push_back(new LeatherChest());
 	}
+
+	this->items[0]->getName(400, 450);
+	WaitTimer(500);
+}
+
+PartyControl::~PartyControl() {
+	this->items.clear();
 }
 
 Player* PartyControl::getMember(int index) {
@@ -27,7 +35,7 @@ int PartyControl::getNumMember() {
 	return this->member.size();
 }
 
-Item PartyControl::getItem(int index){
+Item* PartyControl::getItem(int index){
 	return this->items[index];
 }
 
@@ -53,4 +61,18 @@ void PartyControl::addNumMagicStone(int delta) {
 
 void PartyControl::addNumCoin(int delta) {
 	this->coin += delta;
+}
+
+
+void PartyControl::setEquipment(int member_index, int item_index) {
+	int temp = this->items[item_index]->getIsEquip();
+	if (temp == 1) {
+		this->items.push_back(this->member[member_index]->getWeapon());
+		this->member[member_index]->setEquipment((Weapon*)this->items[item_index]);
+	}
+	else {
+		this->items.push_back(this->member[member_index]->getArmor(temp));
+		this->member[member_index]->setEquipment((Armor*)this->items[item_index], temp);
+	}
+	this->items.erase(this->items.begin() + item_index);
 }

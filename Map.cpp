@@ -6,7 +6,7 @@ Map::Map() {
 
 }
 
-Map::Map(int data, bool is_event, bool is_npc, int table, NPC npc) {
+Map::Map(int data, bool is_event, bool is_npc, int table, NPC* npc) {
 	// ƒf[ƒ^‚É‚æ‚Á‚Ä§Œä
 	this->encount_rate = 0;
 	this->encount_table = table;
@@ -142,15 +142,15 @@ void Map::setNpc(bool isnt) {
 
 void Map::setNpc(NPC* npc) {
 	this->is_npc = true;
-	this->npc = *npc;
+	this->npc = npc;
 }
 
-NPC Map::getNPC() {
+NPC* Map::getNPC() {
 	return this->npc;
 }
 
 void Map::chatNPC() {
-	this->npc.chat();
+	this->npc->chat();
 }
 
 void Map::setEvent(bool isnt) {
@@ -159,10 +159,10 @@ void Map::setEvent(bool isnt) {
 }
 void Map::setEvent(Event* myevent) {
 	this->is_event = true;
-	this->has_event = *myevent;
+	this->has_event = myevent;
 }
 
-Event Map::getEvent() {
+Event* Map::getEvent() {
 	if (this->is_event) {
 		return this->has_event;
 	}

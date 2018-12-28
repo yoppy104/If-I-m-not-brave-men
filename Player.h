@@ -4,6 +4,7 @@
 #include "Character.h"
 #include <vector>
 #include "Magic.h"
+#include "Armor.h"
 
 class Enemy;
 
@@ -14,23 +15,31 @@ typedef unsigned long long stagedata;
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
 	char name[10]; // 名前。これで個体を管理する
-	Weapon weapon; // 装備の配列
 
-	vector <Magic> magics;
+	vector <Magic*> magics;
 	int image_map_front[2] = { 0,0 };
 	int image_map_back[2] = { 0,0 };
 	int image_map_right[4] = { 0, 0, 0, 0 };
 	int image_map_left[4] = { 0, 0, 0, 0 };
 
+	Weapon* weapon; // 装備の配列
+	Armor* arm;
+	Armor* head;
+	Armor* chest;
+	Armor* shield;
+
 public:
 
 	Player();
-	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon _weapon, int _image, int image_dead);
+	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int image_dead);
 
-	void addMagic(Magic new_magic);
+	~Player();
+
+	void addMagic(Magic* new_magic);
 
 	int getNumMagics();
-	vector<Magic> getMagics();
+	vector <Magic*> getMagics();
+	Magic* getMagic(int index);
 
 	virtual void plusMp(int);
 	virtual int getMp();
@@ -44,8 +53,11 @@ public:
 
 	virtual bool is_attackable(int point);
 
-	virtual Weapon getWeapon();
+	virtual Weapon* getWeapon();
+	virtual Armor* getArmor(int type);
 
 	void draw_map(int x, int y, int frame, int direction, double disp_rate);
 
+	void setEquipment(Weapon* temp);
+	void setEquipment(Armor* temp, int type);
 };

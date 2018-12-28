@@ -12,11 +12,19 @@ Player::Player() {
 
 }
 
-Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon weapon, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
+Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int image, int image_dead):Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){
 	this->weapon = weapon; //‘•”õ
+	this->head = head;
+	this->arm = arm;
+	this->shield = shield;
+	this->chest = chest;
 }
 
-void Player::addMagic(Magic new_magic) {
+Player::~Player() {
+	this->magics.clear();
+}
+
+void Player::addMagic(Magic* new_magic) {
 	this->magics.push_back(new_magic);
 }
 
@@ -24,8 +32,12 @@ int Player::getNumMagics() {
 	return this->magics.size();
 }
 
-vector<Magic> Player::getMagics() {
+vector <Magic*> Player::getMagics() {
 	return this->magics;
+}
+
+Magic* Player::getMagic(int index) {
+	return this->magics[index];
 }
 
 int Player::getMagicStone() {
@@ -225,8 +237,25 @@ bool Player::is_attackable(int point) {
 	return 0;
 }
 
-Weapon Player::getWeapon() {
+Weapon* Player::getWeapon() {
 	return this->weapon;
+}
+
+Armor* Player::getArmor(int type) {
+	switch (type) {
+	case 2:
+		return this->shield;
+		break;
+	case 3:
+		return this->chest;
+		break;
+	case 4:
+		return this->chest;
+		break;
+	case 5:
+		return this->head;
+		break;
+	}
 }
 
 void Player::plusMp(int point) {
@@ -250,6 +279,27 @@ void Player::draw_map(int x, int y, int frame, int direction, double disp_rate) 
 		break;
 	case 3:
 		DrawExtendGraph(x, y, x + 64 * disp_rate, y + 64 * disp_rate, this->image_map_right[frame], TRUE);
+		break;
+	}
+}
+
+void Player::setEquipment(Weapon* temp) {
+	this->weapon = temp;
+}
+
+void Player::setEquipment(Armor* temp, int type) {
+	switch (type) {
+	case 2:
+		this->shield = temp;
+		break;
+	case 3:
+		this->chest = temp;
+		break;
+	case 4:
+		this->arm = temp;
+		break;
+	case 5:
+		this->head = temp;
 		break;
 	}
 }

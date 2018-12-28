@@ -12,13 +12,13 @@ private:
 	bool	is_encount;		// エンカウントするかどうか
 	double	encount_rate;	// 敵との遭遇率
 	int		encount_table;	// この場所でエンカウントする敵のテーブルを指定するid
-	NPC		npc;			// この場所にいるnpcの情報。
-	Event	has_event;			// この場所で発生するイベント
+	NPC*		npc;			// この場所にいるnpcの情報。
+	Event*	has_event;			// この場所で発生するイベント
 
 public:
 	//コンストラクタ
 	Map();
-	Map(int data, bool is_event, bool is_npc, int table, NPC npc);
+	Map(int data, bool is_event, bool is_npc, int table, NPC* npc);
 
 	//取得メソッド
 	bool getIsMove();
@@ -29,11 +29,11 @@ public:
 	void setIsEvent(bool is);
 	void setNpc(bool isnt);
 	void setNpc(NPC* npc);
-	NPC getNPC();
+	NPC* getNPC();
 	void chatNPC();
 	void setEvent(bool isnt);
 	void setEvent(Event* myevent);
-	Event getEvent();
+	Event* getEvent();
 	void delEvent();
 	void setTable(int table);
 	double getRate();

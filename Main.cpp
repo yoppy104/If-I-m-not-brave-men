@@ -42,8 +42,6 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	//createMap();
 
-
-	WoodSword* iron_sword(); // 装備のクラス
 	MapControl mapc;
 	
 	//画像ファイルの読み込み
@@ -69,11 +67,8 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	int main = LoadSoundMem("main(仮)4_17.wav"); //メインテーマ
 
 
-	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 6, 3, 6, 5, WoodSword(), allen_image, 10, allen_image_dead); // アレンの構造体定義
-	fstream file;
-	file.open("allendata.dat", ios::binary | ios::in);
-	file.read((char*)&allen, sizeof(allen));
-	file.close();
+	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 6, 3, 6, 5, new WoodSword(), new LeatherCap(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
+
 	/*
 	Rain rain("レイン", 496 + 160 * 4, 136 + 160 * 5, 15, 4, 4, 10, 3, WoodSword(), rain_image, rain_image_dead); // レインの構造体定義
 	Craig craig("クレイグ", 496 + 160 * 0, 136 + 160 * 5, 25, 10, 7, 0, 2, WoodSword(), craig_image, craig_image_dead); // クレイグの構造体定義
@@ -90,13 +85,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 		}
 	}
 	*/
-	PartyControl pc(players, 0, 100);
-	/*
-	fstream file;
-	file.open("savedata.dat", ios::binary | ios::in);
-	file.read((char*)&pc, sizeof(pc));
-	file.close();
-	*/
+	PartyControl* pc = new PartyControl(players, 0, 100);
 	int enemy_image = LoadGraph("スライム.png"); // 敵の画像
 	int enemy_image_dead = LoadGraph("スライムdead.png");
 
@@ -118,23 +107,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	mapc = MapControl(1920, 1200, 6, 5, 1, players[0], pc);
 	
-	file.open("savedata.dat", ios::binary | ios::in);
-	file.read((char*)&mapc, sizeof(mapc));
-	file.close();
-	
 
 	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();
 		mapc.Update();
 	}
-
-	file.open("savedata.dat", ios::binary | ios::out);
-	file.write((char*)&mapc, sizeof(mapc));
-	file.close();
-	file.open("allendata.dat", ios::binary | ios::out);
-	file.write((char*)players[0], sizeof(mapc));
-	file.close();
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理
 	return 0; // ソフトの終了

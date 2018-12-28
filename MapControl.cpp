@@ -11,7 +11,7 @@ MapControl::MapControl() {
 
 }
 
-MapControl::MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl pc) {
+MapControl::MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl* pc) {
 	this->allen = allen;
 	this->countFrame = 0;
 	this->directionPlayer = 0;
@@ -21,13 +21,13 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	this->disp_rate = dispsize_h / 1920.0;
 	this->position_player[1] = y;
 	this->now = NULL;
-	this->now_chat = NPC();
+	this->now_chat = new NPC();
 	this->is_move = true;
 	this->is_chat = false;
 	this->is_event = false;
 	this->is_menu = false;
 	this->pc = pc;
-	this->menu = Menu(pc);
+	this->menu = new Menu(pc);
 	switch (map) {
 	case 0:
 		this->image = LoadGraph("");
@@ -78,7 +78,7 @@ void MapControl::show() {
 	this->countFrame++;
 	if (!this->npcs.empty()) {
 		for (int i = 0; i < this->npcs.size(); i++) {
-			this->npcs.at(i).draw(x + (this->npcs.at(i).getX() * 64) * this->disp_rate, y + (this->npcs.at(i).getY() * 64) * this->disp_rate, this->disp_rate);
+			this->npcs.at(i)->draw(x + (this->npcs.at(i)->getX() * 64) * this->disp_rate, y + (this->npcs.at(i)->getY() * 64) * this->disp_rate, this->disp_rate);
 		}
 	}
 }
@@ -95,8 +95,8 @@ void MapControl::createMap() {
 	bool is_event = false;
 	bool is_npc = false;
 	int table = ENCOUNT_FIRST_NORMAL;
-	NPC npc;
-	Event events;
+	NPC* npc;
+	Event* events;
 	while (getline(stream, line)) {
 		col = 0;
 		for (string::size_type spos, epos = 0;
@@ -106,7 +106,7 @@ void MapControl::createMap() {
 			this->maps[col][row]->setIsEvent(is_event);
 			if (col == 11 && row == 6) {
 				is_npc = true;
-				npc = NPC(11, 6, "テスト君");
+				npc = new NPC(11, 6, "テスト君");
 			}
 			if (is_npc) {
 				this->maps[col][row]->setNpc(&npc);
@@ -117,7 +117,7 @@ void MapControl::createMap() {
 			}
 			if (col == 10 && row == 5) {
 				is_event = true;
-				events = Event();
+				events = new Event();
 			}
 			if (is_event) {
 				this->maps[col][row]->setEvent(&events);
@@ -198,7 +198,7 @@ void MapControl::Update() {
 		}
 	}
 	else if (this->is_event){
-		if (this->now.Update()) {
+		if (this->now->Update()) {
 			this->is_move = true;
 			this->is_event = false;
 			this->now = NULL;
@@ -206,13 +206,13 @@ void MapControl::Update() {
 		}
 	}
 	else if (this->is_chat) {
-		if (this->now_chat.chat()) {
+		if (this->now_chat->chat()) {
 			this->is_chat = false;
 			this->is_move = true;
 		}
 	}
 	else if (this->is_menu) {
-		int test = this->menu.Update();
+		int test = this->menu->Update();
 		if (test) {
 			if (test == 2) {
 

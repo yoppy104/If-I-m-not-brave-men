@@ -8,6 +8,7 @@ protected:
 	int weight; // d—ÊB‚±‚ê‚É‚æ‚Á‚Ä‘•”õ‚Å‚«‚½‚è‚ª•Ï‚í‚éB‘ÌŒ±”Å‚Å‚ÍÀ‘•‚µ‚È‚¢
 
 public:
+	Armor();
 	Armor(char name[], int id, bool is_sell, int point, int price, int weight, int image, int part);
 	int getPoint();
 	int getWeight();

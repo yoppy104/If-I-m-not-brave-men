@@ -24,6 +24,7 @@ public:
 	bool getIsSell();
 	void getName(int x, int y);
 	int getImage();
+	int getIsEquip();
 	virtual bool effectBattle();
 	virtual bool effectMap();
 };

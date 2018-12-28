@@ -24,11 +24,11 @@ private:
 	int start;
 	int sub_select;
 	
-	PartyControl pc;
+	PartyControl* pc;
 
 public:
 	Menu();
-	Menu(PartyControl p);
+	Menu(PartyControl* p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム

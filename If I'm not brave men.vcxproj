@@ -202,6 +202,7 @@
     <ClInclude Include="LeatherShield.h" />
     <ClInclude Include="LetherCap.h" />
     <ClInclude Include="Magic.h" />
+    <ClInclude Include="Magics.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapControl.h" />
     <ClInclude Include="Mathematic.h" />

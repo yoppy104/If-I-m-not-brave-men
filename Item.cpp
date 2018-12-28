@@ -73,6 +73,25 @@ bool Item::effectBattle() {
 	return false;
 }
 
+int Item::getIsEquip() {
+	if (this->is_equip_arm) {
+		return 4;
+	}
+	else if (this->is_equip_head) {
+		return 5;
+	}
+	else if (this->is_equip_chest) {
+		return 3;
+	}
+	else if (this->is_equip_shield) {
+		return 2;
+	}
+	else if (this->is_equip_weapon) {
+		return 1;
+	}
+	return 0;
+}
+
 bool Item::effectMap() {
 	return false;
 }

@@ -18,20 +18,20 @@ private:
 	int directionPlayer;
 	std::vector <std::vector<Map*>> maps;
 	Player* allen;
-	Event now;
-	std::vector<NPC> npcs;
+	Event* now;
+	std::vector<NPC*> npcs;
 	bool is_move;
 	bool is_event;
 	bool is_chat;
 	bool is_menu;
 	int image;
-	NPC now_chat;
-	Menu menu;
-	PartyControl pc;
+	NPC* now_chat;
+	Menu* menu;
+	PartyControl* pc;
 
 public:
 	MapControl();
-	MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl pc);
+	MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl* pc);
 	~MapControl();
 	int getX();
 	int getY();
