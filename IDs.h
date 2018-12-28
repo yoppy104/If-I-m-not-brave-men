@@ -69,6 +69,7 @@
 /*
 ‘•”õ•i
 */
+#define NOTEQUIPMENT	50000	//–¢‘•”õ
 #define WOODSWORD		50001	//–ØŒ•‚ÌID
 #define LEATHERCAP		51001	//”ç‚Ì–XŽq‚ÌID
 #define LEATHERCHEST	51002	//”ç‚Ì‹¹“–‚Ä‚ÌID

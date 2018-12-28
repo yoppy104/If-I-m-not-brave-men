@@ -12,8 +12,8 @@ private:
 	bool	is_encount;		// エンカウントするかどうか
 	double	encount_rate;	// 敵との遭遇率
 	int		encount_table;	// この場所でエンカウントする敵のテーブルを指定するid
-	NPC*		npc;			// この場所にいるnpcの情報。
-	Event*	has_event;			// この場所で発生するイベント
+	NPC*	npc;			// この場所にいるnpcの情報。
+	Event*	has_event;		// この場所で発生するイベント
 
 public:
 	//コンストラクタ

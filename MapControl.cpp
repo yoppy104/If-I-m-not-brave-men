@@ -109,7 +109,7 @@ void MapControl::createMap() {
 				npc = new NPC(11, 6, "テスト君");
 			}
 			if (is_npc) {
-				this->maps[col][row]->setNpc(&npc);
+				this->maps[col][row]->setNpc(npc);
 				this->npcs.push_back(npc);
 			}
 			else {
@@ -120,7 +120,7 @@ void MapControl::createMap() {
 				events = new Event();
 			}
 			if (is_event) {
-				this->maps[col][row]->setEvent(&events);
+				this->maps[col][row]->setEvent(events);
 			}
 			else {
 				this->maps[col][row]->setEvent(false);

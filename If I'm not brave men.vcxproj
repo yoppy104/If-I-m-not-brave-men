@@ -172,6 +172,11 @@
     <ClCompile Include="MapControl.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="M_Functions.cpp" />
+    <ClCompile Include="NonArm.cpp" />
+    <ClCompile Include="NonChest.cpp" />
+    <ClCompile Include="NonHead.cpp" />
+    <ClCompile Include="NonShield.cpp" />
+    <ClCompile Include="NonWeapon.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="PartyControl.cpp" />
     <ClCompile Include="Portion.cpp" />
@@ -208,6 +213,11 @@
     <ClInclude Include="Mathematic.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="M_Functions.h" />
+    <ClInclude Include="NonArm.h" />
+    <ClInclude Include="NonChest.h" />
+    <ClInclude Include="NonHead.h" />
+    <ClInclude Include="NonShield.h" />
+    <ClInclude Include="NonWeapon.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PartyControl.h" />
     <ClInclude Include="Player.h" />
