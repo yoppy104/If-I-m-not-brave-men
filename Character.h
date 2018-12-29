@@ -3,7 +3,7 @@
 
 // キャラクターを定義するクラス
 class Character {
-private:
+protected:
 	char name[15]; // 名前。これで個体を管理する
 	int x; //描画時のx座標
 	int y; //描画時のy座標

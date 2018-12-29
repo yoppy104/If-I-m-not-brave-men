@@ -9,3 +9,5 @@
 //•â•Œn
 
 //•Ö—˜Œn
+
+Magic* searchMagic(int id);

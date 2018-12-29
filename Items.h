@@ -17,3 +17,5 @@
 
 //”ñ‘•”õ•i
 #include "Portion.h"
+
+Item* search(int id);

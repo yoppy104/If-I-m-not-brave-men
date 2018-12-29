@@ -4,6 +4,9 @@
 #include <string>
 #include "IDs.h"
 #include "M_Functions.h"
+#include "Cleark.h"
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -97,6 +100,15 @@ void MapControl::createMap() {
 	int table = ENCOUNT_FIRST_NORMAL;
 	NPC* npc;
 	Event* events;
+	vector<char*> temp;
+	temp.push_back("ここは防具屋です。なんの御用でしょうか？");
+	temp.push_back("");
+	temp.push_back("ありがとうございました。また来てください。");
+	vector <Item*> items;
+	items.push_back(new LeatherArm());
+	items.push_back(new LeatherChest());
+	items.push_back(new LeatherCap());
+	items.push_back(new LeatherSheild());
 	while (getline(stream, line)) {
 		col = 0;
 		for (string::size_type spos, epos = 0;
@@ -106,7 +118,7 @@ void MapControl::createMap() {
 			this->maps[col][row]->setIsEvent(is_event);
 			if (col == 11 && row == 6) {
 				is_npc = true;
-				npc = new NPC(11, 6, "テスト君");
+				npc = new Cleark("防具屋", 11, 6, items, temp, this->pc);
 			}
 			if (is_npc) {
 				this->maps[col][row]->setNpc(npc);
@@ -134,7 +146,7 @@ void MapControl::createMap() {
 	}
 }
 
-void MapControl::Update() {
+bool MapControl::Update() {
 	this->show();
 	if (this->is_move) {
 		if (Button(KEY_INPUT_DOWN) % 15 == 1) {
@@ -142,24 +154,40 @@ void MapControl::Update() {
 				this->position_player[1] += 1;
 			}
 			this->directionPlayer = 0;
+			double r = rand()%100;
+			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+				return true;
+			}
 		}
 		else if (Button(KEY_INPUT_UP) % 15 == 1) {
 			if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
 				this->position_player[1] -= 1;
 			}
 			this->directionPlayer = 1;
+			double r = rand()%100;
+			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+				return true;
+			}
 		}
 		else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
 			if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
 				this->position_player[0] -= 1;
 			}
 			this->directionPlayer = 2;
+			double r = rand()%100;
+			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+				return true;
+			}
 		}
 		else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
 			if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
 				this->position_player[0] += 1;
 			}
 			this->directionPlayer = 3;
+			double r = rand()%100;
+			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+				return true;
+			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			int point_x, point_y;
@@ -223,4 +251,5 @@ void MapControl::Update() {
 			}
 		}
 	}
+	return false;
 }

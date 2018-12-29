@@ -179,6 +179,18 @@
     <ClCompile Include="NonShield.cpp">
       <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
+    <ClCompile Include="Cleak.cpp">
+      <Filter>ソース ファイル\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Items.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Magics.cpp">
+      <Filter>ソース ファイル\Magic</Filter>
+    </ClCompile>
+    <ClCompile Include="Inn.cpp">
+      <Filter>ソース ファイル\NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -291,6 +303,12 @@
     </ClInclude>
     <ClInclude Include="NonChest.h">
       <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Cleark.h">
+      <Filter>ヘッダーファイル\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="Inn.h">
+      <Filter>ヘッダーファイル\NPC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

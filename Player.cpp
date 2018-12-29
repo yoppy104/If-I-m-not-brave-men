@@ -5,8 +5,19 @@
 #include "draw.h"
 #include "DxLib.h"
 #include "Mathematic.h"
+#include <fstream>
+#include "Items.h"
 
 typedef unsigned long long stagedata;
+
+typedef struct {
+	int exp;
+	int weapon;
+	int shield;
+	int chest;
+	int arm;
+	int head;
+} SaveData;
 
 Player::Player() {
 
@@ -18,10 +29,58 @@ Player::Player(char name[], int x, int y, int hp, int attack, int diffence, int 
 	this->arm = arm;
 	this->shield = shield;
 	this->chest = chest;
+	this->exp = 0;
+	this->Lv = 1;
+}
+
+Player::Player(char name[], int x, int y) :Character() {
+	this->x = x;
+	this->y = y;
+	strcpy(this->name, name);
+	SaveData data;
+	fstream file;
+	file.open("playerdata.dat", ios::binary | ios::in);
+	file.read((char*)&data, sizeof(data));
+	file.close();
+	this->exp = data.exp;
+	if (data.weapon == NOTEQUIPMENT) {
+		this->weapon = new NonWeapon();
+	}
+	else {
+		this->weapon = (Weapon*)search(data.weapon);
+	}
+	if (data.shield == NOTEQUIPMENT) {
+		this->shield = new NonShield();
+	}
+	else {
+		this->shield = (Armor*)search(data.shield);
+	}
+	if (data.chest == NOTEQUIPMENT) {
+		this->chest = new NonChest();
+	}
+	else {
+		this->chest = (Armor*)search(data.chest);
+	}
+	if (data.arm == NOTEQUIPMENT) {
+		this->arm = new NonArm();
+	}
+	else {
+		this->arm = (Armor*)search(data.arm);
+	}
+	if (data.head == NOTEQUIPMENT) {
+		this->head = new NonHead();
+	}
+	else {
+		this->head = (Armor*)search(data.head);
+	}
 }
 
 Player::~Player() {
 	this->magics.clear();
+}
+
+void Player::levelup() {
+
 }
 
 void Player::addMagic(Magic* new_magic) {
@@ -250,7 +309,7 @@ Armor* Player::getArmor(int type) {
 		return this->chest;
 		break;
 	case 4:
-		return this->chest;
+		return this->arm;
 		break;
 	case 5:
 		return this->head;
@@ -302,4 +361,20 @@ void Player::setEquipment(Armor* temp, int type) {
 		this->head = temp;
 		break;
 	}
+}
+
+int Player::calcurateEXP() {
+	int result = this->exp;
+	for (int i = 1; i < this->Lv; i++) {
+		result += (int)150 * pow(i, 5.0 / 4.0);
+	}
+	return result;
+}
+
+void Player::save() {
+	fstream file;
+	SaveData data = { this->exp, this->weapon->getId(), this->shield->getId(), this->chest->getId(), this->arm->getId(), this->head->getId()};
+	file.open("playerdata.dat", ios::binary | ios::out);
+	file.write((const char *)&data, sizeof(data));
+	file.close();
 }

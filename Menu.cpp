@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include <fstream>
 #include "Magic.h"
+#include "Items.h"
 
 using namespace std;
 
@@ -160,7 +161,9 @@ bool Menu::updateItem() {
 					this->pc->getItem(this->item_select)->effectMap();
 					break;
 				case 1:
-					this->pc->delItem(this->item_select);
+					if (this->pc->getItem(this->item_select)->getIsSell()) {
+						this->pc->delItem(this->item_select);
+					}
 					break;
 				case 2:
 					this->pc->setEquipment(0, this->item_select);
@@ -170,6 +173,7 @@ bool Menu::updateItem() {
 			}
 			else if (Button(KEY_INPUT_B) == 1) {
 				this->sub_select = -1;
+				return false;
 			}
 			else if (Button(KEY_INPUT_UP) == 1) {
 				if (this->sub_select - 1 >= 0) {
@@ -198,21 +202,27 @@ bool Menu::updateItem() {
 
 bool Menu::updateEquipment() {
 	Player* temp;
-
+	temp = pc->getMember(0);
+	DrawFormatString(400, 100, GetColor(0, 0, 0), "•Ší  : ");
+	temp->getWeapon()->getName(600, 100);
+	DrawFormatString(400, 150, GetColor(0, 0, 0), "  ‚  : ");
+	temp->getArmor(2)->getName(600, 150);
+	DrawFormatString(400, 200, GetColor(0, 0, 0), "“·‘•”õ: ");
+	temp->getArmor(3)->getName(600, 200);
+	DrawFormatString(400, 250, GetColor(0, 0, 0), "˜r‘•”õ: ");
+	temp->getArmor(4)->getName(600, 250);
+	DrawFormatString(400, 300, GetColor(0, 0, 0), "“ª‘•”õ: ");
+	temp->getArmor(5)->getName(600, 300);
+	DrawGraph(350, 100 + 50 * this->equipment_select, this->pointer_image, TRUE);
 	if (this->sub_select == -1) {
-		for (int i = 0; i < this->pc->getNumMember(); i++) {
-			temp = this->pc->getMember(i);
-			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
-		}
-		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
-		if (Button(KEY_INPUT_UP) % 15 == 1) {
-			if (this->magic_select - 1 >= 0) {
-				this->magic_select--;
+		if (Button(KEY_INPUT_UP)%15 == 1) {
+			if (this->equipment_select - 1 >= 0) {
+				this->equipment_select--;
 			}
 		}
-		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (this->magic_select + 1 < this->pc->getNumMember()) {
-				this->magic_select++;
+		else if (Button(KEY_INPUT_DOWN)%15 == 1) {
+			if (this->equipment_select + 1 < 5) {
+				this->equipment_select++;
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
@@ -220,20 +230,49 @@ bool Menu::updateEquipment() {
 		}
 	}
 	else {
-		temp = pc->getMember(this->equipment_select);
-		DrawFormatString(400, 150, GetColor(0, 0, 0), "•Ší  : ");
-		temp->getWeapon()->getName(600, 150);
-		DrawFormatString(400, 200, GetColor(0, 0, 0), "“ª‘•”õ: ");
-		temp->getArmor(5)->getName(600, 200);
-		DrawFormatString(400, 250, GetColor(0, 0, 0), "˜r‘•”õ: ");
-		temp->getArmor(4)->getName(600, 250);
-		DrawFormatString(400, 300, GetColor(0, 0, 0), "“·‘•”õ: ");
-		temp->getArmor(3)->getName(600, 300);
-		DrawFormatString(400, 350, GetColor(0, 0, 0), "  ‚  : ");
-		temp->getArmor(2)->getName(600, 350);
+		DrawExtendGraph(850, 400, 1250, 700, this->subwindw_image, TRUE);
+		DrawFormatString(900, 500, GetColor(0, 0, 0), "‚Í‚¸‚·");
+		DrawFormatString(900, 600, GetColor(0, 0, 0), "‚Í‚¸‚³‚È‚¢");
+		DrawGraph(875, 500 + 100 * this->sub_select, this->pointer_image, TRUE);
+
+		if (Button(KEY_INPUT_B) == 1) {
+			this->sub_select = -1;
+			return false;
+		}
+		else if (Button(KEY_INPUT_UP) == 1) {
+			if (this->sub_select == 1) {
+				this->sub_select = 0;
+			}
+		}
+		else if (Button(KEY_INPUT_DOWN) == 1) {
+			if (this->sub_select == 0) {
+				this->sub_select = 1;
+			}
+		}
+		else if (Button(KEY_INPUT_SPACE) == 1) {
+			if (this->sub_select == 0) {
+				bool check;
+				if (this->equipment_select + 1 == 1) {
+					check = this->pc->getMember(0)->getWeapon()->getId() != NOTEQUIPMENT;
+				}
+				else {
+					check = this->pc->getMember(0)->getArmor(this->equipment_select + 1)->getId() != NOTEQUIPMENT;
+				}
+				if (check) {
+					this->pc->replaceEquipment(0, this->equipment_select + 1);
+				}
+				this->sub_select = -1;
+				this->equipment_select = 0;
+			}
+			else {
+				this->sub_select = -1;
+			}
+		}
 	}
 	if (Button(KEY_INPUT_B) == 1) {
 		this->mode = 0;
+		this->sub_select = -1;
+		this->equipment_select = 0;
 	}
 	else if (Button(KEY_INPUT_M) == 1) {
 		this->mode = 5;
@@ -320,12 +359,7 @@ bool Menu::updateSave() {
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
 		if (this->save_select == 0) {
-			/*
-			fstream file;
-			file.open("savedata.dat", ios::binary | ios::out);
-			file.write((char*)&this->pc, sizeof(this->pc));
-			file.close();
-			*/
+			this->pc->getMember(0)->save();
 			this->mode = 0;
 		}
 		else {

@@ -22,8 +22,8 @@ using namespace std;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
-	ChangeWindowMode(true); // ウインドウモードに変更
-	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
+	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
+	SetGraphMode(1920, 1080, 32); // ウィンドウサイズを指定
 	SetMainWindowText("NotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 
@@ -37,8 +37,6 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	ProcessMessage(); // 割り込み処理をするときに必須
 
 	SRand(time(NULL));
-
-
 
 	//createMap();
 
@@ -106,12 +104,13 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	int click_stepframe = 30;
 
 	mapc = MapControl(1920, 1200, 6, 5, 1, players[0], pc);
-	
 
 	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();
-		mapc.Update();
+		if (mapc.Update()) {
+			DrawFormatString(100, 100, GetColor(255, 255, 255), "test encount");
+		}
 	}
 
 	DxLib_End(); // ＤＸライブラリ使用の終了処理

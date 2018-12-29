@@ -35,7 +35,7 @@ public:
 	~MapControl();
 	int getX();
 	int getY();
-	void Update();
+	bool Update();
 	void show();
 	void createMap();
 };

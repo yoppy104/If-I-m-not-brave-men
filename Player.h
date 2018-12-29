@@ -28,10 +28,13 @@ protected:
 	Armor* chest;
 	Armor* shield;
 
-public:
+	int exp;
+	int Lv;
 
+public:
 	Player();
 	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int image_dead);
+	Player(char name[], int x, int y);
 
 	~Player();
 
@@ -40,7 +43,7 @@ public:
 	int getNumMagics();
 	vector <Magic*> getMagics();
 	Magic* getMagic(int index);
-
+	void levelup();
 	virtual void plusMp(int);
 	virtual int getMp();
 
@@ -60,4 +63,7 @@ public:
 
 	void setEquipment(Weapon* temp);
 	void setEquipment(Armor* temp, int type);
+
+	int calcurateEXP();
+	void save();
 };
