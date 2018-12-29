@@ -106,6 +106,10 @@ void Player::plusMagicStone(int point) {
 
 }
 
+int Player::getLv() {
+	return this->Lv;
+}
+
 bool Player::move(int dx, int dy, stagedata stage, Enemy** enemy, int size_enemy, Player** player, int size_player) {
 	stagedata test = 1; //ˆÚ“®Œã‚ÌˆÊ’uÀ•W
 	int test_x = dx + this->getX();
@@ -321,8 +325,31 @@ void Player::plusMp(int point) {
 
 }
 
+void Player::plusMp() {
+
+}
+
+int Player::getMpMax() {
+	return 0;
+}
+
+void Player::healHp(int delta) {
+	this->hp += delta;
+	if (this->hp > this->hp_max) {
+		this->hp = this->hp_max;
+	}
+}
+
+void Player::healHp() {
+	this->hp = this->hp_max;
+}
+
 int Player::getMp() {
 	return 3;
+}
+
+int Player::getId() {
+	return this->id;
 }
 
 void Player::draw_map(int x, int y, int frame, int direction, double disp_rate) {

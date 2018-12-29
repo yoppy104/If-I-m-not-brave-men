@@ -8,6 +8,7 @@ private:
 	PartyControl* pc;
 	int subwindow_image;
 	bool select_main;
+	int fade;
 
 public:
 	Inn(int pos_x, int pos_y, char name[], vector <char*> text, int price, PartyControl* pc);

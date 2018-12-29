@@ -31,6 +31,8 @@ protected:
 	int exp;
 	int Lv;
 
+	int id;
+
 public:
 	Player();
 	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int image_dead);
@@ -39,16 +41,21 @@ public:
 	~Player();
 
 	void addMagic(Magic* new_magic);
-
+	int getId();
 	int getNumMagics();
+	int getLv();
 	vector <Magic*> getMagics();
 	Magic* getMagic(int index);
 	void levelup();
 	virtual void plusMp(int);
+	virtual void plusMp();
 	virtual int getMp();
-
+	virtual int getMpMax();
 	virtual int getMagicStone();
 	virtual void plusMagicStone(int);
+
+	void healHp(int delta);
+	void healHp();
 
 	virtual bool move(int dx, int dy, stagedata stage, Enemy** enemy, int size_enemy, Player** player, int size_player);
 

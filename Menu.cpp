@@ -20,6 +20,12 @@ Menu::Menu() {
 	this->subwindw_image = LoadGraph("command.png");
 	this->start = 0;
 	this->sub_select = -1;
+
+	this->sound_enter = LoadSoundMem("SE_enter.wav");
+	this->sound_error = LoadSoundMem("SE_error.wav");
+	this->sound_move = LoadSoundMem("SE_move.wav");
+	this->sound_cancel = LoadSoundMem("SE_cancel.wav");
+
 }
 
 Menu::Menu(PartyControl* p) {
@@ -36,6 +42,12 @@ Menu::Menu(PartyControl* p) {
 	this->subwindw_image = LoadGraph("command.png");
 	this->start = 0;
 	this->sub_select = -1;
+
+	this->sound_enter = LoadSoundMem("SE_enter.wav");
+	this->sound_error = LoadSoundMem("SE_error.wav");
+	this->sound_move = LoadSoundMem("SE_move.wav");
+	this->sound_cancel = LoadSoundMem("SE_cancel.wav");
+
 }
 
 bool Menu::Update() {
@@ -44,7 +56,6 @@ bool Menu::Update() {
 		DrawFormatString(125, 100, GetColor(0, 0, 0), "アイテム");
 		DrawFormatString(125, 200, GetColor(0, 0, 0), "装備");
 		DrawFormatString(125, 300, GetColor(0, 0, 0), "魔術");
-		DrawFormatString(125, 400, GetColor(0, 0, 0), "セーブ");
 		switch (this->mode) {
 		case 0:
 			return this->updateMain();
@@ -76,29 +87,46 @@ bool Menu::Update() {
 }
 
 bool Menu::updateMain() {
-	DrawGraph(80, 100 * this->main_select, this->pointer_image, TRUE);
+	DrawLine(120, 50 + 100 * this->main_select, 270, 50 + 100 * this->main_select, GetColor(0, 0, 0), 5);
 	Player * temp;
 	for (int i = 0; i < this->pc->getNumMember(); i++) {
 		temp = this->pc->getMember(i);
 		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
-		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "%d/%d", temp->getHp(), temp->getHpMax());
+		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "Lv:%d", temp->getLv());
+		DrawFormatString(400, 150 + 100 * i, GetColor(0, 0, 0), "HP:%d/%d", temp->getHp(), temp->getHpMax());
+		if (temp->getId() == ALLEN) {
+			DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:%d/%d", temp->getMp(), temp->getMpMax());
+		}
+		else {
+			DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:――");
+		}
 	}
 	DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc->getNumCoin());
 	DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc->getNumMagicStone());
 	if (Button(KEY_INPUT_M) == 1 || Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 5;
 	}
 	else if (Button(KEY_INPUT_UP) == 1) {
 		if (this->main_select - 1 > 0) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 			this->main_select--;
+		}
+		else{
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (Button(KEY_INPUT_DOWN) == 1) {
-		if (this->main_select + 1 < 5) {
+		if (this->main_select + 1 < 4) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 			this->main_select++;
+		}
+		else{
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
+		PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = this->main_select;
 	}
 	return false;
@@ -119,29 +147,38 @@ bool Menu::updateItem() {
 		}
 		for (int i = this->start; i < end; i++) {
 			temp = pc->getItem(i);
-			temp->getName(400, 100 + 50 * (i - this->start));
+			temp->getName(400, 80 + 50 * (i - this->start));
 
-			DrawGraph(350, 100 + 50 * (this->item_select - this->start), this->pointer_image, TRUE);
 		}
+		DrawLine(350, 120 + 50 * this->item_select, 800, 120 + 50 * this->item_select, GetColor(0, 0, 0), 5);
 
 		if (this->sub_select == -1) {
 			if (Button(KEY_INPUT_UP) % 15 == 1) {
 				if (this->item_select - 1 >= 0) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->item_select--;
 					if (this->item_select < this->start) {
 						this->start--;
 					}
 				}
+				else {
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				}
 			}
 			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 				if (this->item_select + 1 < pc->getNumItem()) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->item_select++;
 					if (this->item_select > this->start + 9) {
 						this->start++;
 					}
 				}
+				else {
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				}
 			}
 			else if (Button(KEY_INPUT_SPACE) == 1) {
+				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select = 0;
 			}
 		}
@@ -154,8 +191,9 @@ bool Menu::updateItem() {
 				DrawFormatString(900, 550, GetColor(0, 0, 0), "装備");
 				limit ++;
 			}
-			DrawGraph(860, 450 + 50 * this->sub_select, this->pointer_image, TRUE);
+			DrawLine(900, 490 + 50 * this->sub_select, 1000, 490 + 50 * this->sub_select, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_SPACE) == 1) {
+				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 				switch (this->sub_select) {
 				case 0:
 					this->pc->getItem(this->item_select)->effectMap();
@@ -172,27 +210,38 @@ bool Menu::updateItem() {
 				this->sub_select = -1;
 			}
 			else if (Button(KEY_INPUT_B) == 1) {
+				PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select = -1;
 				return false;
 			}
 			else if (Button(KEY_INPUT_UP) == 1) {
 				if (this->sub_select - 1 >= 0) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->sub_select--;
+				}
+				else{
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
 			else if (Button(KEY_INPUT_DOWN) == 1) {
 				if (this->sub_select + 1 <= limit) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->sub_select++;
+				}
+				else {
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
 		}
 	}
 	if (Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 0;
 		this->item_select = 0;
 		this->start = 0;
 	}
 	else if (Button(KEY_INPUT_M) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 5;
 		this->item_select = 0;
 		this->start = 0;
@@ -213,43 +262,62 @@ bool Menu::updateEquipment() {
 	temp->getArmor(4)->getName(600, 250);
 	DrawFormatString(400, 300, GetColor(0, 0, 0), "頭装備: ");
 	temp->getArmor(5)->getName(600, 300);
-	DrawGraph(350, 100 + 50 * this->equipment_select, this->pointer_image, TRUE);
+	DrawLine(400, 140 + 50 * this->equipment_select, 800, 140 + 50 * this->equipment_select, GetColor(0, 0, 0), 5);
 	if (this->sub_select == -1) {
 		if (Button(KEY_INPUT_UP)%15 == 1) {
 			if (this->equipment_select - 1 >= 0) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->equipment_select--;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN)%15 == 1) {
 			if (this->equipment_select + 1 < 5) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->equipment_select++;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->sub_select = 0;
 		}
 	}
 	else {
-		DrawExtendGraph(850, 400, 1250, 700, this->subwindw_image, TRUE);
+		DrawExtendGraph(850, 400, 1120, 700, this->subwindw_image, TRUE);
 		DrawFormatString(900, 500, GetColor(0, 0, 0), "はずす");
 		DrawFormatString(900, 600, GetColor(0, 0, 0), "はずさない");
-		DrawGraph(875, 500 + 100 * this->sub_select, this->pointer_image, TRUE);
+		DrawLine(890, 540 + 100 * this->sub_select, 1080, 540 + 100 * this->sub_select, GetColor(0, 0, 0), 5);
 
 		if (Button(KEY_INPUT_B) == 1) {
+			PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 			this->sub_select = -1;
 			return false;
 		}
 		else if (Button(KEY_INPUT_UP) == 1) {
 			if (this->sub_select == 1) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select = 0;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) == 1) {
 			if (this->sub_select == 0) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select = 1;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			if (this->sub_select == 0) {
 				bool check;
 				if (this->equipment_select + 1 == 1) {
@@ -270,11 +338,13 @@ bool Menu::updateEquipment() {
 		}
 	}
 	if (Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 0;
 		this->sub_select = -1;
 		this->equipment_select = 0;
 	}
 	else if (Button(KEY_INPUT_M) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 5;
 	}
 	return false;
@@ -287,18 +357,26 @@ bool Menu::updateMagic() {
 			temp = this->pc->getMember(i);
 			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
 		}
-		DrawGraph(350, 100 + 100 * this->magic_select, this->pointer_image, TRUE);
 		if (Button(KEY_INPUT_UP) % 15 == 1) {
 			if (this->magic_select - 1 >= 0) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->magic_select--;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 			if (this->magic_select + 1 < this->pc->getNumMember()) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->magic_select++;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->sub_select = 0;
 		}
 	}
@@ -311,27 +389,39 @@ bool Menu::updateMagic() {
 		DrawGraph(350, 100 + 50 * this->sub_select, this->pointer_image, TRUE);
 		if (Button(KEY_INPUT_UP) % 15 == 1) {
 			if (this->sub_select - 1 >= 0) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select--;
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 			if (this->sub_select + 1 < magic.size()) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->sub_select++;
+			}
+			else{
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			if (magic[this->sub_select]->getIsMap()) {
+				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 				magic[this->sub_select]->effectMap();
 			}
 			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 				DrawFormatString(300, 550, GetColor(0, 0, 0), "これは使えません。");
 			}
 		}
 	}
 	if (Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 0;
 	}
 	else if (Button(KEY_INPUT_M) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->mode = 5;
 	}
 	return false;

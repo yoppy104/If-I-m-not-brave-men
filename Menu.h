@@ -26,6 +26,11 @@ private:
 	
 	PartyControl* pc;
 
+	int sound_enter;
+	int sound_error;
+	int sound_move;
+	int sound_cancel;
+
 public:
 	Menu();
 	Menu(PartyControl* p);

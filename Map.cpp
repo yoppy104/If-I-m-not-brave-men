@@ -92,22 +92,20 @@ void Map::setData(int data) {
 	case 0: // ‘Œ´
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 10;
+		this->encount_rate = 5;
 		break;
 	case 1: // ’n–Ê
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 10;
+		this->encount_rate = 5;
 		break;
 	case 2: //X
-		this->is_move = true;
-		this->is_encount = true;
-		this->encount_rate = 30;
+		this->is_move = false;
+		this->is_encount = false;
 		break;
 	case 3: //ŽRŠx
 		this->is_move = false;
 		this->is_encount = false;
-		this->encount_rate = 30;
 		break;
 	case 4: //ŠC
 		this->is_move = false;

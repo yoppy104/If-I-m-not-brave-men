@@ -5,6 +5,7 @@
 #include "IDs.h"
 #include "M_Functions.h"
 #include "Cleark.h"
+#include "Inn.h"
 #include <stdlib.h>
 #include <time.h>
 
@@ -53,8 +54,16 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 				this->maps[x].push_back(new Map());
 			}
 		}
+		this->sound_main = LoadSoundMem("00sougen.wav");
+		ChangeVolumeSoundMem(165, this->sound_main);
 	}
 	this->createMap();
+
+	this->sound_walk = LoadSoundMem("踏みしめる06.mp3");
+	ChangeVolumeSoundMem(70, this->sound_walk);
+	this->sound_error = LoadSoundMem("SE_error.wav");
+	ChangeVolumeSoundMem(255, this->sound_error);
+	this->sound_enter = LoadSoundMem("SE_enter.wav");
 }
 
 MapControl::~MapControl() {
@@ -101,8 +110,8 @@ void MapControl::createMap() {
 	NPC* npc;
 	Event* events;
 	vector<char*> temp;
-	temp.push_back("ここは防具屋です。なんの御用でしょうか？");
-	temp.push_back("");
+	temp.push_back("ここは宿屋です");
+	temp.push_back("全員で%dギルになります。");
 	temp.push_back("ありがとうございました。また来てください。");
 	vector <Item*> items;
 	items.push_back(new LeatherArm());
@@ -118,7 +127,7 @@ void MapControl::createMap() {
 			this->maps[col][row]->setIsEvent(is_event);
 			if (col == 11 && row == 6) {
 				is_npc = true;
-				npc = new Cleark("防具屋", 11, 6, items, temp, this->pc);
+				npc = new Inn(11, 6, "宿屋", temp, 10, this->pc);
 			}
 			if (is_npc) {
 				this->maps[col][row]->setNpc(npc);
@@ -147,49 +156,73 @@ void MapControl::createMap() {
 }
 
 bool MapControl::Update() {
+	if (!CheckSoundMem(this->sound_main)) {
+		PlaySoundMem(this->sound_main, DX_PLAYTYPE_LOOP, TRUE);
+	}
 	this->show();
 	if (this->is_move) {
 		if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
-				this->position_player[1] += 1;
-			}
 			this->directionPlayer = 0;
-			double r = rand()%100;
-			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
-				return true;
+			if ((this->position_player[1] + 1 < this->mapsize_h) && this->maps[position_player[0]][position_player[1] + 1]->getIsMove()) {
+				PlaySoundMem(this->sound_walk, DX_PLAYTYPE_BACK, TRUE);
+				this->position_player[1] += 1;
+
+				double r = rand() % 100;
+				if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+					return true;
+				}
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_UP) % 15 == 1) {
-			if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
-				this->position_player[1] -= 1;
-			}
 			this->directionPlayer = 1;
-			double r = rand()%100;
-			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
-				return true;
+			if ((this->position_player[1] - 1 >= 0) && this->maps[position_player[0]][position_player[1] - 1]->getIsMove()) {
+				PlaySoundMem(this->sound_walk, DX_PLAYTYPE_BACK, TRUE);
+				this->position_player[1] -= 1;
+
+				double r = rand() % 100;
+				if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+					return true;
+				}
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
-			if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
-				this->position_player[0] -= 1;
-			}
 			this->directionPlayer = 2;
-			double r = rand()%100;
-			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
-				return true;
+			if ((this->position_player[0] - 1 >= 0) && this->maps[position_player[0] - 1][position_player[1]]->getIsMove()) {
+				PlaySoundMem(this->sound_walk, DX_PLAYTYPE_BACK, TRUE);
+				this->position_player[0] -= 1;
+
+				double r = rand() % 100;
+				if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+					return true;
+				}
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
-			if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
-				this->position_player[0] += 1;
-			}
 			this->directionPlayer = 3;
-			double r = rand()%100;
-			if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
-				return true;
+			if ((this->position_player[0] + 1 < this->mapsize_w) && this->maps[position_player[0] + 1][position_player[1]]->getIsMove()) {
+				PlaySoundMem(this->sound_walk, DX_PLAYTYPE_BACK, TRUE);
+				this->position_player[0] += 1;
+
+				double r = rand() % 100;
+				if (this->maps[this->position_player[0]][position_player[1]]->getRate() > r) {
+					return true;
+				}
+			}
+			else {
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			int point_x, point_y;
 			switch (this->directionPlayer) {
 			case 0:
@@ -216,6 +249,7 @@ bool MapControl::Update() {
 			}
 		}
 		else if (Button(KEY_INPUT_M) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->is_move = false;
 			this->is_menu = true;
 		}

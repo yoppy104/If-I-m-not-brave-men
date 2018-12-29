@@ -29,6 +29,11 @@ private:
 	Menu* menu;
 	PartyControl* pc;
 
+	int sound_main;
+	int sound_walk;
+	int sound_error;
+	int sound_enter;
+
 public:
 	MapControl();
 	MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl* pc);
