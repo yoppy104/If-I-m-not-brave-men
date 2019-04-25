@@ -2,12 +2,52 @@
 #include "DxLib.h"
 #include <string.h>
 
-Character::Character() {
+using namespace std;
+
+Character::Character() :
+	name(NULL),
+	x(NULL),
+	y(NULL),
+	hp(NULL),
+	attack(NULL),
+	diffence(NULL),
+	magic_power(NULL),
+	dex(NULL),
+	image(NULL),
+	image_dead(NULL),
+	has_mp(true),
+	is_moveable(true),
+	image_map_back{ NULL, NULL },
+	image_map_front{ NULL, NULL},
+	image_map_right{NULL, NULL, NULL, NULL},
+	image_map_left{NULL, NULL, NULL, NULL}
+{
 
 }
 
-Character::Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead) {
-	strcpy(this->name, name);
+Character::Character(int x, int y) :
+	name(NULL),
+	x(x),//ƒGƒ‰[ˆÊ’u
+	y(y),
+	hp(NULL),
+	attack(NULL),
+	diffence(NULL),
+	magic_power(NULL),
+	dex(NULL),
+	image(NULL),
+	image_dead(NULL),
+	has_mp(true),
+	is_moveable(true),
+	image_map_back{ NULL, NULL },
+	image_map_front{ NULL, NULL },
+	image_map_right{ NULL, NULL, NULL, NULL },
+	image_map_left{ NULL, NULL, NULL, NULL }
+{
+
+}
+
+Character::Character(string name, int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead) {
+	name = name;
 	this->x = x;
 	this->y = y;
 	this->hp = hp;
@@ -35,7 +75,7 @@ int Character::getIsMoveable() {
 }
 
 void Character::getName(int x, int y, int col) {
-	DrawFormatString(x, y, col, this->name);
+	DrawFormatString(x, y, col, this->name.c_str());
 }
 
 int Character::getX() {

@@ -8,6 +8,8 @@
 #include "NonWeapon.h"
 
 #include "WoodSword.h"
+#include "StoneSword.h"
+#include "StealSword.h"
 
 #include "LeatherArm.h"
 #include "LeatherChest.h"

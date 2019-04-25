@@ -3,7 +3,10 @@
 
 // コンストラクタ
 Map::Map() {
-
+	this->npc = new NPC();
+	this->has_event = new Event();
+	this->is_npc = false;
+	this->is_event = false;
 }
 
 Map::Map(int data, bool is_event, bool is_npc, int table, NPC* npc) {
@@ -16,22 +19,22 @@ Map::Map(int data, bool is_event, bool is_npc, int table, NPC* npc) {
 	case 0: // 草原
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 10;
+		this->encount_rate = 0;
 		break;
 	case 1: // 地面
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 10;
+		this->encount_rate = 0;
 		break;
 	case 2: //森
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 30;
+		this->encount_rate = 0;
 		break;
 	case 3: //山岳
 		this->is_move = false;
 		this->is_encount = false;
-		this->encount_rate = 30;
+		this->encount_rate = 0;
 		break;
 	case 4: //海
 		this->is_move = false;
@@ -59,6 +62,11 @@ Map::Map(int data, bool is_event, bool is_npc, int table, NPC* npc) {
 	if (is_npc) {
 		this->npc = npc;
 	}
+}
+
+Map::~Map() {
+	delete this->npc;
+	delete this->has_event;
 }
 
 //取得メソッド
@@ -92,12 +100,12 @@ void Map::setData(int data) {
 	case 0: // 草原
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 5;
+		this->encount_rate = 0;
 		break;
 	case 1: // 地面
 		this->is_move = true;
 		this->is_encount = true;
-		this->encount_rate = 5;
+		this->encount_rate = 0;
 		break;
 	case 2: //森
 		this->is_move = false;

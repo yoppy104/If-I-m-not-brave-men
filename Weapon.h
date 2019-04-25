@@ -9,9 +9,10 @@ class Weapon : public Item{ // 装備の構造体
 public:
 	Weapon();
 	Weapon(char name[], int id, bool is_sell, int point, int price, int weight, int sound, int image);
+	Weapon(int id);
 
 	//パラメータ取り出し用の関数群
-	int getPoint(); //効果点を取得
+	virtual int getPoint(); //効果点を取得
 	int getSound(); //効果音を取得
 
 	//戦闘時に呼び出すメソッド

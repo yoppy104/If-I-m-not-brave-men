@@ -119,3 +119,15 @@ void PartyControl::replaceEquipment(int member_index, int type) {
 		break;
 	}
 }
+
+vector <Player*> PartyControl::getMembers() {
+	return this->member;
+}
+
+int* PartyControl::getCoin() {
+	return &this->coin;
+}
+
+vector <Item*> PartyControl::getItems() {
+	return this->items;
+}

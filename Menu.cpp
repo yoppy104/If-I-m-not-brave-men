@@ -92,7 +92,7 @@ bool Menu::updateMain() {
 	for (int i = 0; i < this->pc->getNumMember(); i++) {
 		temp = this->pc->getMember(i);
 		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
-		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "Lv:%d", temp->getLv());
+		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "Lv:%d", temp->GetLV());
 		DrawFormatString(400, 150 + 100 * i, GetColor(0, 0, 0), "HP:%d/%d", temp->getHp(), temp->getHpMax());
 		if (temp->getId() == ALLEN) {
 			DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:%d/%d", temp->getMp(), temp->getMpMax());
@@ -190,6 +190,14 @@ bool Menu::updateItem() {
 			if (pc->getItem(this->item_select)->getIsEquip() != 0) {
 				DrawFormatString(900, 550, GetColor(0, 0, 0), "‘•”õ");
 				limit ++;
+				switch (pc->getItem(this->item_select)->getIsEquip()) {
+				case 1:
+					DrawFormatString(900, 650, GetColor(0, 0, 0), "%d¨%d", pc->getMember(0)->getWeapon()->getPoint(), pc->getItem(this->item_select)->getPoint());
+					break;
+				default:
+					DrawFormatString(900, 650, GetColor(0, 0, 0), "%d¨%d", pc->getMember(0)->getArmor(pc->getItem(this->item_select)->getIsEquip())->getPoint(), pc->getItem(this->item_select)->getPoint());
+					break;
+				}
 			}
 			DrawLine(900, 490 + 50 * this->sub_select, 1000, 490 + 50 * this->sub_select, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_SPACE) == 1) {
@@ -351,25 +359,46 @@ bool Menu::updateEquipment() {
 }
 
 bool Menu::updateMagic() {
-	Player* temp;
-	if (this->sub_select == -1) {
-		for (int i = 0; i < this->pc->getNumMember(); i++) {
-			temp = this->pc->getMember(i);
-			temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
+	Player* temp = this->pc->getMember(0);
+	vector <Magic*> magic = temp->getMagics();
+	for (int i = 0; i < magic.size(); i++) {
+		if (!magic[i]->getIsMap()) {
+			magic.erase(magic.begin() + i);
+			i--;
 		}
+	}
+	int end;
+	if (magic.size() < 10 || magic.size() < this->start + 10) {
+		end = magic.size();
+	}
+	else {
+		end = this->start + 10;
+	}
+
+	for (int i = this->start; i < end; i++) {
+		magic[i]->getName(400, 100 + 50 * i);
+	}
+	DrawLine(390, 140 + 50 * this->magic_select, 800, 140 + 50 * this->magic_select, GetColor(0, 0, 0), 5);
+	if (this->sub_select == -1) {
 		if (Button(KEY_INPUT_UP) % 15 == 1) {
 			if (this->magic_select - 1 >= 0) {
 				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->magic_select--;
+				if (this->item_select < this->start) {
+					this->start--;
+				}
 			}
 			else {
 				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (this->magic_select + 1 < this->pc->getNumMember()) {
+			if (this->magic_select + 1 < magic.size()) {
 				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->magic_select++;
+				if (this->item_select > this->start + 9) {
+					this->start++;
+				}
 			}
 			else {
 				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
@@ -380,39 +409,59 @@ bool Menu::updateMagic() {
 			this->sub_select = 0;
 		}
 	}
-	else {
-		temp = this->pc->getMember(this->magic_select);
-		vector <Magic*> magic = temp->getMagics();
-		for (int i = 0; i < magic.size(); i++) {
-			magic[i]->getName(400, 100 + 50 * i);
+	else if (this->sub_select == 100) {
+		if (magic[this->magic_select]->effectMap(this->pc)) {
+			pc->getMember(0)->plusMp(-1 * magic[this->magic_select]->getCost());
+			this->sub_select = -1;
 		}
-		DrawGraph(350, 100 + 50 * this->sub_select, this->pointer_image, TRUE);
-		if (Button(KEY_INPUT_UP) % 15 == 1) {
-			if (this->sub_select - 1 >= 0) {
+	}
+	else if (this->sub_select == 99) {
+		DrawFormatString(400, 700, GetColor(0, 0, 0), "–‚—Í‚ª‚½‚è‚Ü‚¹‚ñ");
+		if (Button(KEY_INPUT_SPACE) == 1) {
+
+		}
+	}
+	else {
+		DrawExtendGraph(850, 400, 1120, 700, this->subwindw_image, TRUE);
+		DrawFormatString(900, 500, GetColor(0, 0, 0), "‚Â‚©‚¤");
+		DrawFormatString(900, 600, GetColor(0, 0, 0), "‚Â‚©‚í‚È‚¢");
+		DrawLine(890, 540 + 100 * this->sub_select, 1080, 540 + 100 * this->sub_select, GetColor(0, 0, 0), 5);
+		if (Button(KEY_INPUT_B) == 1) {
+			PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
+			this->sub_select = -1;
+			return false;
+		}
+		else if (Button(KEY_INPUT_UP) == 1) {
+			if (this->sub_select == 1) {
 				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
-				this->sub_select--;
+				this->sub_select = 0;
 			}
 			else {
 				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
-		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (this->sub_select + 1 < magic.size()) {
+		else if (Button(KEY_INPUT_DOWN) == 1) {
+			if (this->sub_select == 0) {
 				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
-				this->sub_select++;
+				this->sub_select = 1;
 			}
-			else{
+			else {
 				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
-			if (magic[this->sub_select]->getIsMap()) {
-				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
-				magic[this->sub_select]->effectMap();
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
+			if (this->sub_select == 0) {
+				if (pc->getMember(0)->getMp() >= magic[this->magic_select]->getCost()) {
+					this->sub_select = 100;
+				}
+				else {
+					this->sub_select = 99;
+				}
+				this->magic_select = 0;
 			}
 			else {
-				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
-				DrawFormatString(300, 550, GetColor(0, 0, 0), "‚±‚ê‚ÍŽg‚¦‚Ü‚¹‚ñB");
+				this->sub_select = -1;
 			}
 		}
 	}
@@ -449,7 +498,6 @@ bool Menu::updateSave() {
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
 		if (this->save_select == 0) {
-			this->pc->getMember(0)->save();
 			this->mode = 0;
 		}
 		else {
@@ -466,6 +514,11 @@ bool Menu::closeWindow() {
 	DrawExtendGraph(242 - 192 / temp, 178 - 126 / temp, 242 + 192 / temp * 2, 178 + 126 / temp * 2, this->window_image, TRUE);
 	if (temp == 5) {
 		this->mode = 0;
+		this->main_select = 1;
+		this->equipment_select = 0;
+		this->item_select = 0;
+		this->magic_select = 0;
+		this->sub_select = -1;
 		this->step = temp;
 		temp = 0;
 		return true;

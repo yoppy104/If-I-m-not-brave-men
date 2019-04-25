@@ -20,6 +20,8 @@ public:
 	Map();
 	Map(int data, bool is_event, bool is_npc, int table, NPC* npc);
 
+	~Map();
+
 	//æ“¾ƒƒ\ƒbƒh
 	bool getIsMove();
 	bool getIsEvent();

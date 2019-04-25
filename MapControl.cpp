@@ -32,42 +32,68 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	this->is_menu = false;
 	this->pc = pc;
 	this->menu = new Menu(pc);
-	switch (map) {
-	case 0:
-		this->image = LoadGraph("");
-		this->mapsize_w = 500;
-		this->mapsize_h = 500;
-		for (int x = 0; x < 500; x++) {
-			this->maps.push_back(*new vector <Map*>);
-			for (int y = 0; y < 500; y++) {
-				this->maps[x].push_back(new Map());
-			}
+	
+	this->image = LoadGraph("worldmap.png");
+	this->mapsize_w = 100;
+	this->mapsize_h = 100;
+	for (int x = 0; x < 100; x++) {
+		this->maps.push_back(*new vector <Map*>);
+		for (int y = 0; y < 100; y++) {
+			this->maps[x].push_back(new Map());
 		}
-		break;
-	case 1:
-		this->image = LoadGraph("test_map.png");
-		this->mapsize_w = 20;
-		this->mapsize_h = 20;
-		for (int x = 0; x < 20; x++) {
-			this->maps.push_back(*new vector <Map*>);
-			for (int y = 0; y < 20; y++) {
-				this->maps[x].push_back(new Map());
-			}
-		}
-		this->sound_main = LoadSoundMem("00sougen.wav");
-		ChangeVolumeSoundMem(165, this->sound_main);
 	}
+	this->sound_main = LoadSoundMem("00sougen.wav");
+	ChangeVolumeSoundMem(165, this->sound_main);
 	this->createMap();
+
+	vector<char*> text = { "今回は戦闘と一緒にすることができなかったのよね。","買い物とかも実現はできてるから、見て言ってね。" };
+	NPC* temp = new NPC(21, 40, "モブ子", text, 1);
+	this->maps[21][40]->setNpc(temp);
+	this->npcs.push_back(temp);
+
+	vector<char*> text5 = { "メニューは実装してあるらしいぞ。","Mキーを押してみな。" };
+	NPC* temp5 = new NPC(28, 9, "モブ男", text5, 0);
+	this->maps[28][9]->setNpc(temp5);
+	this->npcs.push_back(temp5);
+
+	vector<char*> text2 = { "ここは防具屋です","なにか見ていきますか？","ありがとうございました。" };
+	vector<Item*> items2 = { new LeatherCap(), new LeatherArm(), new LeatherChest(), new LeatherSheild() };
+	NPC* temp2 = new Cleark("防具屋", 22, 40, items2, text2, this->pc);
+	this->maps[22][40]->setNpc(temp2);
+	this->npcs.push_back(temp2);
+
+	vector<char*> text3 = { "ここは武器屋です","なにか見ていきますか？","ありがとうございました。" };
+	vector<Item*> items3 = { new WoodSword(), new StoneSword(), new StealSword() };
+	NPC* temp3 = new Cleark("武器屋", 23, 40, items3, text3, this->pc);
+	this->maps[23][40]->setNpc(temp3);
+	this->npcs.push_back(temp3);
+
+	vector<char*> text4 = { "ここは宿屋です","全員で%dゼルとなります。泊っていきますか？","", "ありがとうございました。" };
+	NPC* temp4 = new Inn(24, 40, "宿屋", text4, 10, this->pc);
+	this->maps[24][40]->setNpc(temp4);
+	this->npcs.push_back(temp4);
+
+	vector<char*> text6 = { "同じディスクに戦闘だけのファイルも入ってるからやってみてくれよな。","なんで別々かって？聞かないでくれ" };
+	NPC* temp6 = new NPC(19, 50, "パツキン", text6, 0);
+	this->maps[19][50]->setNpc(temp6);
+	this->npcs.push_back(temp6);
 
 	this->sound_walk = LoadSoundMem("踏みしめる06.mp3");
 	ChangeVolumeSoundMem(70, this->sound_walk);
 	this->sound_error = LoadSoundMem("SE_error.wav");
 	ChangeVolumeSoundMem(255, this->sound_error);
 	this->sound_enter = LoadSoundMem("SE_enter.wav");
+
+
 }
 
 MapControl::~MapControl() {
-
+	for (int i = 0; i < this->maps.size(); i++) {
+		for (int j = 0; j < this->maps[i].size(); j++) {
+			delete this->maps[i][j];
+		}
+	}
+	
 }
 int MapControl::getX() {
 	return this->position_player[0];
@@ -78,84 +104,46 @@ int MapControl::getY() {
 }
 
 void MapControl::show() {
-	int x = (-this->position_player[0]*64 * this->disp_rate + this->dispsize_w/2);
-	int y = (-this->position_player[1]*64 * this->disp_rate + this->dispsize_h/2);
-	DrawExtendGraph(x, y, x + (64 * this->mapsize_w) * this->disp_rate, y + (64 * this->mapsize_h) * this->disp_rate, this->image, TRUE);
+	int x = (-this->position_player[0]*64 + this->dispsize_w/2);
+	int y = (-this->position_player[1]*64 + this->dispsize_h/2);
+	DrawExtendGraph(x, y, x + (64 * this->mapsize_w), y + (64 * this->mapsize_h), this->image, TRUE);
 	if (this->directionPlayer == 1 || this->directionPlayer == 0) {
-		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 2, this->directionPlayer, this->disp_rate);
+		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 2, this->directionPlayer);
 	}
 	else {
-		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 4, this->directionPlayer, this->disp_rate);
+		this->allen->draw_map(this->dispsize_w / 2, this->dispsize_h / 2, (this->countFrame/10) % 4, this->directionPlayer);
 	}
 	this->countFrame++;
 	if (!this->npcs.empty()) {
 		for (int i = 0; i < this->npcs.size(); i++) {
-			this->npcs.at(i)->draw(x + (this->npcs.at(i)->getX() * 64) * this->disp_rate, y + (this->npcs.at(i)->getY() * 64) * this->disp_rate, this->disp_rate);
+			this->npcs.at(i)->draw(x + (this->npcs.at(i)->getX()) * 64, y + (this->npcs.at(i)->getY()) * 64);
 		}
 	}
 }
 
-
-
 void MapControl::createMap() {
-	ifstream stream("test_map.csv");
+	ifstream stream("worldmap.csv");
 	string line;
 	const string delim = ",";
 
 	int row = 0;
 	int col;
-	bool is_event = false;
-	bool is_npc = false;
 	int table = ENCOUNT_FIRST_NORMAL;
-	NPC* npc;
-	Event* events;
-	vector<char*> temp;
-	temp.push_back("ここは宿屋です");
-	temp.push_back("全員で%dギルになります。");
-	temp.push_back("ありがとうございました。また来てください。");
-	vector <Item*> items;
-	items.push_back(new LeatherArm());
-	items.push_back(new LeatherChest());
-	items.push_back(new LeatherCap());
-	items.push_back(new LeatherSheild());
+
 	while (getline(stream, line)) {
 		col = 0;
 		for (string::size_type spos, epos = 0;
 			(spos = line.find_first_not_of(delim, epos)) != string::npos;) {
 			string token = line.substr(spos, (epos = line.find_first_of(delim, spos)) - spos);
 			this->maps[col][row]->setData(stoi(token));
-			this->maps[col][row]->setIsEvent(is_event);
-			if (col == 11 && row == 6) {
-				is_npc = true;
-				npc = new Inn(11, 6, "宿屋", temp, 10, this->pc);
-			}
-			if (is_npc) {
-				this->maps[col][row]->setNpc(npc);
-				this->npcs.push_back(npc);
-			}
-			else {
-				this->maps[col][row]->setNpc(false);
-			}
-			if (col == 10 && row == 5) {
-				is_event = true;
-				events = new Event();
-			}
-			if (is_event) {
-				this->maps[col][row]->setEvent(events);
-			}
-			else {
-				this->maps[col][row]->setEvent(false);
-			}
 			this->maps[col][row]->setTable(table);
 			col++;
-			is_event = false;
-			is_npc = false;
 		}
 		++row;
 	}
 }
 
-bool MapControl::Update() {
+int MapControl::Update() {
 	if (!CheckSoundMem(this->sound_main)) {
 		PlaySoundMem(this->sound_main, DX_PLAYTYPE_LOOP, TRUE);
 	}
@@ -245,6 +233,7 @@ bool MapControl::Update() {
 			if (this->maps[point_x][point_y]->getIsNpc()) {
 				this->is_chat = true;
 				this->is_move = false;
+				this->maps[point_x][point_y]->getNPC()->change_direction(this->position_player[0], this->position_player[1]);
 				this->now_chat = this->maps[point_x][point_y]->getNPC();
 			}
 		}
@@ -264,7 +253,6 @@ bool MapControl::Update() {
 			this->is_move = true;
 			this->is_event = false;
 			this->now = NULL;
-			this->maps[this->position_player[0]][this->position_player[1]]->delEvent();
 		}
 	}
 	else if (this->is_chat) {

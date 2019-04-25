@@ -1,72 +1,94 @@
-#include "Character.h"
 #include "Enemy.h"
-#include "Character.h"
-#include "Player.h"
-#include "DxLib.h"
-#include "draw.h"
-#include "Mathematic.h"
-#include <cstdlib>
-#include <time.h>
-#include <math.h>
 
-using namespace std;
 
-Enemy::Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead) :Character(name, x, y, hp, attack, diffence, magic_power, dex, image, image_dead){ // ‰Šú‰»
-	
+
+Enemy::Enemy(const char name[], int hp, int attack, int diffence, int magic_power, int dex, const char grafhic[],int TypeA,int TypeM) {
+	strcpy(this->name, name);
+	this->hp = hp;
+	this->hp_max = hp;
+	this->attack = attack;
+	this->diffence = diffence;
+	this->magic_power = magic_power;
+	this->dex = dex;
+	LoadDivGraph(grafhic, 1, 1, 1, 128, 128, gra);
+	Attacktype = TypeA;
+	Movetype = TypeM;
+	gill = 30;
+	exp = 150;
+
+	charAniframe = 0;
+	active = false;
 }
 
-bool Enemy::move(int dx, int dy, Player** p, int size_p, Enemy** e, int size_e, stagedata stage) { // “G‚ÌˆÚ“®
-	stagedata test = 1; //ˆÚ“®Œã‚ÌˆÊ’uÀ•W
-	int test_x = dx + this->getX();
-	int test_y = dy + this->getY();
-	if ((test_x >= 496 && test_x <= 1296) && (test_y >= 136 && test_y <= 936)) {
-		test *= pow(2, round((1296 - test_x) / 160));
-		test *= pow(2, 6 * round(((936 - test_y) / 160)));
+int Enemy::DrawEnemy(double x, double y, int scene)
+{
+	float hpbar =128* hp / hp_max;
+	switch (scene)
+	{
+	case 0:
+		DrawGraph(x, y, gra[0], TRUE);
+		DrawLineAA(x, y +3, x + hpbar, y +3, GetColor(0, 255, 0), 3);
+		break;
+	default:
+		break;
 	}
-	else {
-		test = 0;
-	}
-
-	bool is_p, is_e;
-	is_p = false;
-	is_e = false;
-
-	for (int i = 0; i < size_p; i++) {
-		if (test_x == p[i]->getX() && test_y == p[i]->getY()) {
-			is_p = true;
-		}
-	}
-
-	for (int i = 0; i < size_e; i++) {
-		if (test_x == e[i]->getX() && test_y == e[i]->getY()) {
-			is_e = true;
-		}
-	}
-
-	if (is_e || is_p) {
-		test = 0;
-	}
-
-	if (test & stage) {
-		this->setX(test_x);
-		this->setY(test_y);
-		ClearDrawScreen();
-		redraw_battle(stage, e, size_e, p, size_p);
-		WaitTimer(300);
-		return true;
-	}
-	else return false;
+	return 0;
 }
 
-void Enemy::battle(int x, int y, Player** players, int size_players) {
-	int image = LoadGraph("damage.png");
-	for (int i = 0; i < size_players; i++) {
-		if (this->getX() + x == players[i]->getX() && this->getY() + y == players[i]->getY()) {
-			int d = damage(this->getAttack(), players[i]->getDiffence(), 1);
-			players[i]->plusHp(-d);
-			DrawGraph(players[i]->getX() + 40, players[i]->getY() - 35, image, TRUE);
-			DrawFormatString(players[i]->getX() + 64, players[i]->getY() - 20, GetColor(255, 0, 0), "%d", d);
-			WaitTimer(200);
-		}
-	}
+bool Enemy::GetActive()
+{
+	return active;
+}
+
+bool Enemy::Activate()
+{
+	active = !active;
+	return true;
+}
+
+int Enemy::GetAGI()
+{
+	return dex;
+}
+
+int Enemy::Damage(int x)
+{
+	hp -= x;
+	return 0;
+}
+
+int Enemy::GetAttack()
+{
+	return attack;
+}
+
+int Enemy::GetDex()
+{
+	return dex;
+}
+
+int Enemy::GetHp()
+{
+	return hp;
+}
+
+int Enemy::GetDiffence()
+{
+	return diffence;
+}
+
+int Enemy::Getattacktype(){
+	return Attacktype;
+}
+
+int Enemy::Getmovetype(){
+	return Movetype;
+}
+
+int Enemy::GetGill(){
+	return gill;
+}
+
+int Enemy::GetEXP(){
+	return exp;
 }

@@ -1,8 +1,12 @@
 #pragma once
 
+#include <string>
+
+using namespace std;
+
 class Item {
 protected:
-	char name[128];
+	string name;
 	int id;			//id
 	int price_buy;	//”ƒ‰¿
 	int price_sell; //”„‰¿
@@ -16,7 +20,8 @@ protected:
 
 public:
 	Item();
-	Item(char name[], int id, int price, bool is_sell, int image, int is_equip);
+	Item(string name, int id, int price, bool is_sell, int image, int is_equip);
+	Item(int id);
 	~Item();
 	int getId();
 	int getPriceBuy();
@@ -27,4 +32,5 @@ public:
 	int getIsEquip();
 	virtual bool effectBattle();
 	virtual bool effectMap();
+	virtual int getPoint();
 };

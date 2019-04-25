@@ -25,6 +25,12 @@ private:
 	int subwindow_image;
 	int pointer_image;
 
+	int sound_enter;
+	int sound_error;
+	int sound_move;
+	int sound_coin;
+	int sound_cancel;
+
 public:
 	Cleark();
 	Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text, PartyControl* pc);

@@ -5,6 +5,9 @@
 #include "Menu.h"
 #include <vector>
 
+class Player;
+class Map;
+
 //マップ制御用のクラス。Mapクラスを配列として管理する。
 class MapControl {
 private:
@@ -40,7 +43,7 @@ public:
 	~MapControl();
 	int getX();
 	int getY();
-	bool Update();
+	int Update();
 	void show();
 	void createMap();
 };

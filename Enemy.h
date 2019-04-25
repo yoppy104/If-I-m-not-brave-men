@@ -1,17 +1,38 @@
 #pragma once
-#include "Character.h"
-
-class Player;
-
-typedef unsigned long long stagedata;
-
-class Enemy :public Character// “G‚Ì\‘¢‘Ì
+#include "Dxlib.h"
+#include "M_Functions.h"
+#include <string.h>
+class Enemy
 {
-private:
+	char name[15]; // –¼‘OB‚±‚ê‚ÅŒÂ‘Ì‚ğŠÇ—‚·‚é
+	int hp; //Œ»İ‘Ì—Í
+	int hp_max; //Å‘å‘Ì—Í
+	int attack; //UŒ‚—Í
+	int diffence; //–hŒä—Í
+	int magic_power; //–‚—Í
+	int dex; //•q·«
+	int gra[1];//ƒOƒ‰ƒtƒBƒbƒNƒnƒ“ƒhƒ‹Ši”[i‚Æ‚è‚ ‚¦‚¸j
+	int charAniframe;
+	bool active;
+	int Movetype;
+	int Attacktype;
+	int gill;
+	int exp;
 
 public:
-	Enemy(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead); //–¼‘O,x,y,hp,UŒ‚—Í,–hŒä—Í,–‚—Í,•q·
-
-	virtual bool move(int dx, int dy, Player** p, int size_p, Enemy** e, int size_e, stagedata stage);
-	virtual void battle(int x, int y, Player** players, int size_players);
+	Enemy(const char name[], int hp, int attack, int diffence, int magic_power, int dex, const char grafhic[],int TypeA,int TypeM);
+	int DrawEnemy(double x, double y, int scene);
+	bool GetActive();
+	bool Activate();
+	int GetAGI();
+	int Damage(int x);
+	int GetAttack();
+	int GetDex();
+	int GetHp();
+	int GetDiffence();
+	int Getattacktype();
+	int Getmovetype();
+	int GetGill();
+	int GetEXP();
 };
+

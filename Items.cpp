@@ -6,6 +6,12 @@ Item* search(int id) {
 	case WOODSWORD:
 		return new WoodSword();
 		break;
+	case STONESWORD:
+		return new StoneSword();
+		break;
+	case STEALSWORD:
+		return new StealSword();
+		break;
 	case LEATHERARM:
 		return new LeatherArm();
 		break;

@@ -5,6 +5,9 @@
 
 using namespace std;
 
+class Player;
+class Magic;
+
 class PartyControl {
 private:
 	vector<Player*> member; //プレイヤーキャラクター
@@ -28,4 +31,7 @@ public:
 	void addNumCoin(int delta);
 	void setEquipment(int member_index, int item_index);
 	void replaceEquipment(int member_index, int type);
+	vector <Player*> getMembers();
+	int* getCoin();
+	vector <Item*> getItems();
 };

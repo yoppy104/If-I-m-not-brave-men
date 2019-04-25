@@ -116,9 +116,6 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Battle.cpp">
-      <Filter>ソース ファイル\Battle</Filter>
-    </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -191,6 +188,15 @@
     <ClCompile Include="Inn.cpp">
       <Filter>ソース ファイル\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="StealSword.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Battle_Stage.cpp">
+      <Filter>ソース ファイル\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="StoneSword.cpp">
+      <Filter>ソース ファイル\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Character.h">
@@ -228,9 +234,6 @@
     </ClInclude>
     <ClInclude Include="Heal.h">
       <Filter>ヘッダーファイル\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Battle.h">
-      <Filter>ヘッダーファイル\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Mathematic.h">
       <Filter>ヘッダーファイル\Material</Filter>
@@ -309,6 +312,15 @@
     </ClInclude>
     <ClInclude Include="Inn.h">
       <Filter>ヘッダーファイル\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="StoneSword.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="StealSword.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle_Stage.h">
+      <Filter>ヘッダーファイル\Battle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,10 +1,13 @@
 #pragma once
 #include "Weapon.h"
+#include <string>
+
+using namespace std; 
 
 // キャラクターを定義するクラス
 class Character {
 protected:
-	char name[15]; // 名前。これで個体を管理する
+	string name; // 名前。これで個体を管理する
 	int x; //描画時のx座標
 	int y; //描画時のy座標
 	int hp; //現在体力
@@ -17,9 +20,15 @@ protected:
 	int image;
 	int image_dead;
 	bool is_moveable;
+
+	int image_map_front[2];	//mapでの正面画像
+	int image_map_back[2];	//mapでの背面画像
+	int image_map_right[4];	//mapでの右向画像
+	int image_map_left[4];	//mapでの左向画像
 public:
 	Character();
-	Character(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead);
+	Character(string name, int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead);
+	Character(int x, int y);
 	void getName(int x, int y, int col);
 	int getX();
 	void setX(int dx);
@@ -28,8 +37,8 @@ public:
 	int getHp();
 	int getHpMax();
 	void plusHp(int point);
-	int getAttack();
-	int getDiffence();
+	virtual int getAttack();
+	virtual int getDiffence();
 	int getMagicPower();
 	int getDex();
 	bool getHasMp();

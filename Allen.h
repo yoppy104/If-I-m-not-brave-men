@@ -15,4 +15,5 @@ public:
 	virtual int getMpMax();
 	virtual void plusMp(int);
 	virtual void plusMp();
+	virtual int sendEXp(int EXp);
 };

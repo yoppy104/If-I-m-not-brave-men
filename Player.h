@@ -5,8 +5,14 @@
 #include <vector>
 #include "Magic.h"
 #include "Armor.h"
+#include <memory>
+
+#include <array>
+
+#define FIRST_EXP 0
 
 class Enemy;
+class Magic;
 
 using namespace std;
 
@@ -14,13 +20,18 @@ typedef unsigned long long stagedata;
 
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
-	char name[10]; // 名前。これで個体を管理する
-
 	vector <Magic*> magics;
-	int image_map_front[2] = { 0,0 };
-	int image_map_back[2] = { 0,0 };
-	int image_map_right[4] = { 0, 0, 0, 0 };
-	int image_map_left[4] = { 0, 0, 0, 0 };
+
+	int LV;
+	int allEXP;
+	int NextEXP;
+	int stuckEXP;
+	int gra[2], AllenAttack[4], Allendamage[8], AllenWalk[4];//グラフィックハンドル格納（とりあえず）
+	int charAniframe;
+	int StaWindow;
+	int Font;
+	bool active;
+	bool Block;
 
 	Weapon* weapon; // 装備の配列
 	Armor* arm;
@@ -28,49 +39,59 @@ protected:
 	Armor* chest;
 	Armor* shield;
 
-	int exp;
-	int Lv;
+	int id; // id情報
+	
+	bool has_mp; // mpを所持しているかどうか
+	int mp; // 現在のmp
+	int mp_max; // mpの最大値
 
-	int id;
+	int magicstone; // 魔石の所持数
+
 
 public:
 	Player();
-	Player(char name[], int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int image_dead);
-	Player(char name[], int x, int y);
+	Player(string name, int x, int y, int hp, int attack, int diffence, int magic_power, int dex, Weapon* _weapon, Armor* head, Armor* arm, Armor* chest, Armor* shield, int _image, int image_dead);
+	Player(string name, int x, int y);
+	Player(int id, int x, int y); // idによるコンストラクタ
 
 	~Player();
+
+	virtual int getMp();
+	virtual int getMpMax();
+	virtual void plusMp(int);
+	virtual void plusMp();
+	virtual int sendEXp(int EXp);
+
+	virtual int getMagicStone();
+	virtual void plusMagicStone(int);
 
 	void addMagic(Magic* new_magic);
 	int getId();
 	int getNumMagics();
-	int getLv();
 	vector <Magic*> getMagics();
 	Magic* getMagic(int index);
-	void levelup();
-	virtual void plusMp(int);
-	virtual void plusMp();
-	virtual int getMp();
-	virtual int getMpMax();
-	virtual int getMagicStone();
-	virtual void plusMagicStone(int);
+	virtual int getAttack();
+	virtual int getDiffence();
 
 	void healHp(int delta);
 	void healHp();
 
-	virtual bool move(int dx, int dy, stagedata stage, Enemy** enemy, int size_enemy, Player** player, int size_player);
-
-	virtual void battle(int attack_point, Player **p, int size_p, Enemy **e, int size_e);
-
-	virtual bool is_attackable(int point);
-
 	virtual Weapon* getWeapon();
 	virtual Armor* getArmor(int type);
 
-	void draw_map(int x, int y, int frame, int direction, double disp_rate);
+	void draw_map(int x, int y, int frame, int direction);
 
 	void setEquipment(Weapon* temp);
 	void setEquipment(Armor* temp, int type);
 
-	int calcurateEXP();
-	void save();
+	int DrawSta(double x, double y);
+	int ActBlock();
+	int ReleaseBlock();
+	int SetAniframe(int x);
+	int GetLV();
+	bool GetActive();
+	bool Activate();
+	int DrawChar(double x, double y, int scene);
+	int GetAGI();
+	int Damage(int x);
 };

@@ -1,13 +1,14 @@
 #include "Item.h"
 #include <string>
 #include "DxLib.h"
+#include "IDs.h"
 
 Item::Item() {
 
 }
 
-Item::Item(char name[], int id, int price, bool is_sell, int image, int is_equip) {
-	strcpy(this->name, name);
+Item::Item(string name, int id, int price, bool is_sell, int image, int is_equip) {
+	this->name = name;
 	this->id = id;
 	this->price_buy = price;
 	this->price_sell = price / 2;
@@ -41,6 +42,39 @@ Item::Item(char name[], int id, int price, bool is_sell, int image, int is_equip
 	}
 }
 
+Item::Item(int id) :
+	name(NULL),
+	id(id),
+	price_buy(NULL),
+	price_sell(NULL),
+	is_sell(true),
+	image(NULL),
+	is_equip_weapon(false),
+	is_equip_arm(false),
+	is_equip_chest(false),
+	is_equip_head(false),
+	is_equip_shield(false)
+{
+	switch (this->id) {
+	case WOODSWORD:
+		name = "–ØŒ•";
+		price_buy = 50;
+		price_sell = this->price_buy / 2;
+		image = 0;
+		is_equip_weapon = true;
+	case LEATHERARM:
+		name = "”ç‚ÌâÄŽè";
+		price_buy = 100;
+		price_sell = this->price_buy / 2;
+		image = 0;
+		is_equip_arm = true;
+		break;
+
+	default:
+		break;
+	}
+}
+
 Item::~Item() {
 
 }
@@ -66,7 +100,7 @@ int Item::getImage() {
 }
 
 void Item::getName(int x, int y) {
-	DrawFormatString(x, y, GetColor(0, 0, 0), this->name);
+	DrawFormatString(x, y, GetColor(0, 0, 0), this->name.c_str());
 }
 
 bool Item::effectBattle() {
@@ -94,4 +128,8 @@ int Item::getIsEquip() {
 
 bool Item::effectMap() {
 	return false;
+}
+
+int Item::getPoint() {
+	return 0;
 }

@@ -10,7 +10,7 @@ protected:
 public:
 	Armor();
 	Armor(char name[], int id, bool is_sell, int point, int price, int weight, int image, int part);
-	int getPoint();
+	virtual int getPoint();
 	int getWeight();
 
 };

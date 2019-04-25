@@ -3,22 +3,19 @@
 #include <time.h>
 #include "Battle.h" 
 #include "Player.h"
-#include "Allen.h"
-#include "Craig.h"
-#include "Imitia.h"
-#include "Rain.h"
 #include "Weapon.h"
-#include "FireBall.h"
+#include "Magic.h"
 #include "IDs.h"
 #include "M_Functions.h"
 #include <iostream>
-#include "Mathematic.h"
 #include "MapControl.h"
-#include "Items.h"
+#include "Item.h"
 #include <cstdlib>
 #include <fstream>
+#include "Battle_Stage.h"
 
 using namespace std;
+
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
@@ -40,37 +37,34 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	//createMap();
 
-	MapControl mapc;
+	MapControl* mapc;
 	
 	//画像ファイルの読み込み
 	int allen_image = LoadGraph("剣士アレン立ち.png"); //アレンの画像
-	int rain_image = LoadGraph("槍レイン立ち.png"); //レインの画像
-	int craig_image = LoadGraph("斧クレイグ立ち.png"); //クレイグの画像
-	int imitia_image = LoadGraph("弓イミティア立ち.png"); //イミティアの画像
 
 	int allen_image_dead = LoadGraph("剣士アレンdead.png"); //アレンの画像
-	int rain_image_dead = LoadGraph("槍レインdead.png"); //レインの画像
-	int craig_image_dead = LoadGraph("斧クレイグdead.png"); //クレイグの画像
-	int imitia_image_dead = LoadGraph("弓イミティアdead.png"); //イミティアの画像
 
 	// 音声ファイルの読み込み
-	int main = LoadSoundMem("main(仮)4_17.wav"); //メインテーマ
+	int main = LoadSoundMem("00maintheme.wav"); //メインテーマ
+	ChangeVolumeSoundMem(100, main);
 
-	Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 6, 3, 6, 5, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
+	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
+
+	Player allen(ALLEN, 496 + 160 * 5, 136 + 160 * 5);//エラー位置
+
+	return 0;//読まれない
 
 	vector <Player*> players;
-	players.push_back(&allen);
+	//players.push_back(&allen);
 
 	PartyControl* pc = new PartyControl(players, 0, 100);
 
-	int count_dead_players = 0;
-	int count_dead_enemy = 0;
+	Battle_Stage* battle_stage = new Battle_Stage(pc);
 
 	int mode = TITLE;
 
-	int click_stepframe = 30;
-
-	mapc = MapControl(1920, 1200, 6, 5, 1, players[0], pc);
+	//20 40
+	mapc = new MapControl(1920, 1200, 20, 40, 1, players[0], pc);
 
 	int image_title = LoadGraph("タイトル1920 1200.png");
 
@@ -91,13 +85,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			}
 			break;
 		case MAP_NORMAL:
-			if (mapc.Update()) {
+			if (mapc->Update()) {
 				mode = BATTLE_START;
 			}
 			break;
 		case BATTLE_START:
-			DrawFormatString(100, 100, GetColor(255, 255, 255), "test encount");
-			if (CheckHitKeyAll()) {
+			if (battle_stage->Battle_Update()) {
 				mode = MAP_NORMAL;
 			}
 			break;

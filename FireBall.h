@@ -11,7 +11,6 @@ private:
 	int damage;
 	int attackable;//“¯S‰~‚Ì”ÍˆÍA-1‚Ì‚Í‘S”ÍˆÍ
 	int attack_area;//UŒ‚”ÍˆÍ
-	virtual void effectpoint(int, Player**,int, Enemy**, int);
 public:
 	FireBall();
 	virtual bool effectBattle(stagedata, Player**, int, int, Enemy**, int);

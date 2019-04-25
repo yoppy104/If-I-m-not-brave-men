@@ -6,7 +6,7 @@ Cleark::Cleark() {
 
 }
 
-Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text, PartyControl* pc) : NPC(x, y, name, text) {
+Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text, PartyControl* pc) : NPC(x, y, name, text, 2) {
 	this->items = item;
 	this->start = 0;
 	this->num = -1;
@@ -17,14 +17,23 @@ Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text
 	this->select_sub = -1;
 	this->select_sell = -1;
 	this->pc = pc;
+
+	this->sound_coin = LoadSoundMem("SE_coin_2.wav");
+	this->sound_enter = LoadSoundMem("SE_enter.wav");
+	this->sound_error = LoadSoundMem("SE_error.wav");
+	this->sound_move = LoadSoundMem("SE_move.wav");
+	this->sound_cancel = LoadSoundMem("SE_cancel.wav");
 }
 
 int Cleark::update() {
 	DrawExtendGraph(50, 50, 868, 612, this->window_image, TRUE);
+	DrawExtendGraph(1650, 50, 1900, 350, this->subwindow_image, TRUE);
+	DrawFormatString(1700, 100, GetColor(0, 0, 0), "所持金");
+	DrawFormatString(1700, 200, GetColor(0, 0, 0), "%dギル", pc->getNumCoin());
 	DrawFormatString(100, 100, GetColor(0, 0, 0), "買う");
 	DrawFormatString(100, 150, GetColor(0, 0, 0), "売る");
 	DrawFormatString(100, 200, GetColor(0, 0, 0), "やめる");
-	DrawGraph(75, 100 + 50 * this->select_main, this->pointer_image, TRUE);
+	DrawLine(70, 130 + 50 * this->select_main, 250, 130 + 50 * this->select_main, GetColor(0, 0, 0), 5);
 
 	if (this->num != -1) {
 		return this->buy();
@@ -35,18 +44,28 @@ int Cleark::update() {
 	else if (this->select_sub == -1) {
 		if (Button(KEY_INPUT_UP) % 15 == 1) {
 			if (this->select_main - 1 >= 0) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->select_main--;
+			}
+			else{
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 			if (this->select_main + 1 < 3) {
+				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 				this->select_main++;
+			}
+			else{
+				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_B) == 1) {
+			PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 			return 2;
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			if (this->select_main == 0) {
 				this->select_sub = 0;
 			}
@@ -59,6 +78,9 @@ int Cleark::update() {
 				}
 			}
 			else {
+				this->select_main = 0;
+				this->select_sell = -1;
+				this->select_sub = -1;
 				return 2;
 			}
 		}
@@ -70,21 +92,31 @@ int Cleark::update() {
 				this->items[i]->getName(400, 100 + 50 * i);
 				DrawFormatString(650, 100 + 50 * i, GetColor(0, 0, 0), "%dギル", this->items[i]->getPriceBuy());
 			}
-			DrawGraph(350, 100 + 50 * this->select_sub, this->pointer_image, TRUE);
+			DrawLine(390, 130 + 50 * this->select_sub, 800, 130 + 50 * this->select_sub, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_UP) % 15 == 1) {
 				if (this->select_sub - 1 >= 0) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->select_sub--;
+				}
+				else{
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
 			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 				if (this->select_sub + 1 < this->items.size()) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->select_sub++;
+				}
+				else{
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
 			else if (Button(KEY_INPUT_SPACE) == 1) {
+				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 				this->num = 1;
 			}
 			else if (Button(KEY_INPUT_B) == 1) {
+				PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 				this->select_sub = -1;
 			}
 			break;
@@ -99,24 +131,33 @@ int Cleark::update() {
 			for (int i = this->start; i < end; i++) {
 				pc->getItem(i)->getName(400, 100 + 50 * i);
 			}
-			DrawGraph(350, 100 + 50 * this->select_sub, this->pointer_image, TRUE);
+			DrawLine(390, 130 + 50 * this->select_sub, 800, 130 + 50 * this->select_sub, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_UP) % 15 == 1) {
 				if (this->select_sub - 1 >= 0) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->select_sub--;
 					if (this->select_sub < this->start) {
 						this->start--;
 					}
 				}
+				else{
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				}
 			}
 			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 				if (this->select_sub + 1 < pc->getNumItem()) {
+					PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 					this->select_sub++;
 					if (this->select_sub > this->start + 9) {
 						this->start++;
 					}
 				}
+				else{
+					PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				}
 			}
 			else if (Button(KEY_INPUT_SPACE) == 1) {
+				PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 				if (pc->getItem(this->select_sub)->getIsSell()) {
 					this->select_sell = 0;
 				}
@@ -125,6 +166,7 @@ int Cleark::update() {
 				}
 			}
 			else if (Button(KEY_INPUT_B) == 1) {
+				PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 				this->select_sub = -1;
 			}
 			break;
@@ -141,22 +183,34 @@ int Cleark::buy() {
 	DrawFormatString(940, 650, col, "%d",this->num);
 	DrawFormatString(945, 750, col, "↓");
 	if (Button(KEY_INPUT_UP) % 15 == 1) {
+		PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 		this->num++;
 	}
 	else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 		if (this->num - 1 >= 1) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 			this->num--;
+		}
+		else{
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (Button(KEY_INPUT_RIGHT) % 15 == 1) {
+		PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 		this->num += 10;
 	}
 	else if (Button(KEY_INPUT_LEFT) % 15 == 1) {
 		if (this->num - 10 >= 1) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
+			this->num -= 10;
+		}
+		else {
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 			this->num = 10;
 		}
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
+		PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 		int price = this->items[this->select_sub]->getPriceBuy() * this->num;
 		if (this->pc->getNumCoin() < price) {
 			this->num = -1;
@@ -172,6 +226,7 @@ int Cleark::buy() {
 		}
 	}
 	else if (Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->num = -1;
 	}
 	return 0;
@@ -179,21 +234,31 @@ int Cleark::buy() {
 
 int Cleark::sell() {
 	DrawExtendGraph(800, 500, 1100, 800, this->subwindow_image, TRUE);
+	DrawFormatString(150, 850, GetColor(0, 0, 0), "それなら%dギルで買い取ります。",this->pc->getItem(this->select_sub)->getPriceSell());
 	DrawFormatString(900, 550, GetColor(0, 0, 0), "売ります");
-	DrawFormatString(950, 650, GetColor(0, 0, 0), "はい");
-	DrawFormatString(950, 700, GetColor(0, 0, 0), "いいえ");
-	DrawGraph(900, 650 + 50 * this->select_sell, this->pointer_image, TRUE);
+	DrawFormatString(900, 650, GetColor(0, 0, 0), "はい");
+	DrawFormatString(900, 700, GetColor(0, 0, 0), "いいえ");
+	DrawLine(890, 680 + 50 * this->select_sell, 1000, 680 + 50 * this->select_sell, GetColor(0, 0, 0), 5);
 	if (Button(KEY_INPUT_UP) % 15 == 1) {
 		if (this->select_sell - 1 >= 0) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 			this->select_sell--;
+		}
+		else{
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
 		if (this->select_sell + 1 < 2) {
+			PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
 			this->select_sell++;
+		}
+		else{
+			PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
 		}
 	}
 	else if (Button(KEY_INPUT_SPACE) == 1) {
+		PlaySoundMem(this->sound_coin, DX_PLAYTYPE_BACK, TRUE);
 		if (this->select_sell == 0) {
 			int price = this->pc->getItem(this->select_sub)->getPriceSell();
 			this->pc->delItem(this->select_sub);
@@ -206,6 +271,7 @@ int Cleark::sell() {
 		}
 	}
 	else if (Button(KEY_INPUT_B) == 1) {
+		PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
 		this->select_sell = -1;
 	}
 	return 0;
@@ -235,6 +301,7 @@ bool Cleark::chat() {
 	else if (this->step == -1) {
 		DrawFormatString(150, 850, GetColor(0, 0, 0), "また来てください。");
 		if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->step = 0;
 			return true;
 		}
@@ -242,6 +309,7 @@ bool Cleark::chat() {
 	else if (this->step == -2) {
 		DrawFormatString(150, 850, GetColor(0, 0, 0), "お金が足りませんよ。");
 		if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->step = 0;
 			this->select_main = 0;
 			this->select_sub = -1;
@@ -253,6 +321,7 @@ bool Cleark::chat() {
 	else if (this->step == -3) {
 		DrawFormatString(150, 850, GetColor(0, 0, 0), "アイテムを所持していませんよ。");
 		if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->step = 0;
 			this->select_main = 0;
 			this->select_sub = -1;
@@ -264,6 +333,7 @@ bool Cleark::chat() {
 	else if (this->step == -4) {
 		DrawFormatString(150, 850, GetColor(0, 0, 0), "それは買い取れませんよ。");
 		if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
 			this->step = 0;
 			this->select_main = 0;
 			this->select_sub = -1;
@@ -281,6 +351,7 @@ bool Cleark::chat() {
 			return false;
 		}
 		if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(this->sound_coin, DX_PLAYTYPE_BACK, TRUE);
 			if (this->step == this->text.size() - 1) {
 				this->step = 0;
 				this->select_main = 0;
