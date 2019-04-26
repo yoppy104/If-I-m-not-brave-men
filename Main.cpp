@@ -20,8 +20,9 @@ using namespace std;
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
-	SetGraphMode(1920, 1080, 32); // ウィンドウサイズを指定
-	SetMainWindowText("NotBraveman"); // ウィンドウタイトルを指定
+	ChangeWindowMode(true);
+	SetGraphMode(400, 580, 32); // ウィンドウサイズを指定
+	SetMainWindowText("IfNotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 
 	if (DxLib_Init() == -1) // DXライブラリの初期化
