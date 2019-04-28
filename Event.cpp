@@ -3,10 +3,6 @@
 #include "DxLib.h"
 #include "IDs.h"
 
-Event::Event() {
-
-}
-
 Event::Event(int id) {
 	this->id = id;
 	this->step = 0;

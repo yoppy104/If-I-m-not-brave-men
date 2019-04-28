@@ -1,5 +1,4 @@
 #include "NPC.h"
-#include <string.h>
 #include "DxLib.h"
 #include "M_Functions.h"
 
@@ -7,11 +6,11 @@ NPC::NPC() {
 
 }
 
-NPC::NPC(int pos_x, int pos_y, char name[], vector <char*> text, int type) {
+NPC::NPC(int pos_x, int pos_y, char name[], vector <string> text, int type) {
 	this->x = pos_x;
 	this->y = pos_y;
 	this->image = LoadGraph("ƒvƒŒƒCƒ„[.png");
-	strcpy(this->name, name);
+	this->name = name;
 	this->step = 0;
 	this->text = text;
 	this->text_box = LoadGraph("window.png");
@@ -44,7 +43,7 @@ NPC::NPC(int pos_x, int pos_y, char name[], vector <char*> text, int type) {
 }
 
 void NPC::getName(int x, int y) {
-	DrawFormatString(x, y, GetColor(0, 0, 0), this->name);
+	DrawFormatString(x, y, GetColor(0, 0, 0), this->name.c_str());
 }
 
 void NPC::draw(int xx, int yy) {
@@ -80,7 +79,7 @@ bool NPC::chat() {
 	}
 	DrawExtendGraph(100, 800, 1860, 1000, this->text_box, TRUE);
 	this->getName(120, 850);
-	DrawFormatString(150, 900, GetColor(255, 255, 255), this->text[this->step]);
+	DrawFormatString(150, 900, GetColor(255, 255, 255), this->text[this->step].c_str());
 	if (Button(KEY_INPUT_SPACE) == 1) {
 		this->step++;
 	}

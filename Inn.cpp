@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Inn::Inn(int pos_x, int pos_y, char name[], vector <char*> text, int price, PartyControl* pc) : NPC (pos_x, pos_y, name, text, 0){
+Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, PartyControl* pc) : NPC (pos_x, pos_y, name, text, 0){
 	this->price = price;
 	this->pc = pc;
 	this->select_main = true;
@@ -23,7 +23,7 @@ bool Inn::chat() {
 	DrawExtendGraph(100, 800, 1860, 1000, this->text_box, TRUE);
 	this->getName(150, 810);
 	if (this->step == 1) {
-		DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step],this->price * pc->getNumMember());
+		DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step].c_str(),this->price * pc->getNumMember());
 		DrawExtendGraph(1650, 50, 1900, 350, this->subwindow_image, TRUE);
 		DrawFormatString(1700, 100, GetColor(0, 0, 0), "ŠŽ‹à");
 		DrawFormatString(1700, 200, GetColor(0, 0, 0), "%dƒMƒ‹", pc->getNumCoin());
@@ -97,7 +97,7 @@ bool Inn::chat() {
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 	else {
-		DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step]);
+		DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step].c_str());
 		if (Button(KEY_INPUT_SPACE) == 1) {
 			if (this->step == this->text.size() - 1) {
 				this->step = 0;

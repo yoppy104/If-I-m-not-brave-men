@@ -6,12 +6,12 @@ using namespace std;
 
 class NPC {
 protected:
-	char name[15];
+	string name;
 	int x;
 	int y;
 	int image;
 	int step;
-	vector <char*> text;
+	vector <string> text;
 	int text_box;
 
 	int frame;
@@ -24,7 +24,7 @@ protected:
 	
 public:
 	NPC();
-	NPC(int pos_x, int pos_y, char name[], vector <char*> text, int type);
+	NPC(int pos_x, int pos_y, char name[], vector <string> text, int type);
 	void getName(int x, int y);
 	void draw(int x, int y);
 	int getX();

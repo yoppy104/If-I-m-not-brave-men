@@ -13,7 +13,7 @@ protected:
 	int sound_enter;
 
 public:
-	Event();
+	Event() = default;
 	Event(int id);
 	virtual bool Update();
 };

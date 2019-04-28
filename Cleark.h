@@ -33,7 +33,7 @@ private:
 
 public:
 	Cleark();
-	Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text, PartyControl* pc);
+	Cleark(char name[], int x, int y, vector<Item*> item, vector<string> text, PartyControl* pc);
 	int update();
 	int sell(); //プレイヤーが売る
 	int buy(); //プレイヤーが買う

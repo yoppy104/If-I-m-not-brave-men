@@ -53,10 +53,8 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	Player allen(ALLEN, 496 + 160 * 5, 136 + 160 * 5);//ÉGÉâÅ[à íu
 
-	return 0;//ì«Ç‹ÇÍÇ»Ç¢
-
 	vector <Player*> players;
-	//players.push_back(&allen);
+	players.push_back(&allen);
 
 	PartyControl* pc = new PartyControl(players, 0, 100);
 

@@ -46,34 +46,34 @@ MapControl::MapControl(int width, int height, int x, int y, int map, Player* all
 	ChangeVolumeSoundMem(165, this->sound_main);
 	this->createMap();
 
-	vector<char*> text = { "今回は戦闘と一緒にすることができなかったのよね。","買い物とかも実現はできてるから、見て言ってね。" };
+	vector<string> text = { "今回は戦闘と一緒にすることができなかったのよね。","買い物とかも実現はできてるから、見て言ってね。" };
 	NPC* temp = new NPC(21, 40, "モブ子", text, 1);
 	this->maps[21][40]->setNpc(temp);
 	this->npcs.push_back(temp);
 
-	vector<char*> text5 = { "メニューは実装してあるらしいぞ。","Mキーを押してみな。" };
+	vector<string> text5 = { "メニューは実装してあるらしいぞ。","Mキーを押してみな。" };
 	NPC* temp5 = new NPC(28, 9, "モブ男", text5, 0);
 	this->maps[28][9]->setNpc(temp5);
 	this->npcs.push_back(temp5);
 
-	vector<char*> text2 = { "ここは防具屋です","なにか見ていきますか？","ありがとうございました。" };
+	vector<string> text2 = { "ここは防具屋です","なにか見ていきますか？","ありがとうございました。" };
 	vector<Item*> items2 = { new LeatherCap(), new LeatherArm(), new LeatherChest(), new LeatherSheild() };
 	NPC* temp2 = new Cleark("防具屋", 22, 40, items2, text2, this->pc);
 	this->maps[22][40]->setNpc(temp2);
 	this->npcs.push_back(temp2);
 
-	vector<char*> text3 = { "ここは武器屋です","なにか見ていきますか？","ありがとうございました。" };
+	vector<string> text3 = { "ここは武器屋です","なにか見ていきますか？","ありがとうございました。" };
 	vector<Item*> items3 = { new WoodSword(), new StoneSword(), new StealSword() };
 	NPC* temp3 = new Cleark("武器屋", 23, 40, items3, text3, this->pc);
 	this->maps[23][40]->setNpc(temp3);
 	this->npcs.push_back(temp3);
 
-	vector<char*> text4 = { "ここは宿屋です","全員で%dゼルとなります。泊っていきますか？","", "ありがとうございました。" };
+	vector<string> text4 = { "ここは宿屋です","全員で%dゼルとなります。泊っていきますか？","", "ありがとうございました。" };
 	NPC* temp4 = new Inn(24, 40, "宿屋", text4, 10, this->pc);
 	this->maps[24][40]->setNpc(temp4);
 	this->npcs.push_back(temp4);
 
-	vector<char*> text6 = { "同じディスクに戦闘だけのファイルも入ってるからやってみてくれよな。","なんで別々かって？聞かないでくれ" };
+	vector<string> text6 = { "同じディスクに戦闘だけのファイルも入ってるからやってみてくれよな。","なんで別々かって？聞かないでくれ" };
 	NPC* temp6 = new NPC(19, 50, "パツキン", text6, 0);
 	this->maps[19][50]->setNpc(temp6);
 	this->npcs.push_back(temp6);

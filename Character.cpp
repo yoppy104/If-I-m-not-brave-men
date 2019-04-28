@@ -1,11 +1,10 @@
 #include "Character.h"
 #include "DxLib.h"
-#include <string.h>
 
 using namespace std;
 
 Character::Character() :
-	name(NULL),
+	name("NULL"),
 	x(NULL),
 	y(NULL),
 	hp(NULL),
@@ -25,10 +24,10 @@ Character::Character() :
 
 }
 
-Character::Character(int x, int y) :
-	name(NULL),
-	x(x),//エラー位置
-	y(y),
+Character::Character(int xpos, int ypos) :
+	name("NULL"),
+	x(xpos),//エラー位置
+	y(ypos),
 	hp(NULL),
 	attack(NULL),
 	diffence(NULL),

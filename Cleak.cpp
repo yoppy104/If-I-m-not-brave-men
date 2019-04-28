@@ -6,7 +6,7 @@ Cleark::Cleark() {
 
 }
 
-Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<char*> text, PartyControl* pc) : NPC(x, y, name, text, 2) {
+Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<string> text, PartyControl* pc) : NPC(x, y, name, text, 2) {
 	this->items = item;
 	this->start = 0;
 	this->num = -1;
@@ -344,7 +344,7 @@ bool Cleark::chat() {
 	}
 	else {
   		if (this->text[this->step] != "") {
-			DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step]);
+			DrawFormatString(150, 850, GetColor(0, 0, 0), this->text[this->step].c_str());
 		}
 		else {
 			this->step++;

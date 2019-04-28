@@ -540,16 +540,16 @@ int Battle_Stage::troutCursolright()
 
 int Battle_Stage::CheckTroutDistance(int yushaID,int TroutX,int TroutY)
 {
-	return yushas[yushaID]->GetAGI() - (Abs(TroutX-yushaLocateX[yushaID])+Abs(TroutY - yushaLocateY[yushaID]));
+	return yushas[yushaID]->GetAGI() - (abs(TroutX-yushaLocateX[yushaID])+abs(TroutY - yushaLocateY[yushaID]));
 }
 
 int Battle_Stage::CheckAttackRange(int yushaID, int TroutX, int TroutY)
 {
 	int tmp = 0;
-	tmp = Abs(yushaLocateX[yushaID] - TroutX);
-	if (tmp<Abs(yushaLocateY[yushaID]-TroutY))
+	tmp = abs(yushaLocateX[yushaID] - TroutX);
+	if (tmp<abs(yushaLocateY[yushaID]-TroutY))
 	{
-		tmp = Abs(yushaLocateY[yushaID] - TroutY);
+		tmp = abs(yushaLocateY[yushaID] - TroutY);
 	}
 	return tmp;
 }

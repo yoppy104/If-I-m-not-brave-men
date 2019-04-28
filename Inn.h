@@ -19,6 +19,6 @@ private:
 	int sound_yado;
 
 public:
-	Inn(int pos_x, int pos_y, char name[], vector <char*> text, int price, PartyControl* pc);
+	Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, PartyControl* pc);
 	bool chat();
 };

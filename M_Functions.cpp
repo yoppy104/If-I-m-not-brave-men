@@ -20,16 +20,3 @@ int gpUpdateKey() {
 int Button(int Keycode) {
 	return Key[Keycode];
 }
-
-int Abs(int x)
-{
-	if (x>0)
-	{
-		return x;
-	}
-	if (x<0)
-	{
-		return -1 * x;
-	}
-	return 0;
-}

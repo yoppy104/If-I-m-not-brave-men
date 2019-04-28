@@ -28,7 +28,7 @@ protected:
 public:
 	Character();
 	Character(string name, int x, int y, int hp, int attack, int diffence, int magic_power, int dex, int image, int image_dead);
-	Character(int x, int y);
+	Character(int xpos, int ypos);
 	void getName(int x, int y, int col);
 	int getX();
 	void setX(int dx);
