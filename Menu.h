@@ -1,39 +1,49 @@
 #pragma once
 #include "PartyControl.h"
+#include "IDs.h"
+
+enum Mode {
+	MAIN,
+	ITEM,
+	EQUIPMENT,
+	MAGIC,
+	SAVE,
+	CLOSE
+};
 
 class Menu {
 private:
-	int mode;			//モード
-						/*
-						0 : main
-						1 : item
-						2 : equipment
-						3 : magic
-						4 : save
-						5 : close
-						*/
-	int main_select;	//メインでの選択肢を特定する変数
-	int item_select;	//アイテムでの選択肢を特定する変数
-	int equipment_select; //装備での選択肢を特定する変数
-	int magic_select;	//魔術での選択肢を特定する変数
-	int save_select;	//セーブでの選択肢を特定する変数
-	int step;			//描画用のstep変数
-	int window_image;	//ウィンドウの画像
-	int pointer_image;	//ポインターの画像
-	int subwindw_image;
-	int start;
-	int sub_select;
-	
-	PartyControl* pc;
+	typedef struct {
+		int window;
+		int pointer;
+		int subwindow;
+	}Image;
 
-	int sound_enter;
-	int sound_error;
-	int sound_move;
-	int sound_cancel;
+	typedef struct {
+		int enter;
+		int error;
+		int move;
+		int cancel;
+	}Sound;
+
+	Mode mode;
+	int mainSelect;	//メインでの選択肢を特定する変数
+	int itemSelect;	//アイテムでの選択肢を特定する変数
+	int equipmentSelect; //装備での選択肢を特定する変数
+	int magicSelect;	//魔術での選択肢を特定する変数
+	int saveSelect;	//セーブでの選択肢を特定する変数
+	int step;			//描画用のstep変数
+	Image images;
+	int start;
+	int subSelect;
+	
+	shared_ptr<PartyControl> pc;
+
+	Sound sounds;
 
 public:
-	Menu();
-	Menu(PartyControl* p);
+	Menu() = default;
+	Menu(const shared_ptr<PartyControl> p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム

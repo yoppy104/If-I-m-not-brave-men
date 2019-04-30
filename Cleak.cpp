@@ -6,7 +6,7 @@ Cleark::Cleark() {
 
 }
 
-Cleark::Cleark(char name[], int x, int y, vector<Item*> item, vector<string> text, PartyControl* pc) : NPC(x, y, name, text, 2) {
+Cleark::Cleark(char name[], int x, int y, vector<shared_ptr<Item>> item, vector<string> text, shared_ptr<PartyControl> pc) : NPC(x, y, name, text, 2) {
 	this->items = item;
 	this->start = 0;
 	this->num = -1;

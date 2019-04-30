@@ -85,7 +85,7 @@ void Magic::effectBattle(stagedata stage, Player* players, int user, int size_pl
 	}
 }
 
-bool Magic::effectMap(PartyControl* pc) {
+bool Magic::effectMap(shared_ptr<PartyControl> pc) {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
 	if (this->is_map) {
 		return true;

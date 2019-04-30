@@ -9,7 +9,7 @@ using namespace std;
 
 class Cleark : public NPC {
 private:
-	vector <Item*> items;
+	vector <shared_ptr<Item>> items;
 
 	int start;
 
@@ -19,7 +19,7 @@ private:
 
 	int num;
 
-	PartyControl* pc;
+	shared_ptr<PartyControl> pc;
 
 	int window_image;
 	int subwindow_image;
@@ -33,7 +33,7 @@ private:
 
 public:
 	Cleark();
-	Cleark(char name[], int x, int y, vector<Item*> item, vector<string> text, PartyControl* pc);
+	Cleark(char name[], int x, int y, vector<shared_ptr<Item>> item, vector<string> text, shared_ptr<PartyControl> pc);
 	int update();
 	int sell(); //プレイヤーが売る
 	int buy(); //プレイヤーが買う

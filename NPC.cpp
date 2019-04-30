@@ -42,10 +42,6 @@ NPC::NPC(int pos_x, int pos_y, char name[], vector <string> text, int type) {
 
 }
 
-void NPC::getName(int x, int y) {
-	DrawFormatString(x, y, GetColor(0, 0, 0), this->name.c_str());
-}
-
 void NPC::draw(int xx, int yy) {
 	switch (this->direction) {
 	case 0:
@@ -62,14 +58,6 @@ void NPC::draw(int xx, int yy) {
 		break;
 	}
 	this->frame++;
-}
-
-int NPC::getX() {
-	return this->x;
-}
-
-int NPC::getY() {
-	return this->y;
 }
 
 bool NPC::chat() {

@@ -20,7 +20,7 @@ bool Heal::effectMap(PartyControl* pc) {
 	DrawExtendGraph(800, 300, 1600, 800, window, TRUE);
 	DrawFormatString(850, 350, GetColor(0, 0, 0), "‰ñ•œ‚·‚é‘ÎÛ‚ğ‘I‚ñ‚Å‚­‚¾‚³‚¢B");
 	int col = 0;
-	Player* temp;
+	shared_ptr<Player> temp;
 	for (int i = 0; i < pc->getNumMember(); i++) {
 		temp = pc->getMember(i);
 		if ((double)temp->getHp() / (double)temp->getHpMax() > 0.8) {

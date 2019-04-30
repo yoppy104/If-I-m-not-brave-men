@@ -51,12 +51,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
 
-	Player allen(ALLEN, 496 + 160 * 5, 136 + 160 * 5);//エラー位置
+	shared_ptr<Player> allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
 
-	vector <Player*> players;
-	players.push_back(&allen);
+	vector <shared_ptr<Player>> players;
+	players.push_back(allen);
 
-	PartyControl* pc = new PartyControl(players, 0, 100);
+	shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
 
 	Battle_Stage* battle_stage = new Battle_Stage(pc);
 
@@ -69,7 +69,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	mode = TITLE;
 
-	while (!CheckHitKey(KEY_INPUT_ESCAPE) && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+	while (Button(KEY_INPUT_ESCAPE) < 50 && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();
 		switch (mode) {
@@ -95,6 +95,9 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			break;
 		}
 		
+		if (Button(KEY_INPUT_ESCAPE) != 0) {
+			DrawFormatString(10, 10, GetColor(0, 0, 0), "ゲームを終了します");
+		}
 	}
 
 	InitSoundMem();

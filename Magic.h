@@ -42,6 +42,6 @@ public:
 	int getID();
 
 	void effectBattle(stagedata stage, Player* players, int user, int size_players, Enemy* enemy, int size_enemy);	//戦闘での効果
-	bool effectMap(PartyControl* pc);	//マップ上での効果
+	bool effectMap(shared_ptr<PartyControl> pc);	//マップ上での効果
 	void draw_battle();	//バトルでのアニメーション
 };

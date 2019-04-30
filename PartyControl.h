@@ -10,28 +10,27 @@ class Magic;
 
 class PartyControl {
 private:
-	vector<Player*> member; //プレイヤーキャラクター
-	vector<Item*> items;		//アイテム
-	int num_MagicStone;		//魔石の総数
+	vector<shared_ptr<Player>> member; //プレイヤーキャラクター
+	vector<shared_ptr<Item>> items;		//アイテム
+	int numMagicStone;		//魔石の総数
 	int coin;				//所持金の総数
 
 public:
 	PartyControl();
-	PartyControl(vector<Player*> players, int num, int coin);
+	PartyControl(vector<shared_ptr<Player>> players, int num, int coin);
 	~PartyControl();
-	Player* getMember(int index);
-	int getNumMember();
-	Item* getItem(int index);
-	int getNumItem();
+	shared_ptr<Player> getMember(int index) { return member[index]; }
+	int getNumMember() { return member.size(); }
+	shared_ptr<Item> getItem(int index) { return items[index]; }
+	int getNumItem() { return items.size(); }
 	void delItem(int index);
-	void addItem(Item* item);
-	int getNumMagicStone();
-	int getNumCoin();
+	void addItem(shared_ptr<Item> item);
+	int getNumMagicStone() { return numMagicStone; }
+	int getNumCoin() { return coin; }
 	void addNumMagicStone(int delta);
 	void addNumCoin(int delta);
 	void setEquipment(int member_index, int item_index);
 	void replaceEquipment(int member_index, int type);
-	vector <Player*> getMembers();
-	int* getCoin();
-	vector <Item*> getItems();
+	vector <shared_ptr<Player>> getMembers() { return member; }
+	vector <shared_ptr<Item>> getItems() { return items; }
 };

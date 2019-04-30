@@ -8,41 +8,64 @@
 class Player;
 class Map;
 
+//マップサイズ
+typedef struct {
+	int width;
+	int height;
+} MapSize;
+
+//ディスプレイサイズ
+typedef struct {
+	int width;
+	int height;
+} DispSize;
+
+//プレイヤーの向いている方向
+enum DirectionPlayer {
+	FRONT,
+	BACK,
+	RIGHT,
+	LEFT
+};
+
+//音声
+typedef struct {
+	int main;
+	int walk;
+	int error;
+	int enter;
+} Sound;
+
 //マップ制御用のクラス。Mapクラスを配列として管理する。
 class MapControl {
 private:
-	double disp_rate;
-	int position_player[2];
-	int mapsize_w;
-	int dispsize_w;
-	int mapsize_h;
-	int dispsize_h;
+	double dispRate;
+	Vector positionPlayer;
+	DirectionPlayer directionPlayer;
+	MapSize mapSize;
+	DispSize dispSize;
 	int countFrame;
-	int directionPlayer;
-	std::vector <std::vector<Map*>> maps;
-	Player* allen;
-	Event* now;
-	std::vector<NPC*> npcs;
-	bool is_move;
-	bool is_event;
-	bool is_chat;
-	bool is_menu;
+	std::vector <std::vector<shared_ptr<Map>>> maps;
+	shared_ptr<Player> allen;
+	shared_ptr<Event> now;
+	std::vector<shared_ptr<NPC>> npcs;
+	bool isMove;
+	bool isEvent;
+	bool isChat;
+	bool isMenu;
 	int image;
-	NPC* now_chat;
-	Menu* menu;
-	PartyControl* pc;
+	shared_ptr<NPC> nowChat;
+	shared_ptr<Menu> menu;
+	shared_ptr<PartyControl> pc;
 
-	int sound_main;
-	int sound_walk;
-	int sound_error;
-	int sound_enter;
+	Sound sounds;
 
 public:
 	MapControl();
-	MapControl(int width, int height, int x, int y, int map, Player* allen, PartyControl* pc);
+	MapControl(int width, int height, int x, int y, int map, const shared_ptr<Player> allen, const shared_ptr<PartyControl> pc);
 	~MapControl();
-	int getX();
-	int getY();
+	int getX() const { positionPlayer.x; }
+	int getY() const { positionPlayer.y; }
 	int Update();
 	void show();
 	void createMap();

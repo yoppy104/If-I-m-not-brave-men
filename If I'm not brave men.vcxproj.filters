@@ -80,19 +80,7 @@
     <ClCompile Include="Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Allen.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Craig.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Rain.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Imitia.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
@@ -206,18 +194,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>ヘッダーファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Allen.h">
-      <Filter>ヘッダーファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Rain.h">
-      <Filter>ヘッダーファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Imitia.h">
-      <Filter>ヘッダーファイル\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Craig.h">
       <Filter>ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">

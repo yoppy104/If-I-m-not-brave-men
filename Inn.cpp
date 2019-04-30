@@ -2,21 +2,21 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, PartyControl* pc) : NPC (pos_x, pos_y, name, text, 0){
+Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, shared_ptr<PartyControl> pc) : NPC (pos_x, pos_y, name, text, 0){
 	this->price = price;
 	this->pc = pc;
 	this->select_main = true;
 	this->subwindow_image = LoadGraph("command.png");
 	this->fade = 0;
 
-	this->sound_cancel = LoadSoundMem("SE_cancel.wav");
-	this->sound_enter = LoadSoundMem("SE_enter.wav");
-	this->sound_error = LoadSoundMem("SE_error.wav");
-	this->sound_move = LoadSoundMem("SE_move.wav");
-	this->sound_coin = LoadSoundMem("SE_coin_2.wav");
-	this->sound_heal = LoadSoundMem("SE_heal.wav");
-	ChangeVolumeSoundMem(200, this->sound_heal);
-	this->sound_yado = LoadSoundMem("SE_Yado.wav");
+	this->sounds.cancel = LoadSoundMem("SE_cancel.wav");
+	this->sounds.enter = LoadSoundMem("SE_enter.wav");
+	this->sounds.error = LoadSoundMem("SE_error.wav");
+	this->sounds.move = LoadSoundMem("SE_move.wav");
+	this->sounds.coin = LoadSoundMem("SE_coin_2.wav");
+	this->sounds.heal = LoadSoundMem("SE_heal.wav");
+	ChangeVolumeSoundMem(200, this->sounds.heal);
+	this->sounds.yado = LoadSoundMem("SE_Yado.wav");
 }
 
 bool Inn::chat() {
@@ -33,26 +33,26 @@ bool Inn::chat() {
 		DrawLine(1650, 750 + 40 * !this->select_main, 1755, 750 + 40 * !this->select_main, GetColor(0, 0, 0), 5);
 		if (Button(KEY_INPUT_UP) == 1) {
 			if (!this->select_main) {
-				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
+				PlaySoundMem(this->sounds.move, DX_PLAYTYPE_BACK, TRUE);
 				this->select_main = !this->select_main;
 			}
 			else{
-				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				PlaySoundMem(this->sounds.error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) == 1) {
 			if (this->select_main) {
-				PlaySoundMem(this->sound_move, DX_PLAYTYPE_BACK, TRUE);
+				PlaySoundMem(this->sounds.move, DX_PLAYTYPE_BACK, TRUE);
 				this->select_main = !this->select_main;
 			}
 			else{
-				PlaySoundMem(this->sound_error, DX_PLAYTYPE_BACK, TRUE);
+				PlaySoundMem(this->sounds.error, DX_PLAYTYPE_BACK, TRUE);
 			}
 		}
 		else if (Button(KEY_INPUT_SPACE) == 1) {
-			PlaySoundMem(this->sound_enter, DX_PLAYTYPE_BACK, TRUE);
+			PlaySoundMem(this->sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (this->select_main) {
-				Player* temp = pc->getMember(0);
+				shared_ptr<Player> temp = pc->getMember(0);
 				temp->healHp();
 				temp->plusMp();
 				pc->addNumCoin(-1 * this->price * pc->getNumMember());
@@ -63,12 +63,12 @@ bool Inn::chat() {
 			}
 		}
 		else if (Button(KEY_INPUT_B) == 1) {
-			PlaySoundMem(this->sound_cancel, DX_PLAYTYPE_BACK, TRUE);
+			PlaySoundMem(this->sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
 			return true;
 		}
 	}
 	else if (this->step == -1) {
-		PlaySoundMem(this->sound_yado, DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(this->sounds.yado, DX_PLAYTYPE_BACK, TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 16 * this->fade);
 		DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 		DrawFormatString(700, 540, GetColor(255, 255, 255), "アレン達はしっかりと休息をとった。");
@@ -81,12 +81,12 @@ bool Inn::chat() {
 	else if (this->step == -2) {
 		DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 		DrawFormatString(700, 540, GetColor(255, 255, 255), "アレン達はしっかりと休息をとった。");
-		if (Button(KEY_INPUT_SPACE) == 1 && !CheckSoundMem(this->sound_yado)){
+		if (Button(KEY_INPUT_SPACE) == 1 && !CheckSoundMem(this->sounds.yado)){
 			this->step = -3;
 		}
 	}
 	else if (this->step == -3) {
-		PlaySoundMem(this->sound_heal, DX_PLAYTYPE_BACK, TRUE);
+		PlaySoundMem(this->sounds.heal, DX_PLAYTYPE_BACK, TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 16 * this->fade);
 		DrawBox(0, 0, 1920, 1080, GetColor(0, 0, 0), TRUE);
 		DrawFormatString(700, 540, GetColor(255, 255, 255), "アレン達はしっかりと休息をとった。");

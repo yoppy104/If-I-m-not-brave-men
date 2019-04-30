@@ -151,18 +151,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Allen.cpp" />
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Battle_Stage.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Cleak.cpp" />
-    <ClCompile Include="Craig.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Event.cpp" />
     <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Heal.cpp" />
-    <ClCompile Include="Imitia.cpp" />
     <ClCompile Include="Inn.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Items.cpp" />
@@ -184,7 +181,6 @@
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="PartyControl.cpp" />
     <ClCompile Include="Portion.cpp" />
-    <ClCompile Include="Rain.cpp" />
     <ClCompile Include="StealSword.cpp" />
     <ClCompile Include="StoneSword.cpp" />
     <ClCompile Include="Weapon.cpp" />
@@ -194,19 +190,16 @@
     <ClCompile Include="WoodSword.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Allen.h" />
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Battle_Stage.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Cleark.h" />
-    <ClInclude Include="Craig.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="FireBall.h" />
     <ClInclude Include="Heal.h" />
     <ClInclude Include="IDs.h" />
-    <ClInclude Include="Imitia.h" />
     <ClInclude Include="Inn.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="Items.h" />
@@ -230,7 +223,6 @@
     <ClInclude Include="PartyControl.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Portion.h" />
-    <ClInclude Include="Rain.h" />
     <ClInclude Include="StealSword.h" />
     <ClInclude Include="StoneSword.h" />
     <ClInclude Include="Weapon.h" />

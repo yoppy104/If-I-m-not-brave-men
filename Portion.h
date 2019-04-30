@@ -10,5 +10,5 @@ public:
 	Portion();
 	bool effectBattle();
 	bool effectMap();
-	void select(PartyControl* pc);
+	void select(shared_ptr<PartyControl> pc);
 };

@@ -65,7 +65,7 @@ Battle_Stage::Battle_Stage()
 	
 }
 
-Battle_Stage::Battle_Stage(PartyControl* pc)
+Battle_Stage::Battle_Stage(shared_ptr<PartyControl> pc)
 {
 	this->pc = pc;
 	is_first_time = TRUE;

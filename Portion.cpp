@@ -15,8 +15,8 @@ bool Portion::effectMap() {
 	return false;
 }
 
-void Portion::select(PartyControl* pc) {
-	Player* temp;
+void Portion::select(shared_ptr<PartyControl> pc) {
+	shared_ptr<Player> temp;
 	for (int i = 0; i < pc->getNumMember(); i++) {
 		temp = pc->getMember(i);
 		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
