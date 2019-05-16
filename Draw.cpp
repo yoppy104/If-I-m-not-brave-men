@@ -5,7 +5,6 @@
 #include "DxLib.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Weapon.h"
 
 typedef uint64_t stagedata;
 

@@ -89,15 +89,6 @@
     <ClCompile Include="Mathematic.cpp">
       <Filter>ソース ファイル\Material</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="FireBall.cpp">
-      <Filter>ソース ファイル\Magic</Filter>
-    </ClCompile>
-    <ClCompile Include="Heal.cpp">
-      <Filter>ソース ファイル\Magic</Filter>
-    </ClCompile>
     <ClCompile Include="Magic.cpp">
       <Filter>ソース ファイル\Magic</Filter>
     </ClCompile>
@@ -106,9 +97,6 @@
     </ClCompile>
     <ClCompile Include="Character.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="WoodSword.cpp">
-      <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
     <ClCompile Include="Map.cpp">
       <Filter>ソース ファイル\Map</Filter>
@@ -131,59 +119,14 @@
     <ClCompile Include="PartyControl.cpp">
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Portion.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Armor.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="LeatherCap.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="LeatherSheild.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="LeatherChest.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="LeatherArm.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="NonWeapon.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="NonHead.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="NonArm.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="NonChest.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="NonShield.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Cleak.cpp">
       <Filter>ソース ファイル\NPC</Filter>
-    </ClCompile>
-    <ClCompile Include="Items.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Magics.cpp">
-      <Filter>ソース ファイル\Magic</Filter>
     </ClCompile>
     <ClCompile Include="Inn.cpp">
       <Filter>ソース ファイル\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="StealSword.cpp">
-      <Filter>ソース ファイル\Item</Filter>
-    </ClCompile>
     <ClCompile Include="Battle_Stage.cpp">
       <Filter>ソース ファイル\Battle</Filter>
-    </ClCompile>
-    <ClCompile Include="StoneSword.cpp">
-      <Filter>ソース ファイル\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,15 +145,6 @@
     <ClInclude Include="Item.h">
       <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="FireBall.h">
-      <Filter>ヘッダーファイル\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="Heal.h">
-      <Filter>ヘッダーファイル\Magic</Filter>
-    </ClInclude>
     <ClInclude Include="Mathematic.h">
       <Filter>ヘッダーファイル\Material</Filter>
     </ClInclude>
@@ -219,9 +153,6 @@
     </ClInclude>
     <ClInclude Include="Magic.h">
       <Filter>ヘッダーファイル\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="WoodSword.h">
-      <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="MapControl.h">
       <Filter>ヘッダーファイル\Map</Filter>
@@ -244,56 +175,11 @@
     <ClInclude Include="PartyControl.h">
       <Filter>ヘッダーファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Portion.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Armor.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="LetherCap.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="LeatherShield.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="LeatherChest.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="LeatherArm.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Items.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Magics.h">
-      <Filter>ヘッダーファイル\Magic</Filter>
-    </ClInclude>
-    <ClInclude Include="NonWeapon.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="NonHead.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="NonArm.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="NonShield.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="NonChest.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
     <ClInclude Include="Cleark.h">
       <Filter>ヘッダーファイル\NPC</Filter>
     </ClInclude>
     <ClInclude Include="Inn.h">
       <Filter>ヘッダーファイル\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="StoneSword.h">
-      <Filter>ヘッダーファイル\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="StealSword.h">
-      <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="Battle_Stage.h">
       <Filter>ヘッダーファイル\Battle</Filter>

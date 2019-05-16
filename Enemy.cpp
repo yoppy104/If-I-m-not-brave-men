@@ -2,14 +2,14 @@
 
 
 
-Enemy::Enemy(const char name[], int hp, int attack, int diffence, int magic_power, int dex, const char grafhic[],int TypeA,int TypeM) {
-	strcpy(this->name, name);
-	this->hp = hp;
-	this->hp_max = hp;
-	this->attack = attack;
-	this->diffence = diffence;
-	this->magic_power = magic_power;
-	this->dex = dex;
+Enemy::Enemy(char name[], int hp, int attack, int diffence, int magic_power, int dex, char grafhic[],int TypeA,int TypeM) {
+	strcpy(name, name);
+	hp = hp;
+	hp_max = hp;
+	attack = attack;
+	diffence = diffence;
+	magic_power = magic_power;
+	dex = dex;
 	LoadDivGraph(grafhic, 1, 1, 1, 128, 128, gra);
 	Attacktype = TypeA;
 	Movetype = TypeM;

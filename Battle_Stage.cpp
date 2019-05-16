@@ -67,7 +67,7 @@ Battle_Stage::Battle_Stage()
 
 Battle_Stage::Battle_Stage(shared_ptr<PartyControl> pc)
 {
-	this->pc = pc;
+	pc = pc;
 	is_first_time = TRUE;
 	troutCursol = FALSE;
 	charaforcus = 0;

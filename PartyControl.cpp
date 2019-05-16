@@ -1,107 +1,105 @@
 #include "PartyControl.h"
-#include "Items.h"
+#include "Item.h"
 #include "DxLib.h"
-
-PartyControl::PartyControl() {
-
-}
 
 PartyControl::PartyControl(vector <shared_ptr<Player>> players, int num, int coin) :
 	member(players),
 	numMagicStone(num),
 	coin(coin)
 {
-	shared_ptr<Weapon> w(new WoodSword());
-	shared_ptr<Item> p(new Portion());
-	shared_ptr<Armor> a(new LeatherArm());
-	shared_ptr<Armor> s(new LeatherSheild());
-	shared_ptr<Armor> c(new LeatherCap());
-	shared_ptr<Armor> ch(new LeatherChest());
-	for (int i = 0; i < 1; i++) {
-		this->items.push_back(w);
-		this->items.push_back(p);
-		this->items.push_back(a);
-		this->items.push_back(s);
-		this->items.push_back(c);
-		this->items.push_back(ch);
-	}
+	addItem(WOODSWORD, 1);
+	addItem(LEATHERARM, 1);
+	addItem(LEATHERCAP, 1);
+	addItem(PORTION, 3);
 }
 
 PartyControl::~PartyControl() {
-	this->items.clear();
+	items.clear();
 }
 
 void PartyControl::delItem(int index) {
-	this->items.erase(this->items.begin() + index);
+	items.erase(items.begin() + index);
 }
 
-void PartyControl::addItem(shared_ptr<Item> item) {
-	this->items.push_back(item);
+void PartyControl::addItem(ID id, int num){
+	int i = 0;
+	for (i; i < items.size(); i++) {
+		if (items[i].id == id) {
+			items[i].num++;
+			return;
+		}
+	}
+	items.push_back(ItemData{ id, std::make_unique<Item>(new Item(id)), 1 });
 }
 
 void PartyControl::addNumMagicStone(int delta) {
-	this->numMagicStone += delta;
+	numMagicStone += delta;
 }
 
 void PartyControl::addNumCoin(int delta) {
-	this->coin += delta;
+	coin += delta;
 }
 
 
 void PartyControl::setEquipment(int member_index, int item_index) {
-	int temp = this->items[item_index]->getIsEquip();
+	int temp = items[item_index].instance->getIsEquip();
 	if (temp == 1) {
-		if (this->member[member_index]->getWeapon()->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getWeapon());
+		if (member[member_index]->hasEquip(1)) {
+			addItem(member[member_index]->getWeaponId(), 1);
 		}
-		//this->member[member_index]->setEquipment(items[item_index]);
+		member[member_index]->setEquipment(items[item_index].instance->getId(), 1);
 	}
 	else {
-		if (this->member[member_index]->getArmor(temp)->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getArmor(temp));
+		if (member[member_index]->hasEquip(temp)) {
+			addItem(member[member_index]->getArmorId(temp), 1);
 		}
-		//->member[member_index]->setEquipment((Armor*)this->items[item_index], temp);
+		member[member_index]->setEquipment(items[item_index].instance->getId(), temp);
 	}
-	this->items.erase(this->items.begin() + item_index);
+	items[item_index].num--;
+	if (items[item_index].num == 0) {
+		items.erase(items.begin() + item_index);
+	}
 }
 
 void PartyControl::replaceEquipment(int member_index, int type) {
-	shared_ptr<Weapon> nonw(new NonWeapon());
-	shared_ptr<Armor> nons(new NonShield());
-	shared_ptr<Armor> nona(new NonArm());
-	shared_ptr<Armor> nonh(new NonShield());
-	shared_ptr<Armor> nonc(new NonChest());
-
 	switch (type) {
 	case 1:
-		if (this->member[member_index]->getWeapon()->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getWeapon());
+		if (member[member_index]->hasEquip(1)) {
+			addItem(member[member_index]->getWeaponId(), 1);
 		}
-		this->member[member_index]->setEquipment(nonw);
+		member[member_index]->setEquipment(NOTEQUIPMENT, 1);
 		break;
 	case 2:
-		if (this->member[member_index]->getArmor(2)->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getArmor(2));
+		if (member[member_index]->hasEquip(2)) {
+			addItem(member[member_index]->getArmorId(2), 1);
 		}
-		this->member[member_index]->setEquipment(nons, 2);
+		member[member_index]->setEquipment(NOTEQUIPMENT, 2);
 		break;
 	case 3:
-		if (this->member[member_index]->getArmor(3)->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getArmor(3));
+		if (member[member_index]->hasEquip(3)) {
+			addItem(member[member_index]->getArmorId(3), 1);
 		}
-		this->member[member_index]->setEquipment(nonc, 3);
+		member[member_index]->setEquipment(NOTEQUIPMENT, 3);
 		break;
 	case 4:
-		if (this->member[member_index]->getArmor(4)->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getArmor(4));
+		if (member[member_index]->hasEquip(4)) {
+			addItem(member[member_index]->getArmorId(4), 1);
 		}
-		this->member[member_index]->setEquipment(nona, 4);
+		member[member_index]->setEquipment(NOTEQUIPMENT, 4);
 		break;
 	case 5:
-		if (this->member[member_index]->getArmor(5)->getId() != NOTEQUIPMENT) {
-			this->items.push_back(this->member[member_index]->getArmor(5));
+		if (member[member_index]->hasEquip(5)) {
+			addItem(member[member_index]->getArmorId(5), 1);
 		}
-		this->member[member_index]->setEquipment(nonh, 5);
+		member[member_index]->setEquipment(NOTEQUIPMENT, 5);
 		break;
+	}
+}
+
+void PartyControl::useItemMap(int index) {
+	items[index].instance->effectMap();
+	items[index].num--;
+	if (items[index].num == 0) {
+		items.erase(items.begin() + index);
 	}
 }

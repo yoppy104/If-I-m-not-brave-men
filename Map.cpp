@@ -1,116 +1,118 @@
 #include "Map.h"
 #include "DxLib.h"
 
-Map::Map(int data, bool isEvent, bool isNpc, int table, shared_ptr<NPC> npc) {
+Map::Map(int data, bool isEvent, bool isNpc, int table, shared_ptr<NPC> npc) :
+	isEncount(true)
+{
 	// ƒf[ƒ^‚É‚æ‚Á‚Ä§Œä
-	this->encountRate = 0;
-	this->encountTable = table;
-	this->inf = data;
+	encountRate = 0;
+	encountTable = table;
+	inf = data;
 
 	switch (data) {
 	case 0: // ‘Œ´
-		this->isMove = true;
-		this->isEncount = true;
-		this->encountRate = 0;
+		isMove = true;
+		isEncount = true;
+		encountRate = 0;
 		break;
 	case 1: // ’n–Ê
-		this->isMove = true;
-		this->isEncount = true;
-		this->encountRate = 0;
+		isMove = true;
+		isEncount = true;
+		encountRate = 0;
 		break;
 	case 2: //X
-		this->isMove = true;
-		this->isEncount = true;
-		this->encountRate = 0;
+		isMove = true;
+		isEncount = true;
+		encountRate = 0;
 		break;
 	case 3: //ŽRŠx
-		this->isMove = false;
-		this->isEncount = false;
-		this->encountRate = 0;
+		isMove = false;
+		isEncount = false;
+		encountRate = 0;
 		break;
 	case 4: //ŠC
-		this->isMove = false;
-		this->isEncount = false;
+		isMove = false;
+		isEncount = false;
 		break;
 	case 5: //¬‚³‚¢’¬
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 6: //‘å‚«‚È’¬
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 7: //é
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 8: //‹´
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	}
-	this->isEvent = isEvent;
-	this->isNpc = isNpc;
+	isEvent = isEvent;
+	isNpc = isNpc;
 	if (isNpc) {
-		this->npc = move(npc);
+		this->npc = npc;
 	}
 }
 
 void Map::setData(int data) {
-	this->inf = data;
+	inf = data;
 	switch (data) {
 	case 0: // ‘Œ´
-		this->isMove = true;
-		this->isEncount = true;
-		this->encountRate = 0;
+		isMove = true;
+		isEncount = true;
+		encountRate = 0;
 		break;
 	case 1: // ’n–Ê
-		this->isMove = true;
-		this->isEncount = true;
-		this->encountRate = 0;
+		isMove = true;
+		isEncount = true;
+		encountRate = 0;
 		break;
 	case 2: //X
-		this->isMove = false;
-		this->isEncount = false;
+		isMove = false;
+		isEncount = false;
 		break;
 	case 3: //ŽRŠx
-		this->isMove = false;
-		this->isEncount = false;
+		isMove = false;
+		isEncount = false;
 		break;
 	case 4: //ŠC
-		this->isMove = false;
-		this->isEncount = false;
+		isMove = false;
+		isEncount = false;
 		break;
 	case 5: //¬‚³‚¢’¬
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 6: //‘å‚«‚È’¬
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 7: //é
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	case 8: //‹´
-		this->isMove = true;
-		this->isEncount = false;
+		isMove = true;
+		isEncount = false;
 		break;
 	}
 }
 
 void Map::setIsEvent(bool is) {
-	this->isEvent = is;
+	isEvent = is;
 }
 
 void Map::setNpc(bool isnt) {
-	this->isNpc = isnt;
+	isNpc = isnt;
 }
 
 void Map::setNpc(shared_ptr<NPC> npc) {
-	this->isNpc = true;
-	this->npc = move(npc);
+	isNpc = true;
+	this->npc = npc;
 }
 
 shared_ptr<NPC> Map::getNPC() {
@@ -118,17 +120,17 @@ shared_ptr<NPC> Map::getNPC() {
 }
 
 void Map::chatNPC() {
-	this->npc->chat();
+	npc->chat();
 }
 
 void Map::setEvent(shared_ptr<Event> myevent) {
-	this->isEvent = true;
-	this->event = move(myevent);
+	isEvent = true;
+	event = myevent;
 }
 
 shared_ptr<Event> Map::getEvent() {
-	if (this->isEvent) {
-		return this->event;
+	if (isEvent) {
+		return event;
 	}
 	else {
 		return NULL;
@@ -136,9 +138,9 @@ shared_ptr<Event> Map::getEvent() {
 }
 
 void Map::delEvent() {
-	this->isEvent = false;
+	isEvent = false;
 }
 
 void Map::setTable(int table) {
-	this->encountTable = table;
+	encountTable = table;
 }

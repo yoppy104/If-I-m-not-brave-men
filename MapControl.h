@@ -8,18 +8,6 @@
 class Player;
 class Map;
 
-//マップサイズ
-typedef struct {
-	int width;
-	int height;
-} MapSize;
-
-//ディスプレイサイズ
-typedef struct {
-	int width;
-	int height;
-} DispSize;
-
 //プレイヤーの向いている方向
 enum DirectionPlayer {
 	FRONT,
@@ -28,17 +16,31 @@ enum DirectionPlayer {
 	LEFT
 };
 
-//音声
-typedef struct {
-	int main;
-	int walk;
-	int error;
-	int enter;
-} Sound;
 
 //マップ制御用のクラス。Mapクラスを配列として管理する。
 class MapControl {
 private:
+
+	//音声
+	typedef struct {
+		int main;
+		int walk;
+		int error;
+		int enter;
+	} Sound;
+
+	//マップサイズ
+	typedef struct {
+		int width;
+		int height;
+	} MapSize;
+
+	//ディスプレイサイズ
+	typedef struct {
+		int width;
+		int height;
+	} DispSize;
+
 	double dispRate;
 	Vector positionPlayer;
 	DirectionPlayer directionPlayer;
@@ -61,8 +63,8 @@ private:
 	Sound sounds;
 
 public:
-	MapControl();
-	MapControl(int width, int height, int x, int y, int map, const shared_ptr<Player> allen, const shared_ptr<PartyControl> pc);
+	MapControl() = default;
+	MapControl(int width, int height, int x, int y, int map, shared_ptr<Player> allen, shared_ptr<PartyControl> pc);
 	~MapControl();
 	int getX() const { positionPlayer.x; }
 	int getY() const { positionPlayer.y; }

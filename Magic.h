@@ -1,6 +1,7 @@
 #pragma once
 #include "PartyControl.h"
 #include <string>
+#include "IDs.h"
 
 typedef unsigned long long stagedata;
 
@@ -9,6 +10,7 @@ class Enemy;
 class PartyControl;
 
 enum Type {
+	NON,		//無属性
 	FIRE,		//炎属性
 	WATER,		//水属性
 	THUNDER,	//雷属性
@@ -25,8 +27,8 @@ protected:
 	string name;	//名前
 	int cost;		//消費するmp
 	bool is_map;	//マップ上で使えるかどうか
-	int id;			//魔術のid
-	int type;		//属性
+	ID id;			//魔術のid
+	Type type;		//属性
 
 	int point;		//攻撃力や回復力
 	int usable_area;//使用する座標を選べる範囲の半径
@@ -34,12 +36,12 @@ protected:
 
 public:
 	Magic();
-	Magic(int, string, int, bool);
-	Magic(int id);
+	Magic(ID, string, int, bool);
+	Magic(ID id);
 	void getName(int, int);
 	int getCost();
 	bool getIsMap();
-	int getID();
+	ID getID();
 
 	void effectBattle(stagedata stage, Player* players, int user, int size_players, Enemy* enemy, int size_enemy);	//戦闘での効果
 	bool effectMap(shared_ptr<PartyControl> pc);	//マップ上での効果

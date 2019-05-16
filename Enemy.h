@@ -20,7 +20,7 @@ class Enemy
 	int exp;
 
 public:
-	Enemy(const char name[], int hp, int attack, int diffence, int magic_power, int dex, const char grafhic[],int TypeA,int TypeM);
+	Enemy(char name[], int hp, int attack, int diffence, int magic_power, int dex, char grafhic[],int TypeA,int TypeM);
 	int DrawEnemy(double x, double y, int scene);
 	bool GetActive();
 	bool Activate();

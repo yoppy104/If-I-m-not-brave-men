@@ -23,32 +23,32 @@
     <ProjectGuid>{50D50C65-73D9-431E-AABD-BF042D6965E8}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>IfImnotbravemen</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -151,82 +151,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Battle_Stage.cpp" />
     <ClCompile Include="Character.cpp" />
     <ClCompile Include="Cleak.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Event.cpp" />
-    <ClCompile Include="FireBall.cpp" />
-    <ClCompile Include="Heal.cpp" />
     <ClCompile Include="Inn.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="Items.cpp" />
-    <ClCompile Include="LeatherArm.cpp" />
-    <ClCompile Include="LeatherCap.cpp" />
-    <ClCompile Include="LeatherChest.cpp" />
-    <ClCompile Include="LeatherSheild.cpp" />
     <ClCompile Include="Magic.cpp" />
-    <ClCompile Include="Magics.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MapControl.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="M_Functions.cpp" />
-    <ClCompile Include="NonArm.cpp" />
-    <ClCompile Include="NonChest.cpp" />
-    <ClCompile Include="NonHead.cpp" />
-    <ClCompile Include="NonShield.cpp" />
-    <ClCompile Include="NonWeapon.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="PartyControl.cpp" />
-    <ClCompile Include="Portion.cpp" />
-    <ClCompile Include="StealSword.cpp" />
-    <ClCompile Include="StoneSword.cpp" />
-    <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mathematic.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="WoodSword.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Armor.h" />
     <ClInclude Include="Battle_Stage.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Cleark.h" />
     <ClInclude Include="draw.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Event.h" />
-    <ClInclude Include="FireBall.h" />
-    <ClInclude Include="Heal.h" />
     <ClInclude Include="IDs.h" />
     <ClInclude Include="Inn.h" />
     <ClInclude Include="Item.h" />
-    <ClInclude Include="Items.h" />
-    <ClInclude Include="LeatherArm.h" />
-    <ClInclude Include="LeatherChest.h" />
-    <ClInclude Include="LeatherShield.h" />
-    <ClInclude Include="LetherCap.h" />
     <ClInclude Include="Magic.h" />
-    <ClInclude Include="Magics.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MapControl.h" />
     <ClInclude Include="Mathematic.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="M_Functions.h" />
-    <ClInclude Include="NonArm.h" />
-    <ClInclude Include="NonChest.h" />
-    <ClInclude Include="NonHead.h" />
-    <ClInclude Include="NonShield.h" />
-    <ClInclude Include="NonWeapon.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PartyControl.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Portion.h" />
-    <ClInclude Include="StealSword.h" />
-    <ClInclude Include="StoneSword.h" />
-    <ClInclude Include="Weapon.h" />
-    <ClInclude Include="WoodSword.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

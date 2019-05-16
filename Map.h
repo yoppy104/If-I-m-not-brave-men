@@ -1,6 +1,7 @@
 #pragma once
 #include "NPC.h"
 #include "Event.h"
+#include <memory>
 
 //マップ一つ一つのクラス
 class Map {
@@ -21,7 +22,7 @@ public:
 	Map(int data, bool is_event, bool is_npc, int table, shared_ptr<NPC> npc);
 
 	//取得メソッド
-	bool getIsMove() { return this->isMove && !this->isNpc; }
+	bool getIsMove() { return isMove && !isNpc; }
 	bool getIsEvent() { return isEvent; }
 	bool getIsNpc() { return isNpc; }
 	bool getIsEncount() { return isEncount; }

@@ -1,6 +1,7 @@
 #pragma once
 #include "NPC.h"
-#include "Items.h"
+#include "Item.h"
+#include "IDs.h"
 #include <vector>
 #include "PartyControl.h"
 #include <string>
@@ -9,7 +10,22 @@ using namespace std;
 
 class Cleark : public NPC {
 private:
-	vector <shared_ptr<Item>> items;
+	typedef struct {
+		int window;
+		int subWindow;
+		int pointer;
+	} Image;
+
+	typedef struct {
+		int enter;
+		int error;
+		int move;
+		int coin;
+		int cancel;
+	} Sound;
+
+	vector <ID> items;
+	vector <Item> itemsInf;
 
 	int start;
 
@@ -21,19 +37,13 @@ private:
 
 	shared_ptr<PartyControl> pc;
 
-	int window_image;
-	int subwindow_image;
-	int pointer_image;
+	Image image;
 
-	int sound_enter;
-	int sound_error;
-	int sound_move;
-	int sound_coin;
-	int sound_cancel;
+	Sound sound;
 
 public:
-	Cleark();
-	Cleark(char name[], int x, int y, vector<shared_ptr<Item>> item, vector<string> text, shared_ptr<PartyControl> pc);
+	Cleark() = default;
+	Cleark(string name, int x, int y, vector<ID> item, vector<string> text, shared_ptr<PartyControl> pc);
 	int update();
 	int sell(); //プレイヤーが売る
 	int buy(); //プレイヤーが買う

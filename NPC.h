@@ -7,26 +7,36 @@ using namespace std;
 
 class NPC {
 protected:
+	enum Direction {
+		FRONT,
+		BACK,
+		RIGHT,
+		LEFT
+	};
+
+	typedef struct {
+		int mapFront[2];
+		int mapBack[2];
+		int mapRight[3];
+		int mapLeft[3];
+	} Image;
+
 	string name;
 	int x;
 	int y;
-	int image;
 	int step;
 	vector <string> text;
 	int text_box;
 
 	int frame;
-	int direction;
+	Direction direction;
 
-	int image_map_front[2];
-	int image_map_back[2];
-	int image_map_right[3];
-	int image_map_left[3];
-	
+	Image image;
+
 public:
-	NPC();
-	NPC(int pos_x, int pos_y, char name[], vector <string> text, int type);
-	void getName(int x, int y) { DrawFormatString(x, y, GetColor(0, 0, 0), this->name.c_str()); }
+	NPC() = default;
+	NPC(int pos_x, int pos_y, string name, vector <string> text, int type);
+	void getName(int x, int y) { DrawFormatString(x, y, GetColor(0, 0, 0), name.c_str()); }
 	void draw(int x, int y);
 	int getX() const { return x; }
 	int getY() const { return y; }

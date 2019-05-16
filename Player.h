@@ -1,10 +1,9 @@
 #pragma once
 
-#include "Weapon.h"
 #include "Character.h"
 #include <vector>
 #include "Magic.h"
-#include "Armor.h"
+#include "Item.h"
 #include <memory>
 #include <array>
 
@@ -14,11 +13,11 @@ class Enemy;
 class Magic;
 
 typedef struct {
-	shared_ptr<Weapon> weapon; //武器
-	shared_ptr<Armor> arm;		//籠手
-	shared_ptr<Armor> head;	//兜
-	shared_ptr<Armor> chest;	//胸当て
-	shared_ptr<Armor> shield;	//盾
+	unique_ptr<Item> weapon; //武器
+	unique_ptr<Item> arm;	 //籠手
+	unique_ptr<Item> head;	 //兜
+	unique_ptr<Item> chest;	 //胸当て
+	unique_ptr<Item> shield; //盾
 } Equipment;
 
 typedef struct {
@@ -31,7 +30,7 @@ using namespace std;
 
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
-	vector <shared_ptr<Magic>> magics;
+	vector <unique_ptr<Magic>> magics;
 	EXP exp;
 
 	int LV;
@@ -57,23 +56,98 @@ public:
 	int getMagicStone() { return magicStone; }
 	void plusMagicStone(int);
 
-	void addMagic(shared_ptr<Magic> new_magic);
+	void addMagic(ID id);
 	int getNumMagics() { return magics.size(); }
-	vector <shared_ptr<Magic>> getMagics() { return magics; }
-	shared_ptr<Magic> getMagic(int index) { return magics[index]; }
+	vector <unique_ptr<Magic>> getMagics() { return magics; }
 	int getAttack();
 	int getDiffence();
 
 	void healHp(int delta);
 	void healHp();
 
-	shared_ptr<Weapon> getWeapon();
-	shared_ptr<Armor> getArmor(int type);
-
 	void draw_map(int x, int y, int frame, int direction);
 
-	void setEquipment(shared_ptr<Weapon> temp);
-	void setEquipment(shared_ptr<Armor> temp, int type);
+	void setEquipment(ID id, int type);
+
+	bool hasEquip(int ind) {
+		switch (ind) {
+		case 1:
+			return equipment.weapon->getId() != NOTEQUIPMENT;
+			break;
+		case 2:
+			return equipment.shield->getId() != NOTEQUIPMENT;
+			break;
+		case 3:
+			return equipment.chest->getId() != NOTEQUIPMENT;
+			break;
+		case 4:
+			return equipment.arm->getId() != NOTEQUIPMENT;
+			break;
+		case 5:
+			return equipment.head->getId() != NOTEQUIPMENT;
+			break;
+		} 
+	}
+	ID getWeaponId() { return equipment.weapon->getId(); }
+	ID getArmorId(int ind) {
+		switch (ind) {
+		case 2:
+			return equipment.shield->getId();
+			break;
+		case 3:
+			return equipment.chest->getId();
+			break;
+		case 4:
+			return equipment.arm->getId();
+			break;
+		case 5:
+			return equipment.head->getId();
+			break;
+		}
+	}
+	int getEquipPoint(int type) {
+		switch (type) {
+		case 1:
+			return equipment.weapon->getPoint();
+			break;
+		case 2:
+			return equipment.shield->getPoint();
+			break;
+		case 3:
+			return equipment.chest->getPoint();
+			break;
+		case 4:
+			return equipment.arm->getPoint();
+			break;
+		case 5:
+			return equipment.head->getPoint();
+			break;
+		default:
+			return 0;
+			break;
+		}
+	}
+	void getEquipName(int type, int x, int y) {
+		switch (type) {
+		case 1:
+			equipment.weapon->getName(x, y);
+			break;
+		case 2:
+			equipment.shield->getName(x, y);
+			break;
+		case 3:
+			equipment.chest->getName(x, y);
+			break;
+		case 4:
+			equipment.arm->getName(x, y);
+			break;
+		case 5:
+			equipment.head->getName(x, y);
+			break;
+		default:
+			break;
+		}
+	}
 
 	int DrawSta(double x, double y);
 	int ActBlock();

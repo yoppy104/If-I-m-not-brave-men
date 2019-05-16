@@ -1,9 +1,7 @@
 #include "DxLib.h"
 #include <vector>
 #include <time.h>
-#include "Battle.h" 
 #include "Player.h"
-#include "Weapon.h"
 #include "Magic.h"
 #include "IDs.h"
 #include "M_Functions.h"
@@ -20,8 +18,8 @@ using namespace std;
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
-	ChangeWindowMode(true);
-	SetGraphMode(400, 580, 32); // ウィンドウサイズを指定
+	ChangeWindowMode(false);
+	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
 	SetMainWindowText("IfNotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 

@@ -43,7 +43,7 @@ private:
 
 public:
 	Menu() = default;
-	Menu(const shared_ptr<PartyControl> p);
+	Menu(shared_ptr<PartyControl> p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム

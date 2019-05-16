@@ -1,14 +1,14 @@
 #include <cmath>
 #include "Player.h"
 #include "Enemy.h"
-#include "Weapon.h"
 #include "draw.h"
 #include "DxLib.h"
 #include "Mathematic.h"
 #include <fstream>
-#include "Items.h"
 
 typedef unsigned long long stagedata;
+
+using namespace std;
 
 Player::Player(ID id, int x, int y) :
 Character(id, x, y),
@@ -23,57 +23,57 @@ StaWindow(NULL)
 {
 	switch (id) {
 	case ALLEN:		//アレンの場合
-		this->status.mpMax = 10;
-		this->status.mp = 10;
-		this->status.hp = 20;
-		this->status.hpMax = 20;
-		this->status.attack = 10;
-		this->status.diffence = 5;
-		this->status.dex = 10;
-		this->status.magicPower = 10;
-		LoadDivGraph("キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, this->images.mapFront);
-		LoadDivGraph("キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, this->images.mapBack);
-		LoadDivGraph("キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, this->images.mapRight);
-		LoadDivGraph("キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, this->images.mapLeft);
+		status.mpMax = 10;
+		status.mp = 10;
+		status.hp = 20;
+		status.hpMax = 20;
+		status.attack = 10;
+		status.diffence = 5;
+		status.dex = 10;
+		status.magicPower = 10;
+		LoadDivGraph("キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, images.mapFront);
+		LoadDivGraph("キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
+		LoadDivGraph("キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
+		LoadDivGraph("キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
 		break;
 	case IMITIA:	//イミティアの場合
-		this->hasMp = false;
-		this->status.mpMax = -1;
-		this->status.mp = -1;
-		this->status.hp = 20;
-		this->status.hpMax = 20;
-		this->status.attack = 10;
-		this->status.diffence = 5;
-		this->status.dex = 10;
-		this->status.magicPower = 10;
+		hasMp = false;
+		status.mpMax = -1;
+		status.mp = -1;
+		status.hp = 20;
+		status.hpMax = 20;
+		status.attack = 10;
+		status.diffence = 5;
+		status.dex = 10;
+		status.magicPower = 10;
 		break;
 	case CRAIG:		//クレイグの場合
-		this->hasMp = false;
-		this->status.mpMax = -1;
-		this->status.mp = -1;
-		this->status.hp = 20;
-		this->status.hpMax = 20;
-		this->status.attack = 10;
-		this->status.diffence = 5;
-		this->status.dex = 10;
-		this->status.magicPower = 10;
+		hasMp = false;
+		status.mpMax = -1;
+		status.mp = -1;
+		status.hp = 20;
+		status.hpMax = 20;
+		status.attack = 10;
+		status.diffence = 5;
+		status.dex = 10;
+		status.magicPower = 10;
 		break;
 	case RAIN:		//レインの場合
-		this->hasMp = false;
-		this->status.mpMax = -1;
-		this->status.mp = -1;
-		this->status.hp = 20;
-		this->status.hpMax = 20;
-		this->status.attack = 10;
-		this->status.diffence = 5;
-		this->status.dex = 10;
-		this->status.magicPower = 10;
+		hasMp = false;
+		status.mpMax = -1;
+		status.mp = -1;
+		status.hp = 20;
+		status.hpMax = 20;
+		status.attack = 10;
+		status.diffence = 5;
+		status.dex = 10;
+		status.magicPower = 10;
 		break;
 	}
 }
 
 Player::~Player() {
-	this->magics.clear();
+	magics.clear();
 }
 
 bool Player::GetActive()
@@ -134,19 +134,19 @@ int Player::Damage(int x)
 }
 
 int Player::getAttack() {
-	return this->status.attack + this->equipment.weapon->getPoint();
+	return status.attack + equipment.weapon->getPoint();
 }
 
 int Player::getDiffence() {
-	return this->status.diffence + this->equipment.head->getPoint() + this->equipment.arm->getPoint() + this->equipment.shield->getPoint() + this->equipment.chest->getPoint();
+	return status.diffence + equipment.head->getPoint() + equipment.arm->getPoint() + equipment.shield->getPoint() + equipment.chest->getPoint();
 }
 
-void Player::addMagic(shared_ptr<Magic> new_magic) {
-	this->magics.push_back(new_magic);
+void Player::addMagic(ID id) {
+	magics.push_back(std::make_unique<Magic>(new Magic(id)));
 }
 
 void Player::plusMagicStone(int point) {
-	this->magicStone += point;
+	magicStone += point;
 }
 
 int Player::sendEXp(int EXp) {
@@ -214,72 +214,50 @@ int Player::GetLV() {
 	return LV;
 }
 
-shared_ptr<Weapon> Player::getWeapon() {
-	return this->equipment.weapon;
-}
-
-shared_ptr<Armor> Player::getArmor(int type) {
-	switch (type) {
-	case 2:
-		return this->equipment.shield;
-		break;
-	case 3:
-		return this->equipment.chest;
-		break;
-	case 4:
-		return this->equipment.arm;
-		break;
-	case 5:
-		return this->equipment.head;
-		break;
-	}
-}
-
 void Player::healHp(int delta) {
-	this->status.hp += delta;
-	if (this->status.hp > this->status.hpMax) {
-		this->status.hp = this->status.hpMax;
+	status.hp += delta;
+	if (status.hp > status.hpMax) {
+		status.hp = status.hpMax;
 	}
 }
 
 void Player::healHp() {
-	this->status.hp = this->status.hpMax;
+	status.hp = status.hpMax;
 }
 
 void Player::draw_map(int x, int y, int frame, int direction) {
 	switch (direction) {
 	case 0:
-		DrawExtendGraph(x, y, x + 64, y + 64, this->images.mapFront[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64, y + 64, images.mapFront[frame], TRUE);
 		break;
 	case 1:
-		DrawExtendGraph(x, y, x + 64, y + 64, this->images.mapBack[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64, y + 64, images.mapBack[frame], TRUE);
 		break;
 	case 2:
-		DrawExtendGraph(x, y, x + 64, y + 64, this->images.mapLeft[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64, y + 64, images.mapRight[frame], TRUE);
 		break;
 	case 3:
-		DrawExtendGraph(x, y, x + 64, y + 64, this->images.mapRight[frame], TRUE);
+		DrawExtendGraph(x, y, x + 64, y + 64, images.mapLeft[frame], TRUE);
 		break;
 	}
 }
 
-void Player::setEquipment(shared_ptr<Weapon> temp) {
-	this->equipment.weapon = temp;
-}
-
-void Player::setEquipment(shared_ptr<Armor> temp, int type) {
+void Player::setEquipment(ID id, int type) {
 	switch (type) {
+	case 1:
+		equipment.weapon = make_unique<Item>(new Item(id));
+		break;
 	case 2:
-		this->equipment.shield = temp;
+		equipment.shield = make_unique<Item>(new Item(id));
 		break;
 	case 3:
-		this->equipment.chest = temp;
+		equipment.chest = make_unique<Item>(new Item(id));
 		break;
 	case 4:
-		this->equipment.arm = temp;
+		equipment.arm = make_unique<Item>(new Item(id));
 		break;
 	case 5:
-		this->equipment.head = temp;
+		equipment.head = make_unique<Item>(new Item(id));
 		break;
 	}
 }

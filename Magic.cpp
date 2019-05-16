@@ -7,16 +7,16 @@ Magic::Magic() :
 	name(NULL),
 	cost(NULL),
 	is_map(NULL),
-	id(NULL),
+	id(UNDIFINED),
 	point(NULL),
 	usable_area(NULL),
 	effect_area(NULL),
-	type(NULL)
+	type(NON)
 {
 
 }
 
-Magic::Magic(int id, string name, int cost, bool map) :
+Magic::Magic(ID id, string name, int cost, bool map) :
 	name(name),
 	cost(cost),
 	is_map(map),
@@ -24,12 +24,12 @@ Magic::Magic(int id, string name, int cost, bool map) :
 	point(NULL),
 	usable_area(NULL),
 	effect_area(NULL),
-	type(NULL)
+	type(NON)
 {
 
 }
 
-Magic::Magic(int id) :
+Magic::Magic(ID id) :
 	name(NULL),
 	cost(NULL),
 	is_map(NULL),
@@ -37,7 +37,7 @@ Magic::Magic(int id) :
 	point(NULL),
 	usable_area(NULL),
 	effect_area(NULL),
-	type(NULL)
+	type(NON)
 {
 	switch (id) {
 	case FIREBALL:
@@ -62,22 +62,22 @@ Magic::Magic(int id) :
 }
 
 void Magic::getName(int x, int y) {
-	DrawFormatString(x, y, GetColor(0, 0, 0), this->name.c_str());
+	DrawFormatString(x, y, GetColor(0, 0, 0), name.c_str());
 }
 int Magic::getCost() {
-	return this->cost;
+	return cost;
 }
 bool Magic::getIsMap() {
-	return this->is_map;
+	return is_map;
 }
 
-int Magic::getID() {
-	return this->id;
+ID Magic::getID() {
+	return id;
 }
 
 void Magic::effectBattle(stagedata stage, Player* players, int user, int size_players, Enemy* enemy, int size_enemy) {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
-	switch (this->id) {
+	switch (id) {
 	case FIREBALL:
 		break;
 	case HEAL:
@@ -87,14 +87,14 @@ void Magic::effectBattle(stagedata stage, Player* players, int user, int size_pl
 
 bool Magic::effectMap(shared_ptr<PartyControl> pc) {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
-	if (this->is_map) {
+	if (is_map) {
 		return true;
 	}
 	return false;
 }
 
 void Magic::draw_battle() {
-	switch (this->id) {
+	switch (id) {
 	case FIREBALL:
 		break;
 	case HEAL:

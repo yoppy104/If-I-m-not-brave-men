@@ -2,40 +2,37 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-NPC::NPC() {
-
-}
-
-NPC::NPC(int pos_x, int pos_y, char name[], vector <string> text, int type) {
-	this->x = pos_x;
-	this->y = pos_y;
-	this->image = LoadGraph("ÉvÉåÉCÉÑÅ[.png");
-	this->name = name;
-	this->step = 0;
-	this->text = text;
-	this->text_box = LoadGraph("window.png");
-
-	this->frame = 0;
-	this->direction = 0;
+NPC::NPC(int pos_x, int pos_y, string name, vector <string> text, int type) :
+	x(pos_x),
+	y(pos_y),
+	image{ 0, 0, 0, 0 },
+	name(name),
+	step(0),
+	text(text),
+	text_box(0),
+	frame(0),
+	direction(FRONT)
+{
+	text_box = LoadGraph("window.png");
 
 	switch (type) {
 	case 0:
-		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, this->image_map_front);
-		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, this->image_map_back);
-		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, this->image_map_right);
-		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, this->image_map_left);
+		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("Åyã‡îØíjÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 1:
-		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, this->image_map_front);
-		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, this->image_map_back);
-		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, this->image_map_right);
-		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, this->image_map_left);
+		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("Åyã‡îØèóÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 2:
-		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, this->image_map_front);
-		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, this->image_map_back);
-		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, this->image_map_right);
-		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, this->image_map_left);
+		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ™.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ´.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ®.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("ÅyíjÅzMobs32Dots_2Heads_WalkOnMapÅ©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 
 	}
@@ -43,49 +40,49 @@ NPC::NPC(int pos_x, int pos_y, char name[], vector <string> text, int type) {
 }
 
 void NPC::draw(int xx, int yy) {
-	switch (this->direction) {
-	case 0:
-		DrawGraph(xx, yy, this->image_map_front[(this->frame/15) % 2], TRUE);
+	switch (direction) {
+	case FRONT:
+		DrawGraph(xx, yy, image.mapFront[(frame/15) % 2], TRUE);
 		break;
-	case 1:
-		DrawGraph(xx, yy, this->image_map_back[(this->frame/15) % 2], TRUE);
+	case BACK:
+		DrawGraph(xx, yy, image.mapBack[(frame/15) % 2], TRUE);
 		break;
-	case 2:
-		DrawGraph(xx, yy, this->image_map_right[(this->frame /15) % 3], TRUE);
+	case RIGHT:
+		DrawGraph(xx, yy, image.mapRight[(frame /15) % 3], TRUE);
 		break;
-	case 3:
-		DrawGraph(xx, yy, this->image_map_left[(this->frame / 15) % 3], TRUE);
+	case LEFT:
+		DrawGraph(xx, yy, image.mapLeft[(frame / 15) % 3], TRUE);
 		break;
 	}
-	this->frame++;
+	frame++;
 }
 
 bool NPC::chat() {
-	if (this->step == this->text.size()) {
-		this->step = 0;
+	if (step == text.size()) {
+		step = 0;
 		return true;
 	}
-	DrawExtendGraph(100, 800, 1860, 1000, this->text_box, TRUE);
-	this->getName(120, 850);
-	DrawFormatString(150, 900, GetColor(255, 255, 255), this->text[this->step].c_str());
+	DrawExtendGraph(100, 800, 1860, 1000, text_box, TRUE);
+	getName(120, 850);
+	DrawFormatString(150, 900, GetColor(255, 255, 255), text[step].c_str());
 	if (Button(KEY_INPUT_SPACE) == 1) {
-		this->step++;
+		step++;
 	}
 	return false;
 }
 
 void NPC::change_direction(int xp, int yp) {
-	if (yp > this->y){
-		this->direction = 0;
+	if (yp > y){
+		direction = FRONT;
 	}
-	else if (yp < this->y) {
-		this->direction = 1;
+	else if (yp < y) {
+		direction = BACK;
 	}
-	else if (xp > this->x) {
-		this->direction = 2;
+	else if (xp > x) {
+		direction = RIGHT;
 	}
-	else if (xp < this->x) {
-		this->direction = 3;
+	else if (xp < x) {
+		direction = LEFT;
 	}
-	this->frame = 0;
+	frame = 0;
 }

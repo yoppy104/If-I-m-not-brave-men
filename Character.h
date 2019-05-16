@@ -1,8 +1,8 @@
 #pragma once
-#include "Weapon.h"
 #include "DxLib.h"
 #include "IDs.h"
 #include <string>
+#include <memory>
 
 using namespace std; 
 
@@ -55,7 +55,7 @@ public:
 	Character() = default;
 	Character(ID id, int xpos, int ypos);
 
-	void getName(int x, int y, int col) { DrawFormatString(x, y, col, this->name.c_str()); }
+	void getName(int x, int y, int col) { DrawFormatString(x, y, col, name.c_str()); }
 	int getX() const { return pos.x; }
 	void setX(int dx) { pos.x = dx; }
 	int getY() const { return pos.y; }
@@ -85,5 +85,4 @@ public:
 	virtual void move();
 	virtual void battle();
 	virtual bool is_attackable();
-	virtual shared_ptr<Weapon> getWeapon();
 };
