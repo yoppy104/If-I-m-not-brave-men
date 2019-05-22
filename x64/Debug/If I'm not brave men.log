@@ -1,0 +1,70 @@
+﻿  Allen.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(49): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(50): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(51): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(52): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(53): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\allen.cpp(54): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+  Battle_Stage.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(36): warning C4244: '引数': 'time_t' から 'unsigned int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(100): warning C4244: '引数': 'time_t' から 'unsigned int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(287): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(310): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(869): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(870): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(879): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(1036): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\battle_stage.cpp(1086): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+  Character.cpp
+  Cleak.cpp
+  Craig.cpp
+  Draw.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\draw.cpp(13): warning C4244: '初期化中': 'double' から 'stagedata' への変換です。データが失われる可能性があります。
+  FireBall.cpp
+  Heal.cpp
+  Imitia.cpp
+  Inn.cpp
+  Items.cpp
+  Magic.cpp
+  Magics.cpp
+  Map.cpp
+  MapControl.cpp
+  Menu.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\menu.cpp(372): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  NPC.cpp
+  PartyControl.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\partycontrol.cpp(35): warning C4267: 'return': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\partycontrol.cpp(43): warning C4267: 'return': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  Portion.cpp
+  Rain.cpp
+  コードを生成中...
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\magics.cpp(13): warning C4715: 'searchMagic': 値を返さないコントロール パスがあります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\items.cpp(31): warning C4715: 'search': 値を返さないコントロール パスがあります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\character.cpp(99): warning C4700: 初期化されていないローカル変数 'none' が使用されます
+  コンパイル中...
+  Main.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\main.cpp(37): warning C4244: '引数': 'time_t' から 'int' への変換です。データが失われる可能性があります。
+  Mathematic.cpp
+  Player.cpp
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(140): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(145): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(150): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(155): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(187): warning C4267: 'return': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(212): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(213): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(214): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(215): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(216): warning C4244: '=': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(230): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(231): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(232): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(233): warning C4244: '引数': 'double' から 'int' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(234): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(235): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(236): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(237): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(238): warning C4244: '引数': 'double' から 'float' への変換です。データが失われる可能性があります。
+  コードを生成中...
+c:\users\admin\documents\勇者に生まれていなければ\プログラム\if i'm not brave men\player.cpp(289): warning C4715: 'Player::getArmor': 値を返さないコントロール パスがあります。
+  If I'm not brave men.vcxproj -> C:\Users\admin\Documents\勇者に生まれていなければ\プログラム\If I'm not brave men\x64\Debug\If I'm not brave men.exe
