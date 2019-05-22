@@ -75,7 +75,7 @@ ID Magic::getID() {
 	return id;
 }
 
-void Magic::effectBattle(stagedata stage, Player* players, int user, int size_players, Enemy* enemy, int size_enemy) {
+void Magic::effectBattle() {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
 	switch (id) {
 	case FIREBALL:
@@ -85,7 +85,7 @@ void Magic::effectBattle(stagedata stage, Player* players, int user, int size_pl
 	}
 }
 
-bool Magic::effectMap(shared_ptr<PartyControl> pc) {
+bool Magic::effectMap(std::shared_ptr<PartyControl> pc) {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
 	if (is_map) {
 		return true;

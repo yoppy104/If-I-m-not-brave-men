@@ -17,7 +17,7 @@ private:
 	}Sound;
 
 	int price;
-	shared_ptr<PartyControl> pc;
+	std::shared_ptr<PartyControl> pc;
 	int subwindow_image;
 	bool select_main;
 	int fade;
@@ -25,6 +25,6 @@ private:
 	Sound sounds;
 
 public:
-	Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, shared_ptr<PartyControl> pc);
+	Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, std::shared_ptr<PartyControl> pc);
 	bool chat();
 };

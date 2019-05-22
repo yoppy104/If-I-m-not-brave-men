@@ -47,24 +47,24 @@ private:
 	MapSize mapSize;
 	DispSize dispSize;
 	int countFrame;
-	std::vector <std::vector<shared_ptr<Map>>> maps;
-	shared_ptr<Player> allen;
-	shared_ptr<Event> now;
-	std::vector<shared_ptr<NPC>> npcs;
+	std::vector <std::vector<std::shared_ptr<Map>>> maps;
+	std::shared_ptr<Player> allen;
+	std::shared_ptr<Event> now;
+	std::vector<std::shared_ptr<NPC>> npcs;
 	bool isMove;
 	bool isEvent;
 	bool isChat;
 	bool isMenu;
 	int image;
-	shared_ptr<NPC> nowChat;
-	shared_ptr<Menu> menu;
-	shared_ptr<PartyControl> pc;
+	std::shared_ptr<NPC> nowChat;
+	std::shared_ptr<Menu> menu;
+	std::shared_ptr<PartyControl> pc;
 
 	Sound sounds;
 
 public:
 	MapControl() = default;
-	MapControl(int width, int height, int x, int y, int map, shared_ptr<Player> allen, shared_ptr<PartyControl> pc);
+	MapControl(int width, int height, int x, int y, int map, std::shared_ptr<Player> allen, std::shared_ptr<PartyControl> pc);
 	~MapControl();
 	int getX() const { positionPlayer.x; }
 	int getY() const { positionPlayer.y; }

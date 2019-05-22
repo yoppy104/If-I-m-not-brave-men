@@ -37,7 +37,7 @@ class Battle_Stage
 	int B_Panel, B_BG, B_Window, B_Statuswindow, B_Cursol, B_Frame ,CanMoveTrout,Danger,result,heal[8];//グラフィックハンドルたち
 	int win, nomal, sword, punch, run_se, enemies_death;
 	Player locate[6][6];//キャラクターたちの座標管理とかに用いる
-	std::vector<shared_ptr<Player>> yushas;
+	std::vector<std::shared_ptr<Player>> yushas;
 	std::vector<int> yushaLocateX;
 	std::vector<int> yushaLocateY;
 	int fieldData[6][6];//各マスのデータ
@@ -60,11 +60,11 @@ class Battle_Stage
 	int enemyLockonX;
 	int EnemyLockonY;
 
-	shared_ptr<PartyControl> pc;
+	std::shared_ptr<PartyControl> pc;
 
 public:
 	Battle_Stage();
-	Battle_Stage(shared_ptr<PartyControl> pc);
+	Battle_Stage(std::shared_ptr<PartyControl> pc);
 	void B_Sort();
 	void Draw_BattleStage();
 	int DrawBattleCharacter();

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Menu::Menu(shared_ptr<PartyControl> p) :
+Menu::Menu(std::shared_ptr<PartyControl> p) :
 	mode(MAIN),
 	step(5),
 	mainSelect(1),
@@ -69,7 +69,7 @@ bool Menu::Update() {
 
 bool Menu::updateMain() {
 	DrawLine(120, 50 + 100 * mainSelect, 270, 50 + 100 * mainSelect, GetColor(0, 0, 0), 5);
-	shared_ptr<Player> temp;
+	std::shared_ptr<Player> temp;
 	for (int i = 0; i < pc->getNumMember(); i++) {
 		temp = pc->getMember(i);
 		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
@@ -140,7 +140,7 @@ bool Menu::updateItem() {
 		DrawFormatString(350, 100, GetColor(0, 0, 0), "ÉAÉCÉeÉÄÇèäéùÇµÇƒÇ¢Ç‹ÇπÇÒ");
 	}
 	else {
-		shared_ptr<Item> temp;
+		std::shared_ptr<Item> temp;
 		if (pc->getNumItem() < 10 || pc->getNumItem() < start + 10) {
 			end = pc->getNumItem();
 		}
@@ -252,7 +252,7 @@ bool Menu::updateItem() {
 }
 
 bool Menu::updateEquipment() {
-	shared_ptr<Player> temp;
+	std::shared_ptr<Player> temp;
 	temp = pc->getMember(0);
 	DrawFormatString(400, 100, GetColor(0, 0, 0), "ïêäÌ  : ");
 	temp->getEquipName(1, 600, 100);
@@ -347,24 +347,18 @@ bool Menu::updateEquipment() {
 }
 
 bool Menu::updateMagic() {
-	shared_ptr<Player> temp = pc->getMember(0);
-	vector <unique_ptr<Magic>> magic = temp->getMagics();
-	for (int i = 0; i < magic.size(); i++) {
-		if (!magic[i]->getIsMap()) {
-			magic.erase(magic.begin() + i);
-			i--;
-		}
-	}
+	std::shared_ptr<Player> temp = pc->getMember(0);
+	int skip = 0;
 	int end;
-	if (magic.size() < 10 || magic.size() < start + 10) {
-		end = magic.size();
+	if (temp->getNumMagicMap() < 10 || temp->getNumMagicMap() < start + 10) {
+		end = temp->getNumMagicMap();
 	}
 	else {
 		end = start + 10;
 	}
 
 	for (int i = start; i < end; i++) {
-		magic[i]->getName(400, 100 + 50 * i);
+		temp->getMagicInfo(i, 400, 100 + 50 * i, true);
 	}
 	DrawLine(390, 140 + 50 * magicSelect, 800, 140 + 50 * magicSelect, GetColor(0, 0, 0), 5);
 	if (subSelect == -1) {
@@ -381,7 +375,7 @@ bool Menu::updateMagic() {
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (magicSelect + 1 < magic.size()) {
+			if (magicSelect + 1 < temp->getNumMagicMap()) {
 				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
 				magicSelect++;
 				if (itemSelect > start + 9) {
@@ -398,8 +392,7 @@ bool Menu::updateMagic() {
 		}
 	}
 	else if (subSelect == 100) {
-		if (magic[magicSelect]->effectMap(pc)) {
-			pc->getMember(0)->plusMp(-1 * magic[magicSelect]->getCost());
+		if (temp->useMagicMap(magicSelect,pc)) {
 			subSelect = -1;
 		}
 	}
@@ -440,7 +433,7 @@ bool Menu::updateMagic() {
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (subSelect == 0) {
-				if (pc->getMember(0)->getMp() >= magic[magicSelect]->getCost()) {
+				if (temp->useMagicMap(magicSelect, pc) != -1) {
 					subSelect = 100;
 				}
 				else {

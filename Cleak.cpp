@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Cleark::Cleark(string name, int x, int y, vector<ID> item, vector<string> text, shared_ptr<PartyControl> pc) : 
+Cleark::Cleark(string name, int x, int y, vector<ID> item, vector<string> text, std::shared_ptr<PartyControl> pc) : 
 	NPC(x, y, name, text, 2),
 	items(item),
 	itemsInf{},

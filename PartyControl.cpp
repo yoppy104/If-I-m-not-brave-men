@@ -2,7 +2,7 @@
 #include "Item.h"
 #include "DxLib.h"
 
-PartyControl::PartyControl(vector <shared_ptr<Player>> players, int num, int coin) :
+PartyControl::PartyControl(vector <std::shared_ptr<Player>> players, int num, int coin) :
 	member(players),
 	numMagicStone(num),
 	coin(coin)
@@ -29,7 +29,7 @@ void PartyControl::addItem(ID id, int num){
 			return;
 		}
 	}
-	items.push_back(ItemData{ id, std::make_unique<Item>(new Item(id)), 1 });
+	items.push_back(ItemData{ id, std::make_unique<Item>(Item(id)), 1 });
 }
 
 void PartyControl::addNumMagicStone(int delta) {

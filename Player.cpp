@@ -19,7 +19,9 @@ equipment{},
 charAniframe(0),
 active(false),
 Block(false),
-StaWindow(NULL)
+StaWindow(NULL),
+Font(NULL),
+numMagicMap(0)
 {
 	switch (id) {
 	case ALLEN:		//ÉAÉåÉìÇÃèÍçá
@@ -142,7 +144,10 @@ int Player::getDiffence() {
 }
 
 void Player::addMagic(ID id) {
-	magics.push_back(std::make_unique<Magic>(new Magic(id)));
+	magics.push_back(std::make_unique<Magic>(Magic(id)));
+	if (magics[magics.size() - 1]->getIsMap()) {
+		numMagicMap++;
+	}
 }
 
 void Player::plusMagicStone(int point) {
@@ -245,19 +250,19 @@ void Player::draw_map(int x, int y, int frame, int direction) {
 void Player::setEquipment(ID id, int type) {
 	switch (type) {
 	case 1:
-		equipment.weapon = make_unique<Item>(new Item(id));
+		equipment.weapon = make_unique<Item>(Item(id));
 		break;
 	case 2:
-		equipment.shield = make_unique<Item>(new Item(id));
+		equipment.shield = make_unique<Item>(Item(id));
 		break;
 	case 3:
-		equipment.chest = make_unique<Item>(new Item(id));
+		equipment.chest = make_unique<Item>(Item(id));
 		break;
 	case 4:
-		equipment.arm = make_unique<Item>(new Item(id));
+		equipment.arm = make_unique<Item>(Item(id));
 		break;
 	case 5:
-		equipment.head = make_unique<Item>(new Item(id));
+		equipment.head = make_unique<Item>(Item(id));
 		break;
 	}
 }

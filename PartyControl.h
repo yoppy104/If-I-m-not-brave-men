@@ -1,31 +1,31 @@
 #pragma once
 #include <vector>
-#include "Player.h"
+#include <memory>
 #include "Item.h"
-
-using namespace std;
 
 class Player;
 class Magic;
 
+using namespace std;
+
 typedef struct {
 	ID id;
-	unique_ptr<Item> instance;
+	std::unique_ptr<Item> instance;
 	int num;
 } ItemData;
 
 class PartyControl {
 private:
-	vector<shared_ptr<Player>> member; //プレイヤーキャラクター
+	vector<std::shared_ptr<Player>> member; //プレイヤーキャラクター
 	vector<ItemData> items;		//アイテム
 	int numMagicStone;		//魔石の総数
 	int coin;				//所持金の総数
 
 public:
 	PartyControl() = default;
-	PartyControl(vector<shared_ptr<Player>> players, int num, int coin);
+	PartyControl(vector<std::shared_ptr<Player>> players, int num, int coin);
 	~PartyControl();
-	shared_ptr<Player> getMember(int index) { return member[index]; }
+	std::shared_ptr<Player> getMember(int index) { return member[index]; }
 	int getNumMember() { return member.size(); }
 	int getNumItem() { return items.size(); }
 	void delItem(int index);
@@ -36,7 +36,7 @@ public:
 	void addNumCoin(int delta);
 	void setEquipment(int member_index, int item_index);
 	void replaceEquipment(int member_index, int type);
-	vector <shared_ptr<Player>> getMembers() { return member; }
+	vector <std::shared_ptr<Player>> getMembers() { return member; }
 	void getItemInfo(int index, int x, int y) {
 		items[index].instance->getName(x, y);
 		DrawFormatString(x+200, y, GetColor(0, 0, 0), "%d個", items[index].num);

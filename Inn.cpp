@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, shared_ptr<PartyControl> pc) : NPC (pos_x, pos_y, name, text, 0){
+Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, std::shared_ptr<PartyControl> pc) : NPC (pos_x, pos_y, name, text, 0){
 	price = price;
 	pc = pc;
 	select_main = true;
@@ -52,7 +52,7 @@ bool Inn::chat() {
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (select_main) {
-				shared_ptr<Player> temp = pc->getMember(0);
+				std::shared_ptr<Player> temp = pc->getMember(0);
 				temp->healHp();
 				temp->plusMp();
 				pc->addNumCoin(-1 * price * pc->getNumMember());

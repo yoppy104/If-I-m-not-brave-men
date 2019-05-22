@@ -2,22 +2,20 @@
 
 #include "Character.h"
 #include <vector>
-#include "Magic.h"
 #include "Item.h"
 #include <memory>
 #include <array>
+#include "Magic.h"
+#include "PartyControl.h"
 
 #define FIRST_EXP 0
 
-class Enemy;
-class Magic;
-
 typedef struct {
-	unique_ptr<Item> weapon; //武器
-	unique_ptr<Item> arm;	 //籠手
-	unique_ptr<Item> head;	 //兜
-	unique_ptr<Item> chest;	 //胸当て
-	unique_ptr<Item> shield; //盾
+	std::unique_ptr<Item> weapon; //武器
+	std::unique_ptr<Item> arm;	 //籠手
+	std::unique_ptr<Item> head;	 //兜
+	std::unique_ptr<Item> chest;	 //胸当て
+	std::unique_ptr<Item> shield; //盾
 } Equipment;
 
 typedef struct {
@@ -30,7 +28,9 @@ using namespace std;
 
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
-	vector <unique_ptr<Magic>> magics;
+	vector <std::unique_ptr<Magic>> magics;
+	int numMagicMap;
+
 	EXP exp;
 
 	int LV;
@@ -58,7 +58,44 @@ public:
 
 	void addMagic(ID id);
 	int getNumMagics() { return magics.size(); }
-	vector <unique_ptr<Magic>> getMagics() { return magics; }
+
+	void getMagicInfo(int index, int x, int y, bool isMapOnly) {
+		if (isMapOnly) {
+			for (int i = 0; i < magics.size(); i++) {
+				if (magics[index + i]->getIsMap()) {
+					magics[index]->getName(x, y);
+					break;
+				}
+			}
+		}
+		else {
+			magics[index]->getName(x, y);
+		}
+	}
+	bool getMagicIsMap(int index) {
+		return magics[index]->getIsMap();
+	}
+	int getNumMagicMap() {
+		return numMagicMap;
+	}
+
+	int useMagicMap(int index, const std::shared_ptr<PartyControl> pc) {
+		if (magics[index]->getCost() > status.mp) {
+			return -1;
+		}
+		if (magics[index]->effectMap(pc)) {
+			status.mp -= magics[index]->getCost();
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	void useMagicBattle(int index) {
+		magics[index]->effectBattle();
+		status.mp -= magics[index]->getCost();
+	}
+
 	int getAttack();
 	int getDiffence();
 

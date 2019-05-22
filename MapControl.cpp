@@ -11,7 +11,7 @@
 
 using namespace std;
 
-MapControl::MapControl(int width, int height, int x, int y, int map, shared_ptr<Player> allen, shared_ptr<PartyControl> pc) :
+MapControl::MapControl(int width, int height, int x, int y, int map, std::shared_ptr<Player> allen, std::shared_ptr<PartyControl> pc) :
 	positionPlayer{ x, y },
 	directionPlayer(FRONT),
 	dispSize{ height, width },
@@ -27,15 +27,15 @@ MapControl::MapControl(int width, int height, int x, int y, int map, shared_ptr<
 	isMenu = false;
 
 	
-	menu = shared_ptr<Menu>(new Menu(pc));
+	menu = std::shared_ptr<Menu>(new Menu(pc));
 
 	image = LoadGraph("worldmap.png");
 	mapSize.width = 100;
 	mapSize.height = 100;
 	for (int x = 0; x < 100; x++) {
-		maps.push_back(*new vector<shared_ptr<Map>>);
+		maps.push_back(*new vector<std::shared_ptr<Map>>);
 		for (int y = 0; y < 100; y++) {
-			shared_ptr<Map> temp(new Map());
+			std::shared_ptr<Map> temp(new Map());
 			maps[x].push_back(temp);
 		}
 	}
@@ -44,34 +44,34 @@ MapControl::MapControl(int width, int height, int x, int y, int map, shared_ptr<
 	createMap();
 
 	vector<string> text = { "今回は戦闘と一緒にすることができなかったのよね。","買い物とかも実現はできてるから、見て言ってね。" };
-	shared_ptr<NPC> temp1(new NPC(21, 40, "モブ子", text, 1));
+	std::shared_ptr<NPC> temp1(new NPC(21, 40, "モブ子", text, 1));
 	maps[21][40]->setNpc(temp1);
 	npcs.push_back(temp1);
 
 	vector<string> text5 = { "メニューは実装してあるらしいぞ。","Mキーを押してみな。" };
-	shared_ptr<NPC> temp5(new NPC(28, 9, "モブ男", text5, 0));
+	std::shared_ptr<NPC> temp5(new NPC(28, 9, "モブ男", text5, 0));
 	maps[28][9]->setNpc(temp5);
 	npcs.push_back(temp5);
 
 	vector<string> text2 = { "ここは防具屋です","なにか見ていきますか？","ありがとうございました。" };
 	vector<ID> items2 = { LEATHERARM, LEATHERCAP, LEATHERCHEST, LEATHERSHIELD };
-	shared_ptr<NPC> temp2(new Cleark("防具屋", 22, 40, items2, text2, pc));
+	std::shared_ptr<NPC> temp2(new Cleark("防具屋", 22, 40, items2, text2, pc));
 	maps[22][40]->setNpc(temp2);
 	npcs.push_back(temp2);
 
 	vector<string> text3 = { "ここは武器屋です","なにか見ていきますか？","ありがとうございました。" };
 	vector<ID> items3 = { WOODSWORD, STONESWORD, STEALSWORD };
-	shared_ptr<NPC> temp3(new Cleark("武器屋", 23, 40, items3, text3, pc));
+	std::shared_ptr<NPC> temp3(new Cleark("武器屋", 23, 40, items3, text3, pc));
 	maps[23][40]->setNpc(temp3);
 	npcs.push_back(temp3);
 
 	vector<string> text4 = { "ここは宿屋です","全員で%dゼルとなります。泊っていきますか？","", "ありがとうございました。" };
-	shared_ptr<NPC> temp4(new Inn(24, 40, "宿屋", text4, 10, pc));
+	std::shared_ptr<NPC> temp4(new Inn(24, 40, "宿屋", text4, 10, pc));
 	maps[24][40]->setNpc(temp4);
 	npcs.push_back(temp4);
 
 	vector<string> text6 = { "同じディスクに戦闘だけのファイルも入ってるからやってみてくれよな。","なんで別々かって？聞かないでくれ" };
-	shared_ptr<NPC> temp6(new NPC(19, 50, "パツキン", text6, 0));
+	std::shared_ptr<NPC> temp6(new NPC(19, 50, "パツキン", text6, 0));
 	maps[19][50]->setNpc(temp6);
 	npcs.push_back(temp6);
 

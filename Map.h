@@ -13,13 +13,13 @@ private:
 	bool	isEncount;		// エンカウントするかどうか
 	double	encountRate;	// 敵との遭遇率
 	int		encountTable;	// この場所でエンカウントする敵のテーブルを指定するid
-	shared_ptr<NPC>	npc;			// この場所にいるnpcの情報。
-	shared_ptr<Event>	event;		// この場所で発生するイベント
+	std::shared_ptr<NPC>	npc;			// この場所にいるnpcの情報。
+	std::shared_ptr<Event>	event;		// この場所で発生するイベント
 
 public:
 	//コンストラクタ
 	Map() = default;
-	Map(int data, bool is_event, bool is_npc, int table, shared_ptr<NPC> npc);
+	Map(int data, bool is_event, bool is_npc, int table, std::shared_ptr<NPC> npc);
 
 	//取得メソッド
 	bool getIsMove() { return isMove && !isNpc; }
@@ -29,11 +29,11 @@ public:
 	void setData(int data);
 	void setIsEvent(bool is);
 	void setNpc(bool isnt);
-	void setNpc(shared_ptr<NPC> npc);
-	shared_ptr<NPC> getNPC();
+	void setNpc(std::shared_ptr<NPC> npc);
+	std::shared_ptr<NPC> getNPC();
 	void chatNPC();
-	void setEvent(shared_ptr<Event> myevent);
-	shared_ptr<Event> getEvent();
+	void setEvent(std::shared_ptr<Event> myevent);
+	std::shared_ptr<Event> getEvent();
 	void delEvent();
 	void setTable(int table);
 	double getRate() { return encountRate; }

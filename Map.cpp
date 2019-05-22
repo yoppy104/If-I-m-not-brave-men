@@ -1,7 +1,7 @@
 #include "Map.h"
 #include "DxLib.h"
 
-Map::Map(int data, bool isEvent, bool isNpc, int table, shared_ptr<NPC> npc) :
+Map::Map(int data, bool isEvent, bool isNpc, int table, std::shared_ptr<NPC> npc) :
 	isEncount(true)
 {
 	// ƒf[ƒ^‚É‚æ‚Á‚Ä§Œä
@@ -110,12 +110,12 @@ void Map::setNpc(bool isnt) {
 	isNpc = isnt;
 }
 
-void Map::setNpc(shared_ptr<NPC> npc) {
+void Map::setNpc(std::shared_ptr<NPC> npc) {
 	isNpc = true;
 	this->npc = npc;
 }
 
-shared_ptr<NPC> Map::getNPC() {
+std::shared_ptr<NPC> Map::getNPC() {
 	return npc;
 }
 
@@ -123,12 +123,12 @@ void Map::chatNPC() {
 	npc->chat();
 }
 
-void Map::setEvent(shared_ptr<Event> myevent) {
+void Map::setEvent(std::shared_ptr<Event> myevent) {
 	isEvent = true;
 	event = myevent;
 }
 
-shared_ptr<Event> Map::getEvent() {
+std::shared_ptr<Event> Map::getEvent() {
 	if (isEvent) {
 		return event;
 	}

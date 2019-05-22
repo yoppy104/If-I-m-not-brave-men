@@ -35,7 +35,7 @@ private:
 
 	int num;
 
-	shared_ptr<PartyControl> pc;
+	std::shared_ptr<PartyControl> pc;
 
 	Image image;
 
@@ -43,7 +43,7 @@ private:
 
 public:
 	Cleark() = default;
-	Cleark(string name, int x, int y, vector<ID> item, vector<string> text, shared_ptr<PartyControl> pc);
+	Cleark(string name, int x, int y, vector<ID> item, vector<string> text, std::shared_ptr<PartyControl> pc);
 	int update();
 	int sell(); //プレイヤーが売る
 	int buy(); //プレイヤーが買う

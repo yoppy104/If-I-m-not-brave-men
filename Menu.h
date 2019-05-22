@@ -37,13 +37,13 @@ private:
 	int start;
 	int subSelect;
 	
-	shared_ptr<PartyControl> pc;
+	std::shared_ptr<PartyControl> pc;
 
 	Sound sounds;
 
 public:
 	Menu() = default;
-	Menu(shared_ptr<PartyControl> p);
+	Menu(std::shared_ptr<PartyControl> p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム

@@ -49,19 +49,19 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
 
-	shared_ptr<Player> allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
+	std::shared_ptr<Player> allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
 
-	vector <shared_ptr<Player>> players;
+	vector <std::shared_ptr<Player>> players;
 	players.push_back(allen);
 
-	shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
+	std::shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
 
-	Battle_Stage* battle_stage = new Battle_Stage(pc);
+	unique_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
 
 	int mode = TITLE;
 
 	//20 40
-	mapc = new MapControl(1920, 1200, 20, 40, 1, players[0], pc);
+	unique_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
 
 	int image_title = LoadGraph("タイトル1920 1200.png");
 
