@@ -33,10 +33,10 @@ numMagicMap(0)
 		status.diffence = 5;
 		status.dex = 10;
 		status.magicPower = 10;
-		LoadDivGraph("キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, images.mapFront);
-		LoadDivGraph("キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
-		LoadDivGraph("キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
-		LoadDivGraph("キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
+		LoadDivGraph("images\\キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, images.mapFront);
+		LoadDivGraph("images\\キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
+		LoadDivGraph("images\\キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
+		LoadDivGraph("images\\キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
 		break;
 	case IMITIA:	//イミティアの場合
 		hasMp = false;
@@ -144,7 +144,7 @@ int Player::getDiffence() {
 }
 
 void Player::addMagic(ID id) {
-	magics.push_back(std::make_unique<Magic>(Magic(id)));
+	magics.push_back(std::make_shared<Magic>(Magic(id)));
 	if (magics[magics.size() - 1]->getIsMap()) {
 		numMagicMap++;
 	}
@@ -250,19 +250,39 @@ void Player::draw_map(int x, int y, int frame, int direction) {
 void Player::setEquipment(ID id, int type) {
 	switch (type) {
 	case 1:
-		equipment.weapon = make_unique<Item>(Item(id));
+		equipment.weapon = make_shared<Item>(Item(id));
 		break;
 	case 2:
-		equipment.shield = make_unique<Item>(Item(id));
+		equipment.shield = make_shared<Item>(Item(id));
 		break;
 	case 3:
-		equipment.chest = make_unique<Item>(Item(id));
+		equipment.chest = make_shared<Item>(Item(id));
 		break;
 	case 4:
-		equipment.arm = make_unique<Item>(Item(id));
+		equipment.arm = make_shared<Item>(Item(id));
 		break;
 	case 5:
-		equipment.head = make_unique<Item>(Item(id));
+		equipment.head = make_shared<Item>(Item(id));
+		break;
+	}
+}
+
+void Player::setEquipment(const shared_ptr<Item> item, int type) {
+	switch (type) {
+	case 1:
+		equipment.weapon = item;
+		break;
+	case 2:
+		equipment.shield = item;
+		break;
+	case 3:
+		equipment.chest = item;
+		break;
+	case 4:
+		equipment.arm = item;
+		break;
+	case 5:
+		equipment.head = item;
 		break;
 	}
 }

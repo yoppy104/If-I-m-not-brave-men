@@ -19,15 +19,15 @@ Cleark::Cleark(string name, int x, int y, vector<ID> item, vector<string> text, 
 		itemsInf.push_back(Item(items[i]));
 	}
 
-	image.window = LoadGraph("menu.png");
-	image.subWindow = LoadGraph("command.png");
-	image.pointer = LoadGraph("pointer.png");
+	image.window = LoadGraph("images\\menu.png");
+	image.subWindow = LoadGraph("images\\command.png");
+	image.pointer = LoadGraph("images\\pointer.png");
 
-	sound.coin = LoadSoundMem("SE_coin_2.wav");
-	sound.enter = LoadSoundMem("SE_enter.wav");
-	sound.error = LoadSoundMem("SE_error.wav");
-	sound.move = LoadSoundMem("SE_move.wav");
-	sound.cancel = LoadSoundMem("SE_cancel.wav");
+	sound.coin = LoadSoundMem("sounds\\SE_coin_2.wav");
+	sound.enter = LoadSoundMem("sounds\\SE_enter.wav");
+	sound.error = LoadSoundMem("sounds\\SE_error.wav");
+	sound.move = LoadSoundMem("sounds\\SE_move.wav");
+	sound.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
 }
 
 int Cleark::update() {

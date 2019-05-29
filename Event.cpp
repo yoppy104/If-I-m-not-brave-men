@@ -25,8 +25,8 @@ Event::Event(int id) {
 		break;
 	}
 
-	text_box = LoadGraph("window.png");
-	sound_enter = LoadSoundMem("SE_enter.wav");
+	text_box = LoadGraph("images\\window.png");
+	sound_enter = LoadSoundMem("sounds\\SE_enter.wav");
 }
 
 bool Event::Update() {

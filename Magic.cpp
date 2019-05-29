@@ -4,7 +4,7 @@
 
 
 Magic::Magic() :
-	name(NULL),
+	name("NULL"),
 	cost(NULL),
 	is_map(NULL),
 	id(UNDIFINED),
@@ -30,7 +30,7 @@ Magic::Magic(ID id, string name, int cost, bool map) :
 }
 
 Magic::Magic(ID id) :
-	name(NULL),
+	name("NULL"),
 	cost(NULL),
 	is_map(NULL),
 	id(id),

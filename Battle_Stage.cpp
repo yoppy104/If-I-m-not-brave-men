@@ -18,20 +18,20 @@ Battle_Stage::Battle_Stage()
 	dropEXP = 0;
 	Dropgill = 0;
 
-	B_Panel = LoadGraph("battlepanel.png");
-	B_BG = LoadGraph("a.jpg");
-	B_Cursol = LoadGraph("cursol.png");
-	B_Frame = LoadGraph("battleframe.png");
-	CanMoveTrout = LoadGraph("CanMoveTrout.png");
-	Danger = LoadGraph("Danger.png");
-	result = LoadGraph("Result.png");
-	LoadDivGraph("Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
-	win = LoadSoundMem("win(test).wav");
-	nomal = LoadSoundMem("nomal-battle.wav");
-	sword = LoadSoundMem("刀剣・斬る07.mp3");
-	punch = LoadSoundMem("手足・殴る、蹴る10.mp3");
-	run_se = LoadSoundMem("足音・草原を走る.mp3");
-	enemies_death = LoadSoundMem("パーン.mp3");
+	B_Panel = LoadGraph("images\\battlepanel.png");
+	B_BG = LoadGraph("images\\a.jpg");
+	B_Cursol = LoadGraph("images\\cursol.png");
+	B_Frame = LoadGraph("images\\battleframe.png");
+	CanMoveTrout = LoadGraph("images\\CanMoveTrout.png");
+	Danger = LoadGraph("images\\Danger.png");
+	result = LoadGraph("images\\Result.png");
+	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
+	win = LoadSoundMem("sounds\\win(test).wav");
+	nomal = LoadSoundMem("sounds\\nomal-battle.wav");
+	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
+	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
+	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
+	enemies_death = LoadSoundMem("sounds\\パーン.mp3");
 
 	srand(time(NULL));
 	up = 136;
@@ -41,8 +41,8 @@ Battle_Stage::Battle_Stage()
 	B_FrameLocateY = -1;
 
 	CommandFont = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_4X4);
-	commandWindow = LoadGraph("command.png");
-	statusWindow = LoadGraph("playerdata_gray.png");
+	commandWindow = LoadGraph("images\\command.png");
+	statusWindow = LoadGraph("images\\playerdata_gray.png");
 	commandWindowlocateX = 100;
 	commandWindowlocateY = 100;
 	commandCursol[2] = {};
@@ -82,20 +82,20 @@ Battle_Stage::Battle_Stage(std::shared_ptr<PartyControl> pc)
 	dropEXP = 0;
 	Dropgill = 0;
 
-	B_Panel = LoadGraph("battlepanel.png");
-	B_BG = LoadGraph("a.jpg");
-	B_Cursol = LoadGraph("cursol.png");
-	B_Frame = LoadGraph("battleframe.png");
-	CanMoveTrout = LoadGraph("CanMoveTrout.png");
-	Danger = LoadGraph("Danger.png");
-	result = LoadGraph("Result.png");
-	LoadDivGraph("Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
-	win = LoadSoundMem("win(test).wav");
-	nomal = LoadSoundMem("nomal-battle.wav");
-	sword = LoadSoundMem("刀剣・斬る07.mp3");
-	punch = LoadSoundMem("手足・殴る、蹴る10.mp3");
-	run_se = LoadSoundMem("足音・草原を走る.mp3");
-	enemies_death = LoadSoundMem("パーン.mp3");
+	B_Panel = LoadGraph("images\\battlepanel.png");
+	B_BG = LoadGraph("images\\a.jpg");
+	B_Cursol = LoadGraph("images\\cursol.png");
+	B_Frame = LoadGraph("images\\battleframe.png");
+	CanMoveTrout = LoadGraph("images\\CanMoveTrout.png");
+	Danger = LoadGraph("images\\Danger.png");
+	result = LoadGraph("images\\Result.png");
+	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
+	win = LoadSoundMem("sounds\\win(test).wav");
+	nomal = LoadSoundMem("sounds\\nomal-battle.wav");
+	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
+	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
+	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
+	enemies_death = LoadSoundMem("sounds\\パーン.mp3");
 
 	srand(time(NULL));
 	up = 136;
@@ -105,8 +105,8 @@ Battle_Stage::Battle_Stage(std::shared_ptr<PartyControl> pc)
 	B_FrameLocateY = -1;
 
 	CommandFont = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_4X4);
-	commandWindow = LoadGraph("command.png");
-	statusWindow = LoadGraph("playerdata_gray.png");
+	commandWindow = LoadGraph("images\\command.png");
+	statusWindow = LoadGraph("images\\playerdata_gray.png");
 	commandWindowlocateX = 100;
 	commandWindowlocateY = 100;
 	commandCursol[2] = {};

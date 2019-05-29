@@ -39,12 +39,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	MapControl* mapc;
 	
 	//画像ファイルの読み込み
-	int allen_image = LoadGraph("剣士アレン立ち.png"); //アレンの画像
+	int allen_image = LoadGraph("images\\剣士アレン立ち.png"); //アレンの画像
 
-	int allen_image_dead = LoadGraph("剣士アレンdead.png"); //アレンの画像
+	int allen_image_dead = LoadGraph("images\\剣士アレンdead.png"); //アレンの画像
 
 	// 音声ファイルの読み込み
-	int main = LoadSoundMem("00maintheme.wav"); //メインテーマ
+	int main = LoadSoundMem("sounds\\00maintheme.wav"); //メインテーマ
 	ChangeVolumeSoundMem(100, main);
 
 	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
@@ -56,14 +56,14 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	std::shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
 
-	unique_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
+	shared_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
 
 	int mode = TITLE;
 
 	//20 40
-	unique_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
+	shared_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
 
-	int image_title = LoadGraph("タイトル1920 1200.png");
+	int image_title = LoadGraph("images\\タイトル1920 1200.png");
 
 	mode = TITLE;
 

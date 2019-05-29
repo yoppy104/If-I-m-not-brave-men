@@ -13,10 +13,6 @@ PartyControl::PartyControl(vector <std::shared_ptr<Player>> players, int num, in
 	addItem(PORTION, 3);
 }
 
-PartyControl::~PartyControl() {
-	items.clear();
-}
-
 void PartyControl::delItem(int index) {
 	items.erase(items.begin() + index);
 }
@@ -29,7 +25,16 @@ void PartyControl::addItem(ID id, int num){
 			return;
 		}
 	}
-	items.push_back(ItemData{ id, std::make_unique<Item>(Item(id)), 1 });
+	items.push_back(ItemData{ id, std::make_shared<Item>(Item(id)), 1 });
+}
+
+void PartyControl::reduceItem(int index, int num) {
+	if (items[index].num >= num) {
+		items[index].num -= num;
+	}
+	else {
+		delItem(index);
+	}
 }
 
 void PartyControl::addNumMagicStone(int delta) {
@@ -42,6 +47,7 @@ void PartyControl::addNumCoin(int delta) {
 
 
 void PartyControl::setEquipment(int member_index, int item_index) {
+	/*
 	int temp = items[item_index].instance->getIsEquip();
 	if (temp == 1) {
 		if (member[member_index]->hasEquip(1)) {
@@ -58,6 +64,11 @@ void PartyControl::setEquipment(int member_index, int item_index) {
 	items[item_index].num--;
 	if (items[item_index].num == 0) {
 		items.erase(items.begin() + item_index);
+	}
+	*/
+	int equipType = items[item_index].instance->getIsEquip();
+	if (member[member_index]->hasEquip(equipType)) {
+
 	}
 }
 

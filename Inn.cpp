@@ -6,17 +6,17 @@ Inn::Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, std
 	price = price;
 	pc = pc;
 	select_main = true;
-	subwindow_image = LoadGraph("command.png");
+	subwindow_image = LoadGraph("image/command.png");
 	fade = 0;
 
-	sounds.cancel = LoadSoundMem("SE_cancel.wav");
-	sounds.enter = LoadSoundMem("SE_enter.wav");
-	sounds.error = LoadSoundMem("SE_error.wav");
-	sounds.move = LoadSoundMem("SE_move.wav");
-	sounds.coin = LoadSoundMem("SE_coin_2.wav");
-	sounds.heal = LoadSoundMem("SE_heal.wav");
+	sounds.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
+	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");
+	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
+	sounds.move = LoadSoundMem("sounds\\SE_move.wav");
+	sounds.coin = LoadSoundMem("sounds\\SE_coin_2.wav");
+	sounds.heal = LoadSoundMem("sounds\\SE_heal.wav");
 	ChangeVolumeSoundMem(200, sounds.heal);
-	sounds.yado = LoadSoundMem("SE_Yado.wav");
+	sounds.yado = LoadSoundMem("sounds\\SE_Yado.wav");
 }
 
 bool Inn::chat() {

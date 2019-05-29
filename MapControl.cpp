@@ -29,7 +29,7 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 	
 	menu = std::shared_ptr<Menu>(new Menu(pc));
 
-	image = LoadGraph("worldmap.png");
+	image = LoadGraph("images\\worldmap.png");
 	mapSize.width = 100;
 	mapSize.height = 100;
 	for (int x = 0; x < 100; x++) {
@@ -39,7 +39,7 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 			maps[x].push_back(temp);
 		}
 	}
-	sounds.main = LoadSoundMem("00sougen.wav");
+	sounds.main = LoadSoundMem("sounds\\00sougen.wav");
 	ChangeVolumeSoundMem(165, sounds.main);
 	createMap();
 
@@ -75,11 +75,11 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 	maps[19][50]->setNpc(temp6);
 	npcs.push_back(temp6);
 
-	sounds.walk = LoadSoundMem("“¥‚Ý‚µ‚ß‚é06.mp3");
+	sounds.walk = LoadSoundMem("sounds\\“¥‚Ý‚µ‚ß‚é06.mp3");
 	ChangeVolumeSoundMem(70, sounds.walk);
-	sounds.error = LoadSoundMem("SE_error.wav");
+	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
 	ChangeVolumeSoundMem(255, sounds.error);
-	sounds.enter = LoadSoundMem("SE_enter.wav");	   
+	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");	   
 }
 
 MapControl::~MapControl() {

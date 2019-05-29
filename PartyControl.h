@@ -1,16 +1,17 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include "DxLib.h"
 #include "Item.h"
+#include "Player.h"
 
-class Player;
-class Magic;
 
 using namespace std;
 
+
 typedef struct {
 	ID id;
-	std::unique_ptr<Item> instance;
+	std::shared_ptr<Item> instance;
 	int num;
 } ItemData;
 
@@ -24,40 +25,35 @@ private:
 public:
 	PartyControl() = default;
 	PartyControl(vector<std::shared_ptr<Player>> players, int num, int coin);
-	~PartyControl();
+
+	//アクセサ
+	//player周り
 	std::shared_ptr<Player> getMember(int index) { return member[index]; }
+	vector <std::shared_ptr<Player>> getMembers() { return member; }
 	int getNumMember() { return member.size(); }
-	int getNumItem() { return items.size(); }
-	void delItem(int index);
-	void addItem(ID id, int num);
+
+	//魔石の数
 	int getNumMagicStone() { return numMagicStone; }
-	int getNumCoin() { return coin; }
+
+	//金
+	int getNumCoin() { return coin; }	
+
+	//アイテム周り
+	int getNumItem() { return items.size(); }
+	ItemData getItem(int index) { return items[index]; }
+	shared_ptr<Item> getItemInstance(int index) { return items[index].instance; }
+
+	//メンバの増減をする関数
+	//指定のアイテムを消す
+	void delItem(int index);
+	//アイテムをnum個分増やす
+	void addItem(ID id, int num);
+	//アイテムをnum個分減らす
+	void reduceItem(int index, int num);
 	void addNumMagicStone(int delta);
 	void addNumCoin(int delta);
 	void setEquipment(int member_index, int item_index);
 	void replaceEquipment(int member_index, int type);
-	vector <std::shared_ptr<Player>> getMembers() { return member; }
-	void getItemInfo(int index, int x, int y) {
-		items[index].instance->getName(x, y);
-		DrawFormatString(x+200, y, GetColor(0, 0, 0), "%d個", items[index].num);
-	}
-	bool getItemInfo(int index) {
-		return items[index].instance->getIsSell();
-	}
-	int getItemInfo(int index, bool isBuy) {
-		if (isBuy) {
-			return items[index].instance->getPriceBuy();
-		}
-		else {
-			return items[index].instance->getPriceSell();
-		}
-	}
-	int getItemIsEquip(int index) {
-		return items[index].instance->getIsEquip();
-	}
-	int getItemPoint(int index) {
-		return items[index].instance->getPoint();
-	}
 
 	void useItemMap(int index);
 };

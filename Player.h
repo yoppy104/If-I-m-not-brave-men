@@ -1,21 +1,20 @@
 #pragma once
 
-#include "Character.h"
 #include <vector>
-#include "Item.h"
 #include <memory>
 #include <array>
+#include "Character.h"
+#include "Item.h"
 #include "Magic.h"
-#include "PartyControl.h"
 
 #define FIRST_EXP 0
 
 typedef struct {
-	std::unique_ptr<Item> weapon; //武器
-	std::unique_ptr<Item> arm;	 //籠手
-	std::unique_ptr<Item> head;	 //兜
-	std::unique_ptr<Item> chest;	 //胸当て
-	std::unique_ptr<Item> shield; //盾
+	std::shared_ptr<Item> weapon; //武器
+	std::shared_ptr<Item> arm;	 //籠手
+	std::shared_ptr<Item> head;	 //兜
+	std::shared_ptr<Item> chest;	 //胸当て
+	std::shared_ptr<Item> shield; //盾
 } Equipment;
 
 typedef struct {
@@ -28,7 +27,7 @@ using namespace std;
 
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
-	vector <std::unique_ptr<Magic>> magics;
+	vector <std::shared_ptr<Magic>> magics;
 	int numMagicMap;
 
 	EXP exp;
@@ -58,7 +57,12 @@ public:
 
 	void addMagic(ID id);
 	int getNumMagics() { return magics.size(); }
+	std::shared_ptr<Magic> getMagic(int index) { return magics[index]; }
+	std::vector<std::shared_ptr<Magic>> getMagics() { return magics; }
 
+
+	//Magic関連一応残す
+	/*
 	void getMagicInfo(int index, int x, int y, bool isMapOnly) {
 		if (isMapOnly) {
 			for (int i = 0; i < magics.size(); i++) {
@@ -95,7 +99,8 @@ public:
 		magics[index]->effectBattle();
 		status.mp -= magics[index]->getCost();
 	}
-
+	*/
+	
 	int getAttack();
 	int getDiffence();
 
@@ -105,6 +110,7 @@ public:
 	void draw_map(int x, int y, int frame, int direction);
 
 	void setEquipment(ID id, int type);
+	void setEquipment(const shared_ptr<Item> item, int type);
 
 	bool hasEquip(int ind) {
 		switch (ind) {
@@ -125,6 +131,8 @@ public:
 			break;
 		} 
 	}
+	//装備関係の関数　一応残す
+	/*
 	ID getWeaponId() { return equipment.weapon->getId(); }
 	ID getArmorId(int ind) {
 		switch (ind) {
@@ -185,6 +193,9 @@ public:
 			break;
 		}
 	}
+	*/
+
+	Equipment getEquipment() { return equipment; }
 
 	int DrawSta(double x, double y);
 	int ActBlock();

@@ -13,26 +13,26 @@ NPC::NPC(int pos_x, int pos_y, string name, vector <string> text, int type) :
 	frame(0),
 	direction(FRONT)
 {
-	text_box = LoadGraph("window.png");
+	text_box = LoadGraph("images\\window.png");
 
 	switch (type) {
 	case 0:
-		LoadDivGraph("y‹à”¯’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 1:
-		LoadDivGraph("y‹à”¯—zMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("y‹à”¯—zMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("y‹à”¯—zMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("y‹à”¯—zMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 2:
-		LoadDivGraph("y’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("y’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("y’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("y’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 
 	}
