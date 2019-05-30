@@ -109,8 +109,8 @@ public:
 
 	void draw_map(int x, int y, int frame, int direction);
 
-	void setEquipment(ID id, int type);
-	void setEquipment(const shared_ptr<Item> item, int type);
+	shared_ptr<Item> setEquipment(ID id, int type);
+	shared_ptr<Item> setEquipment(const shared_ptr<Item> item, int type);
 
 	bool hasEquip(int ind) {
 		switch (ind) {
@@ -196,6 +196,28 @@ public:
 	*/
 
 	Equipment getEquipment() { return equipment; }
+
+	shared_ptr<Item> getEquipment(int type) {
+		switch (type) {
+		case 1:
+			return equipment.weapon;
+			break;
+		case 2:
+			return equipment.shield;
+			break;
+		case 3:
+			return equipment.chest;
+			break;
+		case 4:
+			return equipment.arm;
+			break;
+		case 5:
+			return equipment.head;
+			break;
+		default:
+			break;
+		}
+	}
 
 	int DrawSta(double x, double y);
 	int ActBlock();

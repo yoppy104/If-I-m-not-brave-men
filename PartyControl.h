@@ -48,6 +48,7 @@ public:
 	void delItem(int index);
 	//アイテムをnum個分増やす
 	void addItem(ID id, int num);
+	void addItem(const shared_ptr<Item> item, int num);
 	//アイテムをnum個分減らす
 	void reduceItem(int index, int num);
 	void addNumMagicStone(int delta);

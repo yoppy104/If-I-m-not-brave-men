@@ -247,43 +247,57 @@ void Player::draw_map(int x, int y, int frame, int direction) {
 	}
 }
 
-void Player::setEquipment(ID id, int type) {
+shared_ptr<Item> Player::setEquipment(ID id, int type) {
+	shared_ptr<Item> temp;
 	switch (type) {
 	case 1:
+		temp = equipment.weapon;
 		equipment.weapon = make_shared<Item>(Item(id));
 		break;
 	case 2:
+		temp = equipment.shield;
 		equipment.shield = make_shared<Item>(Item(id));
 		break;
 	case 3:
+		temp = equipment.chest;
 		equipment.chest = make_shared<Item>(Item(id));
 		break;
 	case 4:
+		temp = equipment.arm;
 		equipment.arm = make_shared<Item>(Item(id));
 		break;
 	case 5:
+		temp = equipment.head;
 		equipment.head = make_shared<Item>(Item(id));
 		break;
 	}
+	return temp;
 }
 
-void Player::setEquipment(const shared_ptr<Item> item, int type) {
+shared_ptr<Item> Player::setEquipment(const shared_ptr<Item> item, int type) {
+	shared_ptr<Item> temp;
 	switch (type) {
 	case 1:
+		temp = equipment.weapon;
 		equipment.weapon = item;
 		break;
 	case 2:
+		temp = equipment.shield;
 		equipment.shield = item;
 		break;
 	case 3:
+		temp = equipment.chest;
 		equipment.chest = item;
 		break;
 	case 4:
+		temp = equipment.arm;
 		equipment.arm = item;
 		break;
 	case 5:
+		temp = equipment.head;
 		equipment.head = item;
 		break;
 	}
+	return temp;
 }
 

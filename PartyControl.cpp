@@ -28,6 +28,16 @@ void PartyControl::addItem(ID id, int num){
 	items.push_back(ItemData{ id, std::make_shared<Item>(Item(id)), 1 });
 }
 
+void PartyControl::addItem(const shared_ptr<Item> item, int num) {
+	for (auto itr = items.begin(); itr != items.end(); itr++) {
+		if (itr->id == item->getId()) {
+			itr->num++;
+			return;
+		}
+	}
+	items.push_back(ItemData{ item->getId(), item, 1 });
+}
+
 void PartyControl::reduceItem(int index, int num) {
 	if (items[index].num >= num) {
 		items[index].num -= num;
@@ -45,8 +55,9 @@ void PartyControl::addNumCoin(int delta) {
 	coin += delta;
 }
 
-
+//プレイヤーに装備させる。または、装備を変更する
 void PartyControl::setEquipment(int member_index, int item_index) {
+	//旧コードを補完
 	/*
 	int temp = items[item_index].instance->getIsEquip();
 	if (temp == 1) {
@@ -66,9 +77,20 @@ void PartyControl::setEquipment(int member_index, int item_index) {
 		items.erase(items.begin() + item_index);
 	}
 	*/
-	int equipType = items[item_index].instance->getIsEquip();
-	if (member[member_index]->hasEquip(equipType)) {
 
+	//装備する部位を表す値を取得する
+	int equipType = items[item_index].instance->getIsEquip();
+	//装備できない場合ははじく
+	if (equipType != 0) {
+		//未装備用のクラスを装備している場合は、アイテムリストに追加しない
+		if (member[member_index]->hasEquip(equipType)) {
+			shared_ptr<Item> old_equip_item = member.at(member_index)->setEquipment(items.at(item_index).instance, equipType);
+			addItem(old_equip_item, 1);
+		}
+		else {
+			member.at(member_index)->setEquipment(items.at(item_index).instance, equipType);
+		}
+		reduceItem(item_index, 1);
 	}
 }
 
