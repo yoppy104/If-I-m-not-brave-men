@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-NPC::NPC(int pos_x, int pos_y, string name, vector <string> text, int type) :
+NPC::NPC(int pos_x, int pos_y, std:: string name, std::vector <std::string> text, int type) :
 	x(pos_x),
 	y(pos_y),
 	image{ 0, 0, 0, 0 },

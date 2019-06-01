@@ -6,7 +6,7 @@
 #include "PartyControl.h"
 #include <string>
 
-using namespace std;
+
 
 class Cleark : public NPC {
 private:
@@ -24,8 +24,8 @@ private:
 		int cancel;
 	} Sound;
 
-	vector <ID> items;
-	vector <Item> itemsInf;
+	std::vector <ID> items;
+	std::vector <Item> itemsInf;
 
 	int start;
 
@@ -43,7 +43,7 @@ private:
 
 public:
 	Cleark() = default;
-	Cleark(string name, int x, int y, vector<ID> item, vector<string> text, std::shared_ptr<PartyControl> pc);
+	Cleark(std::string name, int x, int y, std::vector<ID> item, std::vector<std::string> text, std::shared_ptr<PartyControl> pc);
 	int update();
 	int sell(); //プレイヤーが売る
 	int buy(); //プレイヤーが買う

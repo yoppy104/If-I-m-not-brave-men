@@ -2,7 +2,7 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Cleark::Cleark(string name, int x, int y, vector<ID> item, vector<string> text, std::shared_ptr<PartyControl> pc) : 
+Cleark::Cleark(std::string name, int x, int y, std::vector<ID> item, std::vector<std::string> text, std::shared_ptr<PartyControl> pc) : 
 	NPC(x, y, name, text, 2),
 	items(item),
 	itemsInf{},
@@ -134,7 +134,7 @@ int Cleark::update() {
 				end = start + 10;
 			}
 			for (int i = start; i < end; i++) {
-				pc->getItemInfo(i,400, 100 + 50 * i);
+				pc->getItem(i).instance->getName(400, 100 + 50 * i);
 			}
 			DrawLine(390, 130 + 50 * select_sub, 800, 130 + 50 * select_sub, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_UP) % 15 == 1) {
@@ -163,7 +163,7 @@ int Cleark::update() {
 			}
 			else if (Button(KEY_INPUT_SPACE) == 1) {
 				PlaySoundMem(sound.enter, DX_PLAYTYPE_BACK, TRUE);
-				if (pc->getItemInfo(select_sub)) {
+				if (pc->getItem(select_sub).instance->getIsSell()) {
 					select_sell = 0;
 				}
 				else {
@@ -239,7 +239,7 @@ int Cleark::buy() {
 
 int Cleark::sell() {
 	DrawExtendGraph(800, 500, 1100, 800, image.subWindow, TRUE);
-	DrawFormatString(150, 850, GetColor(0, 0, 0), "‚»‚ê‚È‚ç%dƒMƒ‹‚Å”ƒ‚¢Žæ‚è‚Ü‚·B",pc->getItemInfo(select_sub, false));
+	DrawFormatString(150, 850, GetColor(0, 0, 0), "‚»‚ê‚È‚ç%dƒMƒ‹‚Å”ƒ‚¢Žæ‚è‚Ü‚·B",pc->getItem(select_sub).instance->getPriceSell());
 	DrawFormatString(900, 550, GetColor(0, 0, 0), "”„‚è‚Ü‚·");
 	DrawFormatString(900, 650, GetColor(0, 0, 0), "‚Í‚¢");
 	DrawFormatString(900, 700, GetColor(0, 0, 0), "‚¢‚¢‚¦");
@@ -265,7 +265,7 @@ int Cleark::sell() {
 	else if (Button(KEY_INPUT_SPACE) == 1) {
 		PlaySoundMem(sound.coin, DX_PLAYTYPE_BACK, TRUE);
 		if (select_sell == 0) {
-			int price = pc->getItemInfo(select_sub, false);
+			int price = pc->getItem(select_sub).instance->getPriceSell();
 			pc->delItem(select_sub);
 			pc->addNumCoin(price);
 			select_sell = -1;

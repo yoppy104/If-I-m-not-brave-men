@@ -16,7 +16,7 @@ Magic::Magic() :
 
 }
 
-Magic::Magic(ID id, string name, int cost, bool map) :
+Magic::Magic(ID id, std::string name, int cost, bool map) :
 	name(name),
 	cost(cost),
 	is_map(map),
@@ -85,11 +85,15 @@ void Magic::effectBattle() {
 	}
 }
 
-bool Magic::effectMap(std::shared_ptr<PartyControl> pc) {
+bool Magic::effectMap() {
 	//DrawFormatString(100, 100, GetColor(0, 0, 0), "オーバーライドされていません。");
+
+	/*
 	if (is_map) {
 		return true;
 	}
+	return false;
+	*/
 	return false;
 }
 

@@ -1,9 +1,6 @@
 #pragma once
-#include "PartyControl.h"
 #include <string>
 #include "IDs.h"
-
-typedef unsigned long long stagedata;
 
 enum Type {
 	NON,		//無属性
@@ -20,7 +17,7 @@ enum Type {
 
 class Magic {
 protected:
-	string name;	//名前
+	std::string name;	//名前
 	int cost;		//消費するmp
 	bool is_map;	//マップ上で使えるかどうか
 	ID id;			//魔術のid
@@ -32,7 +29,7 @@ protected:
 
 public:
 	Magic();
-	Magic(ID, string, int, bool);
+	Magic(ID, std::string, int, bool);
 	Magic(ID id);
 	void getName(int, int);
 	int getCost();
@@ -40,6 +37,6 @@ public:
 	ID getID();
 
 	void effectBattle();	//戦闘での効果
-	bool effectMap(std::shared_ptr<PartyControl> pc);	//マップ上での効果
+	bool effectMap();	//マップ上での効果
 	void draw_battle();	//バトルでのアニメーション
 };

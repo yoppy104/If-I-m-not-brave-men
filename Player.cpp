@@ -8,14 +8,19 @@
 
 typedef unsigned long long stagedata;
 
-using namespace std;
+
 
 Player::Player(ID id, int x, int y) :
 Character(id, x, y),
 LV(1),
 exp{0, FIRST_EXP + 150, 0},
 magicStone(0),
-equipment{},
+equipment{std::make_shared<Item>(Item(NOTEQUIPMENT)),
+std::make_shared<Item>(Item(NOTEQUIPMENT)),
+std::make_shared<Item>(Item(NOTEQUIPMENT)),
+std::make_shared<Item>(Item(NOTEQUIPMENT)),
+std::make_shared<Item>(Item(NOTEQUIPMENT))
+},
 charAniframe(0),
 active(false),
 Block(false),
@@ -72,10 +77,6 @@ numMagicMap(0)
 		status.magicPower = 10;
 		break;
 	}
-}
-
-Player::~Player() {
-	magics.clear();
 }
 
 bool Player::GetActive()
@@ -247,35 +248,35 @@ void Player::draw_map(int x, int y, int frame, int direction) {
 	}
 }
 
-shared_ptr<Item> Player::setEquipment(ID id, int type) {
-	shared_ptr<Item> temp;
+item_ptr Player::setEquipment(ID id, int type) {
+	item_ptr temp;
 	switch (type) {
 	case 1:
 		temp = equipment.weapon;
-		equipment.weapon = make_shared<Item>(Item(id));
+		equipment.weapon = std::make_shared<Item>(Item(id));
 		break;
 	case 2:
 		temp = equipment.shield;
-		equipment.shield = make_shared<Item>(Item(id));
+		equipment.shield = std::make_shared<Item>(Item(id));
 		break;
 	case 3:
 		temp = equipment.chest;
-		equipment.chest = make_shared<Item>(Item(id));
+		equipment.chest = std::make_shared<Item>(Item(id));
 		break;
 	case 4:
 		temp = equipment.arm;
-		equipment.arm = make_shared<Item>(Item(id));
+		equipment.arm = std::make_shared<Item>(Item(id));
 		break;
 	case 5:
 		temp = equipment.head;
-		equipment.head = make_shared<Item>(Item(id));
+		equipment.head = std::make_shared<Item>(Item(id));
 		break;
 	}
 	return temp;
 }
 
-shared_ptr<Item> Player::setEquipment(const shared_ptr<Item> item, int type) {
-	shared_ptr<Item> temp;
+item_ptr Player::setEquipment(item_ptr item, int type) {
+	item_ptr temp;
 	switch (type) {
 	case 1:
 		temp = equipment.weapon;

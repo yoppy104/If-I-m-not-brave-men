@@ -2,34 +2,33 @@
 #include <vector>
 #include <memory>
 #include "DxLib.h"
-#include "Item.h"
 #include "Player.h"
+#include "Item.h"
 
-
-using namespace std;
-
+typedef std::shared_ptr<Item> item_ptr;
+typedef std::shared_ptr<Player> player_ptr;
 
 typedef struct {
 	ID id;
-	std::shared_ptr<Item> instance;
+	item_ptr instance;
 	int num;
 } ItemData;
 
 class PartyControl {
 private:
-	vector<std::shared_ptr<Player>> member; //プレイヤーキャラクター
-	vector<ItemData> items;		//アイテム
+	std::vector<player_ptr> member; //プレイヤーキャラクター
+	std::vector<ItemData> items;		//アイテム
 	int numMagicStone;		//魔石の総数
 	int coin;				//所持金の総数
 
 public:
 	PartyControl() = default;
-	PartyControl(vector<std::shared_ptr<Player>> players, int num, int coin);
+	PartyControl(std::vector<player_ptr> players, int num, int coin);
 
 	//アクセサ
 	//player周り
-	std::shared_ptr<Player> getMember(int index) { return member[index]; }
-	vector <std::shared_ptr<Player>> getMembers() { return member; }
+	player_ptr getMember(int index) const { return member.at(index); }
+	std::vector <player_ptr> getMembers() { return member; }
 	int getNumMember() { return member.size(); }
 
 	//魔石の数
@@ -41,14 +40,13 @@ public:
 	//アイテム周り
 	int getNumItem() { return items.size(); }
 	ItemData getItem(int index) { return items[index]; }
-	shared_ptr<Item> getItemInstance(int index) { return items[index].instance; }
 
 	//メンバの増減をする関数
 	//指定のアイテムを消す
 	void delItem(int index);
 	//アイテムをnum個分増やす
 	void addItem(ID id, int num);
-	void addItem(const shared_ptr<Item> item, int num);
+	void addItem(const item_ptr item, int num);
 	//アイテムをnum個分減らす
 	void reduceItem(int index, int num);
 	void addNumMagicStone(int delta);

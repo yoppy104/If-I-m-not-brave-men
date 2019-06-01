@@ -1,5 +1,4 @@
 #pragma once
-
 #include <vector>
 #include <memory>
 #include <array>
@@ -9,12 +8,15 @@
 
 #define FIRST_EXP 0
 
+typedef std::shared_ptr<Magic> magic_ptr;
+typedef std::shared_ptr<Item> item_ptr;
+
 typedef struct {
-	std::shared_ptr<Item> weapon; //武器
-	std::shared_ptr<Item> arm;	 //籠手
-	std::shared_ptr<Item> head;	 //兜
-	std::shared_ptr<Item> chest;	 //胸当て
-	std::shared_ptr<Item> shield; //盾
+	item_ptr weapon; //武器
+	item_ptr arm;	 //籠手
+	item_ptr head;	 //兜
+	item_ptr chest;	 //胸当て
+	item_ptr shield; //盾
 } Equipment;
 
 typedef struct {
@@ -23,11 +25,9 @@ typedef struct {
 	int stuckEXP;	//累積経験値
 } EXP;
 
-using namespace std;
-
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
-	vector <std::shared_ptr<Magic>> magics;
+	std::vector <magic_ptr> magics;
 	int numMagicMap;
 
 	EXP exp;
@@ -48,17 +48,16 @@ public:
 	Player() = default;
 	Player(ID id, int x, int y); // idによるコンストラクタ
 
-	~Player();
-
 	virtual int sendEXp(int EXp);
 
 	int getMagicStone() { return magicStone; }
 	void plusMagicStone(int);
 
 	void addMagic(ID id);
+	int getNumMagicMap() { return numMagicMap; }
 	int getNumMagics() { return magics.size(); }
-	std::shared_ptr<Magic> getMagic(int index) { return magics[index]; }
-	std::vector<std::shared_ptr<Magic>> getMagics() { return magics; }
+	magic_ptr getMagic(int index) { return magics[index]; }
+	std::vector<magic_ptr> getMagics() { return magics; }
 
 
 	//Magic関連一応残す
@@ -109,8 +108,8 @@ public:
 
 	void draw_map(int x, int y, int frame, int direction);
 
-	shared_ptr<Item> setEquipment(ID id, int type);
-	shared_ptr<Item> setEquipment(const shared_ptr<Item> item, int type);
+	item_ptr setEquipment(ID id, int type);
+	item_ptr setEquipment(item_ptr item, int type);
 
 	bool hasEquip(int ind) {
 		switch (ind) {
@@ -197,7 +196,7 @@ public:
 
 	Equipment getEquipment() { return equipment; }
 
-	shared_ptr<Item> getEquipment(int type) {
+	item_ptr getEquipment(int type) {
 		switch (type) {
 		case 1:
 			return equipment.weapon;

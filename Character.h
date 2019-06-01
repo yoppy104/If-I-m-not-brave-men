@@ -4,7 +4,7 @@
 #include <string>
 #include <memory>
 
-using namespace std; 
+ 
 
 typedef struct {
 	int x;	//x座標
@@ -44,7 +44,7 @@ typedef struct {
 class Character {
 protected:
 	ID id;				//id これで個体を管理する。
-	string name;		//名前
+	std::string name;		//名前
 	Vector pos;			//描画位置
 	Status status;		//ステータス
 	Image images;		//画像集

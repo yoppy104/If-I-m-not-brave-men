@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 
-using namespace std;
+
 
 class NPC {
 protected:
@@ -21,11 +21,11 @@ protected:
 		int mapLeft[3];
 	} Image;
 
-	string name;
+	std::string name;
 	int x;
 	int y;
 	int step;
-	vector <string> text;
+	std::vector <std::string> text;
 	int text_box;
 
 	int frame;
@@ -35,7 +35,7 @@ protected:
 
 public:
 	NPC() = default;
-	NPC(int pos_x, int pos_y, string name, vector <string> text, int type);
+	NPC(int pos_x, int pos_y, std::string name, std::vector <std::string> text, int type);
 	void getName(int x, int y) { DrawFormatString(x, y, GetColor(0, 0, 0), name.c_str()); }
 	void draw(int x, int y);
 	int getX() const { return x; }

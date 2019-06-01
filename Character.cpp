@@ -1,6 +1,6 @@
 #include "Character.h"
 
-using namespace std;
+
 
 Character::Character(ID id, int xpos, int ypos) :
 	id(id),

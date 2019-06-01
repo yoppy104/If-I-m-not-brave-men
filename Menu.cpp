@@ -4,7 +4,7 @@
 #include <fstream>
 #include "Magic.h"
 
-using namespace std;
+
 
 Menu::Menu(std::shared_ptr<PartyControl> p) :
 	mode(MAIN),
@@ -140,7 +140,6 @@ bool Menu::updateItem() {
 		DrawFormatString(350, 100, GetColor(0, 0, 0), "アイテムを所持していません");
 	}
 	else {
-		std::shared_ptr<Item> temp;
 		if (pc->getNumItem() < 10 || pc->getNumItem() < start + 10) {
 			end = pc->getNumItem();
 		}
@@ -148,8 +147,7 @@ bool Menu::updateItem() {
 			end = start + 10;
 		}
 		for (int i = start; i < end; i++) {
-			pc->getItemInfo(i, 400, 80 + 50 * (i - start));
-
+			pc->getItem(i).instance->getName(400, 80 + 50 * (i - start));
 		}
 		DrawLine(350, 120 + 50 * itemSelect, 800, 120 + 50 * itemSelect, GetColor(0, 0, 0), 5);
 
@@ -188,10 +186,16 @@ bool Menu::updateItem() {
 			DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
 			DrawFormatString(900, 500, GetColor(0, 0, 0), "すてる");
 			int limit = 1;
-			if (pc->getItemIsEquip(itemSelect) != 0) {
+			if (pc->getItem(itemSelect).instance->getIsEquip() != 0) {
 				DrawFormatString(900, 550, GetColor(0, 0, 0), "装備");
 				limit ++;
-				DrawFormatString(900, 650, GetColor(0, 0, 0), "%d→%d", pc->getMember(0)->getEquipPoint(pc->getItemIsEquip(itemSelect)), pc->getItemPoint(itemSelect));
+				//選択しているアイテムの装備箇所
+				int select_item_equip_type = pc->getItem(itemSelect).instance->getIsEquip();
+				//現在装備しているアイテムのポイント
+				int old_item_point = pc->getMember(0)->getEquipment(select_item_equip_type)->getPoint();
+				//選択しているアイテムのポイント
+				int new_item_point = pc->getItem(itemSelect).instance->getPoint();
+				DrawFormatString(900, 650, GetColor(0, 0, 0), "%d→%d", old_item_point, new_item_point);
 			}
 			DrawLine(900, 490 + 50 * subSelect, 1000, 490 + 50 * subSelect, GetColor(0, 0, 0), 5);
 			if (Button(KEY_INPUT_SPACE) == 1) {
@@ -201,7 +205,7 @@ bool Menu::updateItem() {
 					pc->useItemMap(itemSelect);
 					break;
 				case 1:
-					if (pc->getItemInfo(itemSelect)) {
+					if (pc->getItem(itemSelect).instance->getIsSell()) {
 						pc->delItem(itemSelect);
 					}
 					break;
@@ -255,15 +259,15 @@ bool Menu::updateEquipment() {
 	std::shared_ptr<Player> temp;
 	temp = pc->getMember(0);
 	DrawFormatString(400, 100, GetColor(0, 0, 0), "武器  : ");
-	temp->getEquipName(1, 600, 100);
+	temp->getEquipment(1)->getName(600, 100);
 	DrawFormatString(400, 150, GetColor(0, 0, 0), "  盾  : ");
-	temp->getEquipName(2, 600, 150);
+	temp->getEquipment(2)->getName(600, 150);
 	DrawFormatString(400, 200, GetColor(0, 0, 0), "胴装備: ");
-	temp->getEquipName(3, 600, 200);
+	temp->getEquipment(3)->getName(600, 200);
 	DrawFormatString(400, 250, GetColor(0, 0, 0), "腕装備: ");
-	temp->getEquipName(4, 600, 250);
+	temp->getEquipment(4)->getName(600, 250);
 	DrawFormatString(400, 300, GetColor(0, 0, 0), "頭装備: ");
-	temp->getEquipName(5, 600, 300);
+	temp->getEquipment(5)->getName(600, 300);
 	DrawLine(400, 140 + 50 * equipmentSelect, 800, 140 + 50 * equipmentSelect, GetColor(0, 0, 0), 5);
 	if (subSelect == -1) {
 		if (Button(KEY_INPUT_UP)%15 == 1) {
@@ -347,7 +351,7 @@ bool Menu::updateEquipment() {
 }
 
 bool Menu::updateMagic() {
-	std::shared_ptr<Player> temp = pc->getMember(0);
+	player_ptr temp = pc->getMember(0);
 	int skip = 0;
 	int end;
 	if (temp->getNumMagicMap() < 10 || temp->getNumMagicMap() < start + 10) {
@@ -356,9 +360,15 @@ bool Menu::updateMagic() {
 	else {
 		end = start + 10;
 	}
-
+	std::vector<std::shared_ptr<Magic>> all_magics = temp->getMagics();
+	int escape_count = 0; //マップで使用できない魔術を回避した回数
 	for (int i = start; i < end; i++) {
-		temp->getMagicInfo(i, 400, 100 + 50 * i, true);
+		if (all_magics.at(i)->getIsMap()) {
+			all_magics.at(i)->getName(400, 100 + 50 * (i - escape_count));
+		}
+		else {
+			escape_count++;
+		}
 	}
 	DrawLine(390, 140 + 50 * magicSelect, 800, 140 + 50 * magicSelect, GetColor(0, 0, 0), 5);
 	if (subSelect == -1) {
@@ -392,7 +402,7 @@ bool Menu::updateMagic() {
 		}
 	}
 	else if (subSelect == 100) {
-		if (temp->useMagicMap(magicSelect,pc)) {
+		if (temp->getMagic(magicSelect)->effectMap()) {
 			subSelect = -1;
 		}
 	}
@@ -433,7 +443,7 @@ bool Menu::updateMagic() {
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (subSelect == 0) {
-				if (temp->useMagicMap(magicSelect, pc) != -1) {
+				if (temp->getMagic(magicSelect)->effectMap() != -1) {
 					subSelect = 100;
 				}
 				else {

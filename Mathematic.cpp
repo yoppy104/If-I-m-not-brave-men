@@ -8,7 +8,7 @@
 #include <fstream>
 #include "DxLib.h"
 
-using namespace std;
+
 
 int damage(int attack_point, int diffence_point, int weak) {
 	int x = attack_point / 100;

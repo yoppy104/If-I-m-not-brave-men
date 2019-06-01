@@ -16,7 +16,6 @@ enum DirectionPlayer {
 	LEFT
 };
 
-
 //マップ制御用のクラス。Mapクラスを配列として管理する。
 class MapControl {
 private:

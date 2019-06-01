@@ -3,7 +3,7 @@
 #include <string>
 #include "IDs.h"
 
-using namespace std;
+
 
 typedef struct {
 	int buy;
@@ -20,7 +20,7 @@ typedef struct {
 
 class Item {
 protected:
-	string name;
+	std::string name;
 	ID id;			//id
 	Price price;
 	bool isSell;	//”„‹p‰Â”\‚©‚Ç‚¤‚©
@@ -37,7 +37,7 @@ protected:
 
 public:
 	Item() = default;
-	Item(string name, ID id, int price, bool is_sell, int image, int is_equip);
+	Item(std::string name, ID id, int price, bool is_sell, int image, int is_equip);
 	Item(ID id);
 	ID getId() { return id; }
 	int getPriceBuy() { return price.buy; }

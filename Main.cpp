@@ -1,19 +1,22 @@
-#include "DxLib.h"
 #include <vector>
 #include <time.h>
-#include "Player.h"
-#include "Magic.h"
-#include "IDs.h"
-#include "M_Functions.h"
-#include <iostream>
-#include "MapControl.h"
-#include "Item.h"
 #include <cstdlib>
 #include <fstream>
+#include <memory>
+#include "DxLib.h"
+#include "IDs.h"
+#include "M_Functions.h"
+#include "MapControl.h"
+#include "PartyControl.h"
 #include "Battle_Stage.h"
 
-using namespace std;
+/*
 
+todo : weak_ptrを使用して書き直す
+
+*/
+
+typedef std::shared_ptr<Player> player_ptr;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
@@ -33,10 +36,6 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	ProcessMessage(); // 割り込み処理をするときに必須
 
 	SRand(time(NULL));
-
-	//createMap();
-
-	MapControl* mapc;
 	
 	//画像ファイルの読み込み
 	int allen_image = LoadGraph("images\\剣士アレン立ち.png"); //アレンの画像
@@ -49,19 +48,17 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 
 	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
 
-	std::shared_ptr<Player> allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
+	player_ptr allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
+	std::vector<player_ptr> players = { allen };
 
-	vector <std::shared_ptr<Player>> players;
-	players.push_back(allen);
+	std:: shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
 
-	std::shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
-
-	shared_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
+	std::unique_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
 
 	int mode = TITLE;
 
 	//20 40
-	shared_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
+	std::unique_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
 
 	int image_title = LoadGraph("images\\タイトル1920 1200.png");
 

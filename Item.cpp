@@ -3,7 +3,7 @@
 #include "DxLib.h"
 #include "IDs.h"
 
-Item::Item(string name, ID id, int price, bool is_sell, int image, int is_equip):
+Item::Item(std::string name, ID id, int price, bool is_sell, int image, int is_equip):
 	name(name),
 	id(id),
 	price{price, (int)price / 2},

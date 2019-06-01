@@ -25,6 +25,6 @@ private:
 	Sound sounds;
 
 public:
-	Inn(int pos_x, int pos_y, char name[], vector <string> text, int price, std::shared_ptr<PartyControl> pc);
+	Inn(int pos_x, int pos_y, char name[], std::vector <std::string> text, int price, std::shared_ptr<PartyControl> pc);
 	bool chat();
 };

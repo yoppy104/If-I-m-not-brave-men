@@ -1,15 +1,14 @@
 #pragma once
-#include "DxLib.h"
-#include "Player.h"
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "M_Functions.h"
 #include <vector>
-#include "Enemy.h"
+#include <memory>
 #include <algorithm>
-#include "Item.h"
+#include "DxLib.h"
+#include "M_Functions.h"
 #include "PartyControl.h"
+#include "Enemy.h"
 
 class Battle_Stage
 {
@@ -37,7 +36,7 @@ class Battle_Stage
 	int B_Panel, B_BG, B_Window, B_Statuswindow, B_Cursol, B_Frame ,CanMoveTrout,Danger,result,heal[8];//グラフィックハンドルたち
 	int win, nomal, sword, punch, run_se, enemies_death;
 	Player locate[6][6];//キャラクターたちの座標管理とかに用いる
-	std::vector<std::shared_ptr<Player>> yushas;
+	std::vector<player_ptr> yushas;
 	std::vector<int> yushaLocateX;
 	std::vector<int> yushaLocateY;
 	int fieldData[6][6];//各マスのデータ
@@ -64,7 +63,7 @@ class Battle_Stage
 
 public:
 	Battle_Stage();
-	Battle_Stage(std::shared_ptr<PartyControl> pc);
+	Battle_Stage(std::shared_ptr<PartyControl> pc_m);
 	void B_Sort();
 	void Draw_BattleStage();
 	int DrawBattleCharacter();
