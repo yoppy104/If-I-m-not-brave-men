@@ -78,23 +78,27 @@ void PartyControl::setEquipment(int member_index, int item_index) {
 	}
 	*/
 
+	//何回もアクセスするため変数で確保
+	shared_ptr<Player> target_member = member.at(member_index);
 	//装備する部位を表す値を取得する
 	int equipType = items[item_index].instance->getIsEquip();
 	//装備できない場合ははじく
 	if (equipType != 0) {
 		//未装備用のクラスを装備している場合は、アイテムリストに追加しない
-		if (member[member_index]->hasEquip(equipType)) {
-			shared_ptr<Item> old_equip_item = member.at(member_index)->setEquipment(items.at(item_index).instance, equipType);
+		if (target_member->hasEquip(equipType)) {
+			shared_ptr<Item> old_equip_item = target_member->setEquipment(items.at(item_index).instance, equipType);
 			addItem(old_equip_item, 1);
 		}
 		else {
-			member.at(member_index)->setEquipment(items.at(item_index).instance, equipType);
+			target_member->setEquipment(items.at(item_index).instance, equipType);
 		}
 		reduceItem(item_index, 1);
 	}
 }
 
 void PartyControl::replaceEquipment(int member_index, int type) {
+	//旧コードを一応残しておく
+	/*
 	switch (type) {
 	case 1:
 		if (member[member_index]->hasEquip(1)) {
@@ -127,6 +131,15 @@ void PartyControl::replaceEquipment(int member_index, int type) {
 		member[member_index]->setEquipment(NOTEQUIPMENT, 5);
 		break;
 	}
+	*/
+
+	//何回もアクセスするため変数で確保
+	shared_ptr<Player> target_member = member.at(member_index);
+	//もともと装備していたアイテム
+	shared_ptr<Item> old_equip_item = target_member->getEquipment(type);
+	addItem(old_equip_item, 1);
+	//未装備用のアイテムを入れる
+	target_member->setEquipment(NOTEQUIPMENT, type);
 }
 
 void PartyControl::useItemMap(int index) {
