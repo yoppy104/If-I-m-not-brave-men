@@ -1,4 +1,4 @@
-#include "NPC.h"
+#include "Npc.h"
 #include "DxLib.h"
 #include "M_Functions.h"
 

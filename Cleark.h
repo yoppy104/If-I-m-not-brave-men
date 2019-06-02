@@ -1,5 +1,5 @@
 #pragma once
-#include "NPC.h"
+#include "Npc.h"
 #include "Item.h"
 #include "IDs.h"
 #include <vector>

@@ -37,7 +37,7 @@ private:
 	int start;
 	int subSelect;
 	
-	std::shared_ptr<PartyControl> pc;
+	std::weak_ptr<PartyControl> pc;
 
 	Sound sounds;
 

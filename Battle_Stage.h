@@ -59,7 +59,7 @@ class Battle_Stage
 	int enemyLockonX;
 	int EnemyLockonY;
 
-	std::shared_ptr<PartyControl> pc;
+	std::weak_ptr<PartyControl> pc;
 
 public:
 	Battle_Stage();

@@ -235,19 +235,25 @@ int Battle_Stage::PutYusha()
 	yushaLocateY.clear();
 	int putX, putY;
 	int i = 0;
-	while ( i < pc->getNumMember())
-	{
-		putX = rand() % 6;
-		putY = rand() % 6;
-		if (Check_is_occupied(putX, putY) && fieldData[putX][putY] == 0)
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		while (i < pc_p->getNumMember())
 		{
-			yushas.push_back(pc->getMember(i));
-			yushaLocateX.push_back(putX);
-			yushaLocateY.push_back(putY);
-			i++;
-			number_of_character++;
+			putX = rand() % 6;
+			putY = rand() % 6;
+			if (Check_is_occupied(putX, putY) && fieldData[putX][putY] == 0)
+			{
+				yushas.push_back(pc_p->getMember(i));
+				yushaLocateX.push_back(putX);
+				yushaLocateY.push_back(putY);
+				i++;
+				number_of_character++;
+			}
+
 		}
-		
+	}
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : pointer is deleted");
+		return 0;
 	}
 	
 	return 0;
@@ -1401,22 +1407,27 @@ int Battle_Stage::next()
 }
 
 int Battle_Stage::Result(){
-	if (CheckSoundMem(win)==0){
-		StopSoundMem(nomal);
-		PlaySoundMem(win, DX_PLAYTYPE_LOOP, TRUE);
-		pc->getMember(0)->sendEXp(dropEXP);
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		if (CheckSoundMem(win) == 0) {
+			StopSoundMem(nomal);
+			PlaySoundMem(win, DX_PLAYTYPE_LOOP, TRUE);
+			pc_p->getMember(0)->sendEXp(dropEXP);
+		}
+		DrawGraph(767, 215, result, TRUE);
+		DrawStringToHandle(830, 250, "RESULT", GetColor(0, 0, 0), CommandFont);
+		DrawLineAA(830, 290, 950, 290, GetColor(0, 0, 0), 2);
+		DrawStringToHandle(830, 360, "取得したギル", GetColor(0, 0, 0), CommandFont);
+		DrawFormatStringToHandle(830, 410, GetColor(0, 0, 0), CommandFont, "%d", Dropgill);
+		DrawStringToHandle(830, 490, "取得した経験値", GetColor(0, 0, 0), CommandFont);
+		DrawFormatStringToHandle(830, 540, GetColor(0, 0, 0), CommandFont, "%d", dropEXP);
+		DrawStringToHandle(830, 600, "Allen", GetColor(0, 0, 0), CommandFont);
+		DrawStringToHandle(830, 645, "LV.", GetColor(0, 0, 0), CommandFont);
+		DrawFormatStringToHandle(890, 645, GetColor(0, 0, 0), CommandFont, "%d → %d", yushas[0]->GetLV(), pc_p->getMember(0)->GetLV());
 	}
-	DrawGraph(767, 215, result, TRUE);
-	DrawStringToHandle(830, 250, "RESULT", GetColor(0, 0, 0), CommandFont);
-	DrawLineAA(830, 290, 950, 290, GetColor(0, 0, 0), 2);
-	DrawStringToHandle(830, 360, "取得したギル", GetColor(0, 0, 0), CommandFont);
-	DrawFormatStringToHandle(830, 410, GetColor(0, 0, 0), CommandFont, "%d", Dropgill);
-	DrawStringToHandle(830, 490, "取得した経験値", GetColor(0, 0, 0), CommandFont);
-	DrawFormatStringToHandle(830, 540, GetColor(0, 0, 0), CommandFont, "%d", dropEXP);
-	DrawStringToHandle(830, 600, "Allen", GetColor(0, 0, 0), CommandFont);
-	DrawStringToHandle(830, 645, "LV.", GetColor(0, 0, 0), CommandFont);
-	DrawFormatStringToHandle(890, 645, GetColor(0, 0, 0), CommandFont, "%d → %d", yushas[0]->GetLV(),pc->getMember(0)->GetLV());
-
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : pointer is deleted");
+		return 0;
+	}
 	if (Button(KEY_INPUT_SPACE)>=1)
 	{
 		scene = 30;
@@ -1472,95 +1483,101 @@ int  Battle_Stage::Use_heal(){
 
 bool Battle_Stage::Battle_Update()
 {
-	pc->getMember(0)->DrawSta(1500, 50);
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		pc_p->getMember(0)->DrawSta(1500, 50);
 
-	if (is_first_time == true)
-	{
-		PlaySoundMem(nomal, DX_PLAYTYPE_LOOP);
-		PutYusha();
-		PutEnemy(0);
-		is_first_time = false;
-		first();
-	}
-	
-	Draw_BattleStage();
-	DrawBattleWindow(scene);
-	if (Button(KEY_INPUT_LSHIFT)>0)
-	{
-		Draw_Danger_Zone();
-	}
-	if (troutCursol == TRUE)
-	{
+		if (is_first_time == true)
+		{
+			PlaySoundMem(nomal, DX_PLAYTYPE_LOOP);
+			PutYusha();
+			PutEnemy(0);
+			is_first_time = false;
+			first();
+		}
+
+		Draw_BattleStage();
+		DrawBattleWindow(scene);
+		if (Button(KEY_INPUT_LSHIFT) > 0)
+		{
+			Draw_Danger_Zone();
+		}
+		if (troutCursol == TRUE)
+		{
+			switch (scene)
+			{
+			case 3:
+				DrawCanMove(sort[charaforcus]);
+				break;
+			case 4:
+				Draw_can_attack(sort[charaforcus]);
+				break;
+			default:
+				break;
+			}
+			DrawTroutCursol();
+		}
+		DrawBattleCharacter();
 		switch (scene)
 		{
-		case 3:
-			DrawCanMove(sort[charaforcus]);
+		case 0:// エンカウント時のアニメーション表示
+			Encount_Ani();
 			break;
-		case 4:
-			Draw_can_attack(sort[charaforcus]);
+		case 1:// 逃げるか逃げないか選ばせる
+			RunAsk();
+			break;
+		case 2:// コマンド選択
+			WaitCommand();
+			break;
+		case 3:// 自キャラ移動先選択
+			SelectMove();
+			break;
+		case 4:// 自キャラ攻撃先選択
+			Selectattack();
+			break;
+		case 5:// キャラ攻撃シーン
+			Player_attack();
+			break;
+		case 6:// キャラ移動シーン
+			Player_Move();
+			break;
+		case 7:// アイテムorスキル使用シーン
+			Use_Fireball();
+			break;
+		case 8:// バトル終了
+			Result();
+			break;
+		case 9:
+			Enemy_Attack();
+			break;
+		case 10:
+			Enemy_Move();
+			break;
+		case 11:
+			Use_heal();
 			break;
 		default:
+			is_first_time = TRUE;
+			troutCursol = FALSE;
+			charaforcus = 0;
+			enemyforcus = 0;
+			scene = 0;
+			number_of_character = 0;
+			Anime_frame = 0;
+			RunFail = false;
+			Random = 0;
+			Battle_End = false;
+			pc_p->addNumCoin(Dropgill);
+
+			dropEXP = 0;
+			Dropgill = 0;
+
+			return true;
 			break;
 		}
-		DrawTroutCursol();
 	}
-	DrawBattleCharacter();
-	switch (scene)
-	{
-	case 0:// エンカウント時のアニメーション表示
-		Encount_Ani();
-		break;
-	case 1:// 逃げるか逃げないか選ばせる
-		RunAsk();
-		break;
-	case 2:// コマンド選択
-		WaitCommand();
-		break;
-	case 3:// 自キャラ移動先選択
-		SelectMove();
-		break;
-	case 4:// 自キャラ攻撃先選択
-		Selectattack();
-		break;
-	case 5:// キャラ攻撃シーン
-		Player_attack();
-		break;
-	case 6:// キャラ移動シーン
-		Player_Move();
-		break;
-	case 7:// アイテムorスキル使用シーン
-		Use_Fireball();
-		break;
-	case 8:// バトル終了
-		Result();
-		break;
-	case 9:
-		Enemy_Attack();
-		break;
-	case 10:
-		Enemy_Move();
-		break;
-	case 11:
-		Use_heal();
-		break;
-	default:
-		is_first_time = TRUE;
-		troutCursol = FALSE;
-		charaforcus = 0;
-		enemyforcus = 0;
-		scene = 0;
-		number_of_character = 0;
-		Anime_frame = 0;
-		RunFail = false;
-		Random = 0;
-		Battle_End = false;
-		pc->addNumCoin(Dropgill);
-
-		dropEXP = 0;
-		Dropgill = 0;
-
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : pointer is deleted");
 		return true;
-		break;
 	}
 	
 	return false;

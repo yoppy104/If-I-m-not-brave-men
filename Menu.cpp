@@ -69,108 +69,234 @@ bool Menu::Update() {
 
 bool Menu::updateMain() {
 	DrawLine(120, 50 + 100 * mainSelect, 270, 50 + 100 * mainSelect, GetColor(0, 0, 0), 5);
-	std::shared_ptr<Player> temp;
-	for (int i = 0; i < pc->getNumMember(); i++) {
-		temp = pc->getMember(i);
-		temp->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
-		DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "Lv:%d", temp->GetLV());
-		DrawFormatString(400, 150 + 100 * i, GetColor(0, 0, 0), "HP:%d/%d", temp->getHp(), temp->getHpMax());
-		if (temp->getId() == ALLEN) {
-			DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:%d/%d", temp->getMp(), temp->getMpMax());
+	std::weak_ptr<Player> temp;
+
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		for (int i = 0; i < pc_p->getNumMember(); i++) {
+			temp = pc_p->getMember(i);
+			temp.lock()->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
+			DrawFormatString(600, 100 + 100 * i, GetColor(0, 0, 0), "Lv:%d", temp.lock()->GetLV());
+			DrawFormatString(400, 150 + 100 * i, GetColor(0, 0, 0), "HP:%d/%d", temp.lock()->getHp(), temp.lock()->getHpMax());
+			if (temp.lock()->getId() == ALLEN) {
+				DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:%d/%d", temp.lock()->getMp(), temp.lock()->getMpMax());
+			}
+			else {
+				DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:――");
+			}
 		}
-		else {
-			DrawFormatString(600, 150 + 100 * i, GetColor(0, 0, 0), "MP:――");
-		}
-	}
-	DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc->getNumCoin());
-	DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc->getNumMagicStone());
-	if (Button(KEY_INPUT_M) == 1 || Button(KEY_INPUT_B) == 1) {
-		PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
-		mode = CLOSE;
-	}
-	else if (Button(KEY_INPUT_UP) == 1) {
-		if (mainSelect - 1 > 0) {
-			PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-			mainSelect--;
-		}
-		else{
-			PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-		}
-	}
-	else if (Button(KEY_INPUT_DOWN) == 1) {
-		if (mainSelect + 1 < 4) {
-			PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-			mainSelect++;
-		}
-		else{
-			PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-		}
-	}
-	else if (Button(KEY_INPUT_SPACE) == 1) {
-		PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
-		switch (mainSelect) {
-		case 0:
-			mode = MAIN;
-			break;
-		case 1:
-			mode = ITEM;
-			break;
-		case 2:
-			mode = EQUIPMENT;
-			break;
-		case 3:
-			mode = MAGIC;
-			break;
-		case 4:
-			mode = SAVE;
-			break;
-		case 5:
+		DrawFormatString(400, 500, GetColor(0, 0, 0), "所持金 : %d ギル", pc_p->getNumCoin());
+		DrawFormatString(400, 550, GetColor(0, 0, 0), "魔石　 : %d 個", pc_p->getNumMagicStone());
+		if (Button(KEY_INPUT_M) == 1 || Button(KEY_INPUT_B) == 1) {
+			PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
 			mode = CLOSE;
-			break;
-		default:
-			break;
 		}
+		else if (Button(KEY_INPUT_UP) == 1) {
+			if (mainSelect - 1 > 0) {
+				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+				mainSelect--;
+			}
+			else {
+				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+			}
+		}
+		else if (Button(KEY_INPUT_DOWN) == 1) {
+			if (mainSelect + 1 < 4) {
+				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+				mainSelect++;
+			}
+			else {
+				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+			}
+		}
+		else if (Button(KEY_INPUT_SPACE) == 1) {
+			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
+			switch (mainSelect) {
+			case 0:
+				mode = MAIN;
+				break;
+			case 1:
+				mode = ITEM;
+				break;
+			case 2:
+				mode = EQUIPMENT;
+				break;
+			case 3:
+				mode = MAGIC;
+				break;
+			case 4:
+				mode = SAVE;
+				break;
+			case 5:
+				mode = CLOSE;
+				break;
+			default:
+				break;
+			}
+		}
+		return false;
 	}
-	return false;
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : Pointer is deleted");
+		return true;
+	}
 }
 
 bool Menu::updateItem() {
 	int end;
-	if (pc->getNumItem() == 0) {
-		DrawFormatString(350, 100, GetColor(0, 0, 0), "アイテムを所持していません");
-	}
-	else {
-		if (pc->getNumItem() < 10 || pc->getNumItem() < start + 10) {
-			end = pc->getNumItem();
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		if (pc_p->getNumItem() == 0) {
+			DrawFormatString(350, 100, GetColor(0, 0, 0), "アイテムを所持していません");
 		}
 		else {
-			end = start + 10;
-		}
-		for (int i = start; i < end; i++) {
-			pc->getItem(i).instance->getName(400, 80 + 50 * (i - start));
-		}
-		DrawLine(350, 120 + 50 * itemSelect, 800, 120 + 50 * itemSelect, GetColor(0, 0, 0), 5);
+			if (pc_p->getNumItem() < 10 || pc_p->getNumItem() < start + 10) {
+				end = pc_p->getNumItem();
+			}
+			else {
+				end = start + 10;
+			}
+			for (int i = start; i < end; i++) {
+				pc_p->getItem(i).instance->getName(400, 80 + 50 * (i - start));
+			}
+			DrawLine(350, 120 + 50 * itemSelect, 800, 120 + 50 * itemSelect, GetColor(0, 0, 0), 5);
 
+			if (subSelect == -1) {
+				if (Button(KEY_INPUT_UP) % 15 == 1) {
+					if (itemSelect - 1 >= 0) {
+						PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+						itemSelect--;
+						if (itemSelect < start) {
+							start--;
+						}
+					}
+					else {
+						PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+					}
+				}
+				else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
+					if (itemSelect + 1 < pc_p->getNumItem()) {
+						PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+						itemSelect++;
+						if (itemSelect > start + 9) {
+							start++;
+						}
+					}
+					else {
+						PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+					}
+				}
+				else if (Button(KEY_INPUT_SPACE) == 1) {
+					PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
+					subSelect = 0;
+				}
+			}
+			else {
+				DrawExtendGraph(850, 400, 1050, 700, images.subwindow, TRUE);
+				DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
+				DrawFormatString(900, 500, GetColor(0, 0, 0), "すてる");
+				int limit = 1;
+				if (pc_p->getItem(itemSelect).instance->getIsEquip() != 0) {
+					DrawFormatString(900, 550, GetColor(0, 0, 0), "装備");
+					limit++;
+					//選択しているアイテムの装備箇所
+					int select_item_equip_type = pc_p->getItem(itemSelect).instance->getIsEquip();
+					//現在装備しているアイテムのポイント
+					int old_item_point = pc_p->getMember(0)->getEquipment(select_item_equip_type)->getPoint();
+					//選択しているアイテムのポイント
+					int new_item_point = pc_p->getItem(itemSelect).instance->getPoint();
+					DrawFormatString(900, 650, GetColor(0, 0, 0), "%d→%d", old_item_point, new_item_point);
+				}
+				DrawLine(900, 490 + 50 * subSelect, 1000, 490 + 50 * subSelect, GetColor(0, 0, 0), 5);
+				if (Button(KEY_INPUT_SPACE) == 1) {
+					PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
+					switch (subSelect) {
+					case 0:
+						pc_p->useItemMap(itemSelect);
+						break;
+					case 1:
+						if (pc_p->getItem(itemSelect).instance->getIsSell()) {
+							pc_p->delItem(itemSelect);
+						}
+						break;
+					case 2:
+						pc_p->setEquipment(0, itemSelect);
+						break;
+					}
+					subSelect = -1;
+				}
+				else if (Button(KEY_INPUT_B) == 1) {
+					PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
+					subSelect = -1;
+					return false;
+				}
+				else if (Button(KEY_INPUT_UP) == 1) {
+					if (subSelect - 1 >= 0) {
+						PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+						subSelect--;
+					}
+					else {
+						PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+					}
+				}
+				else if (Button(KEY_INPUT_DOWN) == 1) {
+					if (subSelect + 1 <= limit) {
+						PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+						subSelect++;
+					}
+					else {
+						PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+					}
+				}
+			}
+		}
+		if (Button(KEY_INPUT_B) == 1) {
+			PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
+			mode = MAIN;
+			itemSelect = 0;
+			start = 0;
+		}
+		else if (Button(KEY_INPUT_M) == 1) {
+			PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
+			mode = CLOSE;
+			itemSelect = 0;
+			start = 0;
+		}
+		return false;
+	}
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : Pointer is deleted");
+		return true;
+	}
+}
+
+bool Menu::updateEquipment() {
+	std::weak_ptr<Player> temp;
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		temp = pc_p->getMember(0);
+		DrawFormatString(400, 100, GetColor(0, 0, 0), "武器  : ");
+		temp.lock()->getEquipment(1)->getName(600, 100);
+		DrawFormatString(400, 150, GetColor(0, 0, 0), "  盾  : ");
+		temp.lock()->getEquipment(2)->getName(600, 150);
+		DrawFormatString(400, 200, GetColor(0, 0, 0), "胴装備: ");
+		temp.lock()->getEquipment(3)->getName(600, 200);
+		DrawFormatString(400, 250, GetColor(0, 0, 0), "腕装備: ");
+		temp.lock()->getEquipment(4)->getName(600, 250);
+		DrawFormatString(400, 300, GetColor(0, 0, 0), "頭装備: ");
+		temp.lock()->getEquipment(5)->getName(600, 300);
+		DrawLine(400, 140 + 50 * equipmentSelect, 800, 140 + 50 * equipmentSelect, GetColor(0, 0, 0), 5);
 		if (subSelect == -1) {
 			if (Button(KEY_INPUT_UP) % 15 == 1) {
-				if (itemSelect - 1 >= 0) {
+				if (equipmentSelect - 1 >= 0) {
 					PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-					itemSelect--;
-					if (itemSelect < start) {
-						start--;
-					}
+					equipmentSelect--;
 				}
 				else {
 					PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
 			else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-				if (itemSelect + 1 < pc->getNumItem()) {
+				if (equipmentSelect + 1 < 5) {
 					PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-					itemSelect++;
-					if (itemSelect > start + 9) {
-						start++;
-					}
+					equipmentSelect++;
 				}
 				else {
 					PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
@@ -182,185 +308,85 @@ bool Menu::updateItem() {
 			}
 		}
 		else {
-			DrawExtendGraph(850, 400, 1050, 700, images.subwindow, TRUE);
-			DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
-			DrawFormatString(900, 500, GetColor(0, 0, 0), "すてる");
-			int limit = 1;
-			if (pc->getItem(itemSelect).instance->getIsEquip() != 0) {
-				DrawFormatString(900, 550, GetColor(0, 0, 0), "装備");
-				limit ++;
-				//選択しているアイテムの装備箇所
-				int select_item_equip_type = pc->getItem(itemSelect).instance->getIsEquip();
-				//現在装備しているアイテムのポイント
-				int old_item_point = pc->getMember(0)->getEquipment(select_item_equip_type)->getPoint();
-				//選択しているアイテムのポイント
-				int new_item_point = pc->getItem(itemSelect).instance->getPoint();
-				DrawFormatString(900, 650, GetColor(0, 0, 0), "%d→%d", old_item_point, new_item_point);
-			}
-			DrawLine(900, 490 + 50 * subSelect, 1000, 490 + 50 * subSelect, GetColor(0, 0, 0), 5);
-			if (Button(KEY_INPUT_SPACE) == 1) {
-				PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
-				switch (subSelect) {
-				case 0:
-					pc->useItemMap(itemSelect);
-					break;
-				case 1:
-					if (pc->getItem(itemSelect).instance->getIsSell()) {
-						pc->delItem(itemSelect);
-					}
-					break;
-				case 2:
-					pc->setEquipment(0, itemSelect);
-					break;
-				}
-				subSelect = -1;
-			}
-			else if (Button(KEY_INPUT_B) == 1) {
+			DrawExtendGraph(850, 400, 1120, 700, images.subwindow, TRUE);
+			DrawFormatString(900, 500, GetColor(0, 0, 0), "はずす");
+			DrawFormatString(900, 600, GetColor(0, 0, 0), "はずさない");
+			DrawLine(890, 540 + 100 * subSelect, 1080, 540 + 100 * subSelect, GetColor(0, 0, 0), 5);
+
+			if (Button(KEY_INPUT_B) == 1) {
 				PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
 				subSelect = -1;
 				return false;
 			}
 			else if (Button(KEY_INPUT_UP) == 1) {
-				if (subSelect - 1 >= 0) {
+				if (subSelect == 1) {
 					PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-					subSelect--;
-				}
-				else{
-					PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-				}
-			}
-			else if (Button(KEY_INPUT_DOWN) == 1) {
-				if (subSelect + 1 <= limit) {
-					PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-					subSelect++;
+					subSelect = 0;
 				}
 				else {
 					PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
 				}
 			}
-		}
-	}
-	if (Button(KEY_INPUT_B) == 1) {
-		PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
-		mode = MAIN;
-		itemSelect = 0;
-		start = 0;
-	}
-	else if (Button(KEY_INPUT_M) == 1) {
-		PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
-		mode = CLOSE;
-		itemSelect = 0;
-		start = 0;
-	}
-	return false;
-}
-
-bool Menu::updateEquipment() {
-	std::shared_ptr<Player> temp;
-	temp = pc->getMember(0);
-	DrawFormatString(400, 100, GetColor(0, 0, 0), "武器  : ");
-	temp->getEquipment(1)->getName(600, 100);
-	DrawFormatString(400, 150, GetColor(0, 0, 0), "  盾  : ");
-	temp->getEquipment(2)->getName(600, 150);
-	DrawFormatString(400, 200, GetColor(0, 0, 0), "胴装備: ");
-	temp->getEquipment(3)->getName(600, 200);
-	DrawFormatString(400, 250, GetColor(0, 0, 0), "腕装備: ");
-	temp->getEquipment(4)->getName(600, 250);
-	DrawFormatString(400, 300, GetColor(0, 0, 0), "頭装備: ");
-	temp->getEquipment(5)->getName(600, 300);
-	DrawLine(400, 140 + 50 * equipmentSelect, 800, 140 + 50 * equipmentSelect, GetColor(0, 0, 0), 5);
-	if (subSelect == -1) {
-		if (Button(KEY_INPUT_UP)%15 == 1) {
-			if (equipmentSelect - 1 >= 0) {
-				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-				equipmentSelect--;
+			else if (Button(KEY_INPUT_DOWN) == 1) {
+				if (subSelect == 0) {
+					PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
+					subSelect = 1;
+				}
+				else {
+					PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+				}
 			}
-			else {
-				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
+			else if (Button(KEY_INPUT_SPACE) == 1) {
+				PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
+				if (subSelect == 0) {
+					bool check = pc_p->getMember(0)->hasEquip(equipmentSelect + 1);
+					if (check) {
+						pc_p->replaceEquipment(0, equipmentSelect + 1);
+					}
+					subSelect = -1;
+					equipmentSelect = 0;
+				}
+				else {
+					subSelect = -1;
+				}
 			}
 		}
-		else if (Button(KEY_INPUT_DOWN)%15 == 1) {
-			if (equipmentSelect + 1 < 5) {
-				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-				equipmentSelect++;
-			}
-			else {
-				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-			}
-		}
-		else if (Button(KEY_INPUT_SPACE) == 1) {
-			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
-			subSelect = 0;
-		}
-	}
-	else {
-		DrawExtendGraph(850, 400, 1120, 700, images.subwindow, TRUE);
-		DrawFormatString(900, 500, GetColor(0, 0, 0), "はずす");
-		DrawFormatString(900, 600, GetColor(0, 0, 0), "はずさない");
-		DrawLine(890, 540 + 100 * subSelect, 1080, 540 + 100 * subSelect, GetColor(0, 0, 0), 5);
-
 		if (Button(KEY_INPUT_B) == 1) {
 			PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
+			mode = MAIN;
 			subSelect = -1;
-			return false;
+			equipmentSelect = 0;
 		}
-		else if (Button(KEY_INPUT_UP) == 1) {
-			if (subSelect == 1) {
-				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-				subSelect = 0;
-			}
-			else {
-				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-			}
+		else if (Button(KEY_INPUT_M) == 1) {
+			PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
+			mode = CLOSE;
 		}
-		else if (Button(KEY_INPUT_DOWN) == 1) {
-			if (subSelect == 0) {
-				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
-				subSelect = 1;
-			}
-			else {
-				PlaySoundMem(sounds.error, DX_PLAYTYPE_BACK, TRUE);
-			}
-		}
-		else if (Button(KEY_INPUT_SPACE) == 1) {
-			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
-			if (subSelect == 0) {
-				bool check = pc->getMember(0)->hasEquip(equipmentSelect + 1);
-				if (check) {
-					pc->replaceEquipment(0, equipmentSelect + 1);
-				}
-				subSelect = -1;
-				equipmentSelect = 0;
-			}
-			else {
-				subSelect = -1;
-			}
-		}
+		return false;
 	}
-	if (Button(KEY_INPUT_B) == 1) {
-		PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
-		mode = MAIN;
-		subSelect = -1;
-		equipmentSelect = 0;
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : Pointer is deleted");
+		return true;
 	}
-	else if (Button(KEY_INPUT_M) == 1) {
-		PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
-		mode = CLOSE;
-	}
-	return false;
 }
 
 bool Menu::updateMagic() {
-	player_ptr temp = pc->getMember(0);
+	std::weak_ptr<Player> temp;
+	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+		temp = pc_p->getMember(0);
+	}
+	else {
+		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : Pointer is deleted");
+		return true;
+	}
 	int skip = 0;
 	int end;
-	if (temp->getNumMagicMap() < 10 || temp->getNumMagicMap() < start + 10) {
-		end = temp->getNumMagicMap();
+	if (temp.lock()->getNumMagicMap() < 10 || temp.lock()->getNumMagicMap() < start + 10) {
+		end = temp.lock()->getNumMagicMap();
 	}
 	else {
 		end = start + 10;
 	}
-	std::vector<std::shared_ptr<Magic>> all_magics = temp->getMagics();
+	std::vector<std::shared_ptr<Magic>> all_magics = temp.lock()->getMagics();
 	int escape_count = 0; //マップで使用できない魔術を回避した回数
 	for (int i = start; i < end; i++) {
 		if (all_magics.at(i)->getIsMap()) {
@@ -385,7 +411,7 @@ bool Menu::updateMagic() {
 			}
 		}
 		else if (Button(KEY_INPUT_DOWN) % 15 == 1) {
-			if (magicSelect + 1 < temp->getNumMagicMap()) {
+			if (magicSelect + 1 < temp.lock()->getNumMagicMap()) {
 				PlaySoundMem(sounds.move, DX_PLAYTYPE_BACK, TRUE);
 				magicSelect++;
 				if (itemSelect > start + 9) {
@@ -402,7 +428,7 @@ bool Menu::updateMagic() {
 		}
 	}
 	else if (subSelect == 100) {
-		if (temp->getMagic(magicSelect)->effectMap()) {
+		if (temp.lock()->getMagic(magicSelect)->effectMap()) {
 			subSelect = -1;
 		}
 	}
@@ -443,7 +469,7 @@ bool Menu::updateMagic() {
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (subSelect == 0) {
-				if (temp->getMagic(magicSelect)->effectMap() != -1) {
+				if (temp.lock()->getMagic(magicSelect)->effectMap() != -1) {
 					subSelect = 100;
 				}
 				else {
