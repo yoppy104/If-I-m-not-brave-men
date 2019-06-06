@@ -234,16 +234,16 @@ void Player::healHp() {
 void Player::draw_map(int x, int y, int frame, int direction) {
 	switch (direction) {
 	case 0:
-		DrawExtendGraph(x, y, x + 64, y + 64, images.mapFront[frame], TRUE);
+		DrawGraph(x, y, images.mapFront[frame], TRUE);
 		break;
 	case 1:
-		DrawExtendGraph(x, y, x + 64, y + 64, images.mapBack[frame], TRUE);
+		DrawGraph(x, y, images.mapBack[frame], TRUE);
 		break;
 	case 2:
-		DrawExtendGraph(x, y, x + 64, y + 64, images.mapRight[frame], TRUE);
+		DrawGraph(x, y, images.mapRight[frame], TRUE);
 		break;
 	case 3:
-		DrawExtendGraph(x, y, x + 64, y + 64, images.mapLeft[frame], TRUE);
+		DrawGraph(x, y, images.mapLeft[frame], TRUE);
 		break;
 	}
 }

@@ -156,6 +156,7 @@ bool Menu::updateItem() {
 			}
 			for (int i = start; i < end; i++) {
 				pc_p->getItem(i).instance->getName(400, 80 + 50 * (i - start));
+				DrawFormatString(700, 80 + 50 * (i - start), GetColor(0, 0, 0), "%dŒÂ", pc_p->getItem(i).num);
 			}
 			DrawLine(350, 120 + 50 * itemSelect, 800, 120 + 50 * itemSelect, GetColor(0, 0, 0), 5);
 

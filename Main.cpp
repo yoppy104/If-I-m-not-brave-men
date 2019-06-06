@@ -20,9 +20,8 @@ typedef std::shared_ptr<Player> player_ptr;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
-	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_DESKTOP);
-	ChangeWindowMode(false);
 	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
+	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);
 	SetMainWindowText("IfNotBraveman"); // ウィンドウタイトルを指定
 	SetOutApplicationLogValidFlag(FALSE); // ログが出ないように設定
 

@@ -89,7 +89,7 @@ MapControl::~MapControl() {
 void MapControl::show() {
 	int x = (-positionPlayer.x*64 + dispSize.width/2);
 	int y = (-positionPlayer.y*64 + dispSize.height/2);
-	DrawExtendGraph(x, y, x + (64 * mapSize.width), y + (64 * mapSize.height), image, TRUE);
+	DrawGraph(x, y, image, TRUE);
 	if (directionPlayer == 1 || directionPlayer == 0) {
 		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame/10) % 2, directionPlayer);
 	}

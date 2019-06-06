@@ -24,7 +24,7 @@ void PartyControl::addItem(ID id, int num){
 			return;
 		}
 	}
-	items.push_back(ItemData{ id, std::make_shared<Item>(Item(id)), 1 });
+	items.push_back(ItemData{ id, std::make_shared<Item>(Item(id)), num });
 }
 
 void PartyControl::addItem(item_ptr item, int num) {
@@ -34,11 +34,11 @@ void PartyControl::addItem(item_ptr item, int num) {
 			return;
 		}
 	}
-	items.push_back(ItemData{ item->getId(), item, 1 });
+	items.push_back(ItemData{ item->getId(), item, num });
 }
 
 void PartyControl::reduceItem(int index, int num) {
-	if (items[index].num >= num) {
+	if (items[index].num > num) {
 		items[index].num -= num;
 	}
 	else {
