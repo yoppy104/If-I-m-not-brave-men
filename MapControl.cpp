@@ -14,13 +14,12 @@
 MapControl::MapControl(int width, int height, int x, int y, int map, std::shared_ptr<Player> allen, std::shared_ptr<PartyControl> pc) :
 	positionPlayer{ x, y },
 	directionPlayer(FRONT),
-	dispSize{ height, width },
-	dispRate(dispSize.height / 1920.0),
+	dispSize{ width, height },
 	allen(allen),
 	pc(pc)
 {
 	countFrame = 0;
-	now = NULL;
+	nowEvent = nullptr;
 	isMove = true;
 	isChat = false;
 	isEvent = false;
@@ -29,7 +28,7 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 	
 	menu = std::shared_ptr<Menu>(new Menu(pc));
 
-	image = LoadGraph("images\\worldmap.png");
+	mapImage = LoadGraph("images\\worldmap.png");
 	mapSize.width = 100;
 	mapSize.height = 100;
 	for (int x = 0; x < 100; x++) {
@@ -43,6 +42,7 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 	ChangeVolumeSoundMem(165, sounds.main);
 	createMap();
 
+	//以下NPCの初期化
 	std::vector<std::string> text = { "今回は戦闘と一緒にすることができなかったのよね。","買い物とかも実現はできてるから、見て言ってね。" };
 	std::shared_ptr<NPC> temp1(new NPC(21, 40, "モブ子", text, 1));
 	maps[21][40]->setNpc(temp1);
@@ -74,6 +74,8 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 	std::shared_ptr<NPC> temp6(new NPC(19, 50, "パツキン", text6, 0));
 	maps[19][50]->setNpc(temp6);
 	npcs.push_back(temp6);
+	//ここまでNPCの設定
+
 
 	sounds.walk = LoadSoundMem("sounds\\踏みしめる06.mp3");
 	ChangeVolumeSoundMem(70, sounds.walk);
@@ -89,8 +91,8 @@ MapControl::~MapControl() {
 void MapControl::show() {
 	int x = (-positionPlayer.x*64 + dispSize.width/2);
 	int y = (-positionPlayer.y*64 + dispSize.height/2);
-	DrawGraph(x, y, image, TRUE);
-	if (directionPlayer == 1 || directionPlayer == 0) {
+	DrawGraph(x, y, mapImage, TRUE);
+ 	if (directionPlayer == 1 || directionPlayer == 0) {
 		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame/10) % 2, directionPlayer);
 	}
 	else {
@@ -226,16 +228,16 @@ int MapControl::Update() {
 			isMenu = true;
 		}
 		if (maps[positionPlayer.x][positionPlayer.y]->getIsEvent()) {
-			now = maps[positionPlayer.x][positionPlayer.y]->getEvent();
+			nowEvent = maps[positionPlayer.x][positionPlayer.y]->getEvent();
 			isMove = false;
 			isEvent = true;
 		}
 	}
 	else if (isEvent){
-		if (now->Update()) {
+		if (nowEvent->Update()) {
 			isMove = true;
 			isEvent = false;
-			now = NULL;
+			nowEvent = nullptr;
 		}
 	}
 	else if (isChat) {

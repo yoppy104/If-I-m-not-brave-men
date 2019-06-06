@@ -11,7 +11,7 @@ Cleark::Cleark(std::string name, int x, int y, std::vector<ID> item, std::vector
 	image{0, 0, 0},
 	sound{0, 0, 0, 0},
 	select_main(0),
-	select_sub(0),
+	select_sub(-1),
 	select_sell(-1),
 	pc(pc)
 {

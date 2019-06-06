@@ -10,12 +10,6 @@
 #include "PartyControl.h"
 #include "Battle_Stage.h"
 
-/*
-
-todo : weak_ptr‚ğg—p‚µ‚Ä‘‚«’¼‚·
-
-*/
-
 typedef std::shared_ptr<Player> player_ptr;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)

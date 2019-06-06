@@ -40,23 +40,56 @@ private:
 		int height;
 	} DispSize;
 
-	double dispRate;
+	// プレイヤーのマップ上での座標
 	Vector positionPlayer;
+
+	//プレイヤーの向いている方向
 	DirectionPlayer directionPlayer;
+
+	//マップの全体縦横のピクセル数
 	MapSize mapSize;
+
+	//ディスプレイの縦横のピクセル数
 	DispSize dispSize;
+
+	//現在のフレーム
+	//アニメーション用
 	int countFrame;
+
+	//マップ情報をすべて格納したコンテナ
 	std::vector <std::vector<std::shared_ptr<Map>>> maps;
+
+	//プレイヤーの代表インスタンス
 	std::shared_ptr<Player> allen;
-	std::shared_ptr<Event> now;
+
+	//現在実行中のイベント
+	std::shared_ptr<Event> nowEvent;
+
+	//マップに表示されるNPC
 	std::vector<std::shared_ptr<NPC>> npcs;
+
+	//移動可能かどうかのbool
 	bool isMove;
+
+	//イベントを処理中かどうかのbool
 	bool isEvent;
+
+	//会話を処理中かどうかのbool
 	bool isChat;
+
+	//メニューを処理中かどうかのbool
 	bool isMenu;
-	int image;
+
+	//マップの画像
+	int mapImage;
+
+	//現在会話中のNPC
 	std::shared_ptr<NPC> nowChat;
+
+	//メニュークラスのインスタンスを保持
 	std::shared_ptr<Menu> menu;
+
+	//パーティ管理クラスのインスタンスを保持
 	std::shared_ptr<PartyControl> pc;
 
 	Sound sounds;
@@ -67,7 +100,13 @@ public:
 	~MapControl();
 	int getX() const { positionPlayer.x; }
 	int getY() const { positionPlayer.y; }
+
+	//更新メソッド
 	int Update();
+
+	//描画メソッド
 	void show();
+
+	//IDに合わせたマップを生成する
 	void createMap();
 };
