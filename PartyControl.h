@@ -5,14 +5,14 @@
 #include "Player.h"
 #include "Item.h"
 
-typedef std::shared_ptr<Item> item_ptr;
-typedef std::shared_ptr<Player> player_ptr;
+using item_ptr = std::shared_ptr<Item>;
+using player_ptr = std::shared_ptr<Player>;
 
-typedef struct {
+using ItemData = struct {
 	ID id;
 	item_ptr instance;
 	int num;
-} ItemData;
+};
 
 class PartyControl {
 private:

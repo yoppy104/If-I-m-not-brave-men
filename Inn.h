@@ -6,7 +6,7 @@
 
 class Inn : public NPC {
 private:
-	typedef struct {
+	using Sound = struct {
 		int enter;
 		int error;
 		int move;
@@ -14,7 +14,7 @@ private:
 		int coin;
 		int heal;
 		int yado;
-	}Sound;
+	};
 
 	int price;
 	std::shared_ptr<PartyControl> pc;

@@ -6,10 +6,6 @@
 #include "Mathematic.h"
 #include <fstream>
 
-typedef unsigned long long stagedata;
-
-
-
 Player::Player(ID id, int x, int y) :
 Character(id, x, y),
 LV(1),

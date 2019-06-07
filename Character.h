@@ -4,14 +4,12 @@
 #include <string>
 #include <memory>
 
- 
-
-typedef struct {
+using Vector = struct {
 	int x;	//x座標
 	int y;	//y座標
-} Vector;
+};
 
-typedef struct {
+using Status = struct {
 	int hp;			//体力
 	int hpMax;		//体力上限
 	int attack;		//攻撃力
@@ -20,9 +18,9 @@ typedef struct {
 	int magicPower;	//魔力
 	int mp;			//MP
 	int mpMax;		//MP上限
-} Status;
+};
 
-typedef struct {
+using Image = struct {
 	int mapFront[2];			//mapでの正面画像
 	int mapBack[2];				//mapでの背面画像
 	int mapRight[4];			//mapでの右向画像
@@ -38,7 +36,7 @@ typedef struct {
 	int battleAttackUp[2];		//battleでの上向き攻撃画像
 	int battleAttackDown[2];	//battleでの下向き攻撃画像
 	int battleDamage[5];		//battleでのダメージ画像
-} Image;
+};
 
 // キャラクターを定義するクラス
 class Character {

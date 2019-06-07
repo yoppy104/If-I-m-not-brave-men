@@ -13,18 +13,18 @@ enum Mode {
 
 class Menu {
 private:
-	typedef struct {
+	using Image = struct {
 		int window;
 		int pointer;
 		int subwindow;
-	}Image;
+	};
 
-	typedef struct {
+	using Sound = struct {
 		int enter;
 		int error;
 		int move;
 		int cancel;
-	}Sound;
+	};
 
 	Mode mode;
 	int mainSelect;	//ƒƒCƒ“‚Å‚Ì‘I‘ğˆ‚ğ“Á’è‚·‚é•Ï”

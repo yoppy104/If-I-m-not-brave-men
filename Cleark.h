@@ -10,19 +10,19 @@
 
 class Cleark : public NPC {
 private:
-	typedef struct {
+	using Image = struct {
 		int window;
 		int subWindow;
 		int pointer;
-	} Image;
+	};
 
-	typedef struct {
+	using Sound = struct {
 		int enter;
 		int error;
 		int move;
 		int coin;
 		int cancel;
-	} Sound;
+	};
 
 	std::vector <ID> items;
 	std::vector <Item> itemsInf;

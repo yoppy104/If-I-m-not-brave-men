@@ -38,6 +38,7 @@ MapControl::MapControl(int width, int height, int x, int y, int map, std::shared
 			maps[x].push_back(temp);
 		}
 	}
+
 	sounds.main = LoadSoundMem("sounds\\00sougen.wav");
 	ChangeVolumeSoundMem(165, sounds.main);
 	createMap();
@@ -88,17 +89,26 @@ MapControl::~MapControl() {
 	maps.clear();
 }
 
-void MapControl::show() {
+void MapControl::show() {	
+	//マップ画像の左上の座標
+	//プレイヤーのいる座標が中央に来るように計算
 	int x = (-positionPlayer.x*64 + dispSize.width/2);
 	int y = (-positionPlayer.y*64 + dispSize.height/2);
 	DrawGraph(x, y, mapImage, TRUE);
- 	if (directionPlayer == 1 || directionPlayer == 0) {
-		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame/10) % 2, directionPlayer);
+	//プレイヤーを描画する。
+	//上下と左右でコマ数が違うため分類
+	switch (directionPlayer) {
+	case 0:
+	case 1:
+		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame / 10) % 2, directionPlayer);
+		break;
+	case 2:
+	case 3:
+		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame / 10) % 4, directionPlayer);
+		break;
 	}
-	else {
-		allen->draw_map(dispSize.width / 2, dispSize.height / 2, (countFrame/10) % 4, directionPlayer);
-	}
-	countFrame++;
+	//npcを描画する
+	/*	todo : 画面外なら描画しない  */
 	if (!npcs.empty()) {
 		for (int i = 0; i < npcs.size(); i++) {
 			npcs.at(i)->draw(x + (npcs.at(i)->getX()) * 64, y + (npcs.at(i)->getY()) * 64);
@@ -132,6 +142,7 @@ int MapControl::Update() {
 	if (!CheckSoundMem(sounds.main)) {
 		PlaySoundMem(sounds.main, DX_PLAYTYPE_LOOP, TRUE);
 	}
+	countFrame++;
 	show();
 	if (isMove) {
 		if (Button(KEY_INPUT_DOWN) % 15 == 1) {

@@ -6,7 +6,7 @@
 #include "Player.h"
 #include "DxLib.h"
 
-typedef unsigned long long stagedata;
+using stagedata = unsigned long long ;
 
 void battle_stage(stagedata stage);
 

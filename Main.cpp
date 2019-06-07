@@ -10,7 +10,7 @@
 #include "PartyControl.h"
 #include "Battle_Stage.h"
 
-typedef std::shared_ptr<Player> player_ptr;
+using player_ptr = std::shared_ptr<Player> ;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {

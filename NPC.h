@@ -14,12 +14,12 @@ protected:
 		LEFT
 	};
 
-	typedef struct {
+	using Image = struct {
 		int mapFront[2];
 		int mapBack[2];
 		int mapRight[3];
 		int mapLeft[3];
-	} Image;
+	};
 
 	std::string name;
 	int x;

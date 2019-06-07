@@ -3,23 +3,21 @@
 #include <string>
 #include "IDs.h"
 
-
-
-typedef struct {
+using Price = struct {
 	int buy;
 	int sell;
-} Price;
+};
 
-typedef struct {
+using IsEquip = struct {
 	bool weapon;
 	bool shield;
 	bool arm;
 	bool head;
 	bool chest;
-} IsEquip;
+};
 
 class Item {
-protected:
+private:
 	std::string name;
 	ID id;			//id
 	Price price;

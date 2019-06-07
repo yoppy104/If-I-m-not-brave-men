@@ -5,9 +5,6 @@
 #include "Menu.h"
 #include <vector>
 
-class Player;
-class Map;
-
 //プレイヤーの向いている方向
 enum DirectionPlayer {
 	FRONT,
@@ -21,24 +18,24 @@ class MapControl {
 private:
 
 	//音声
-	typedef struct {
+	using Sound = struct {
 		int main;
 		int walk;
 		int error;
 		int enter;
-	} Sound;
+	};
 
 	//マップサイズ
-	typedef struct {
+	using MapSize = struct {
 		int width;
 		int height;
-	} MapSize;
+	};
 
 	//ディスプレイサイズ
-	typedef struct {
+	using DispSize = struct {
 		int width;
 		int height;
-	} DispSize;
+	};
 
 	// プレイヤーのマップ上での座標
 	Vector positionPlayer;

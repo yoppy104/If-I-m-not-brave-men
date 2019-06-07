@@ -6,8 +6,6 @@
 #include "Player.h"
 #include "Enemy.h"
 
-typedef uint64_t stagedata;
-
 void battle_stage(stagedata stage) {
 	stagedata test = 1 * pow(2, 35);//見る値の範囲を36マスに限定する
 	int image_stage = LoadGraph("images\\battlepanel.png"); //通常マス

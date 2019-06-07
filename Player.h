@@ -8,22 +8,22 @@
 
 #define FIRST_EXP 0
 
-typedef std::shared_ptr<Magic> magic_ptr;
-typedef std::shared_ptr<Item> item_ptr;
+using magic_ptr = std::shared_ptr<Magic>;
+using item_ptr = std::shared_ptr<Item>;
 
-typedef struct {
+using Equipment = struct {
 	item_ptr weapon; //武器
 	item_ptr arm;	 //籠手
 	item_ptr head;	 //兜
 	item_ptr chest;	 //胸当て
 	item_ptr shield; //盾
-} Equipment;
+};
 
-typedef struct {
+using EXP = struct {
 	int allEXP;		//全経験値
 	int NextEXP;	//次回レベルアップまでの経験値
 	int stuckEXP;	//累積経験値
-} EXP;
+};
 
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
