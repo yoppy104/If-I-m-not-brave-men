@@ -3,7 +3,9 @@
 #include <vector>
 #include <string>
 
-
+/*
+概要 :	NPCを定義するクラス
+*/
 
 class NPC {
 protected:
@@ -21,17 +23,17 @@ protected:
 		int mapLeft[3];
 	};
 
-	std::string name;
-	int x;
-	int y;
-	int step;
-	std::vector <std::string> text;
-	int text_box;
+	std::string name;	//NPCの名前
+	int x;				//x座標
+	int y;				//y座標
+	int step;			
+	std::vector <std::string> text;	//会話の内容
+	int text_box;		//会話を表示するテキストボックスの画像
 
 	int frame;
-	Direction direction;
+	Direction direction;	//向いている方向
 
-	Image image;
+	Image image;			//画像
 
 public:
 	NPC() = default;

@@ -2,10 +2,14 @@
 #include "DxLib.h"
 
 Map::Map(int data, bool isEvent, bool isNpc, int table, std::shared_ptr<NPC> npc) :
-	isEncount(true)
+	isEncount(true),
+	transform_map(UNDIFINED),
+	transform_x(0),
+	transform_y(0),
+	is_transform(false)
 {
 	// ƒf[ƒ^‚É‚æ‚Á‚Ä§Œä
-	encountRate = 0;
+	encountRate = 100;
 	encountTable = table;
 	inf = data;
 
@@ -14,41 +18,50 @@ Map::Map(int data, bool isEvent, bool isNpc, int table, std::shared_ptr<NPC> npc
 		isMove = true;
 		isEncount = true;
 		encountRate = 0;
+		is_move_enemy = true;
 		break;
 	case 1: // ’n–Ê
 		isMove = true;
 		isEncount = true;
 		encountRate = 0;
+		is_move_enemy = true;
 		break;
 	case 2: //X
-		isMove = true;
-		isEncount = true;
+		isMove = false;
+		isEncount = false;
 		encountRate = 0;
+		is_move_enemy = false;
 		break;
 	case 3: //RŠx
 		isMove = false;
 		isEncount = false;
 		encountRate = 0;
+		is_move_enemy = false;
 		break;
 	case 4: //ŠC
 		isMove = false;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 5: //¬‚³‚¢’¬
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 6: //‘å‚«‚È’¬
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 7: //é
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 8: //‹´
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	}
 	isEvent = isEvent;
@@ -65,39 +78,50 @@ void Map::setData(int data) {
 		isMove = true;
 		isEncount = true;
 		encountRate = 0;
+		is_move_enemy = true;
 		break;
 	case 1: // ’n–Ê
 		isMove = true;
 		isEncount = true;
 		encountRate = 0;
+		is_move_enemy = true;
 		break;
 	case 2: //X
 		isMove = false;
-		isEncount = false;
+		isEncount = true;
+		encountRate = 0;
+		is_move_enemy = false;
 		break;
 	case 3: //RŠx
 		isMove = false;
 		isEncount = false;
+		encountRate = 0;
+		is_move_enemy = false;
 		break;
 	case 4: //ŠC
 		isMove = false;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 5: //¬‚³‚¢’¬
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 6: //‘å‚«‚È’¬
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 7: //é
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	case 8: //‹´
 		isMove = true;
 		isEncount = false;
+		is_move_enemy = false;
 		break;
 	}
 }

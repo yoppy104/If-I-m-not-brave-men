@@ -29,6 +29,7 @@ Event::Event(int id) {
 	sound_enter = LoadSoundMem("sounds\\SE_enter.wav");
 }
 
+//設定したイベントの動作を実行する。
 bool Event::Update() {
 	if (step == text.size()) {
 		return true;

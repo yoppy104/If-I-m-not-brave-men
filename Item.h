@@ -1,13 +1,23 @@
 #pragma once
 
 #include <string>
+#include <memory>
 #include "IDs.h"
 
+class Player;
+
+/*
+概要 :	アイテムクラス
+		装備クラスはこれを継承する。
+*/
+
+//価格
 using Price = struct {
 	int buy;
 	int sell;
 };
 
+//装備可能かどうかをまとめたもの。
 using IsEquip = struct {
 	bool weapon;
 	bool shield;
@@ -20,7 +30,7 @@ class Item {
 private:
 	std::string name;
 	ID id;			//id
-	Price price;
+	Price price;	//値段
 	bool isSell;	//売却可能かどうか
 	int image;		//画像
 	IsEquip isEquip;
@@ -32,6 +42,8 @@ private:
 	消耗品：回復量や上昇量
 	*/
 	int point;
+
+	int attack_length;
 
 public:
 	Item() = default;
@@ -45,8 +57,9 @@ public:
 	int getImage() { return image; }
 	int getIsEquip();
 	bool effectBattle();
-	bool effectMap();
+	bool effectMap(std::shared_ptr<Player> player);
 	int getPoint() { return point; }
+	int getAttackLength() { return attack_length; }
 
 	/*
 	武器の場合に使用する関数

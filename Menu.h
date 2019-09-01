@@ -1,7 +1,8 @@
 #pragma once
-#include "PartyControl.h"
+#include "PartyControll.h"
 #include "IDs.h"
 
+//現在のモードを定義している。
 enum Mode {
 	MAIN,
 	ITEM,
@@ -11,6 +12,9 @@ enum Mode {
 	CLOSE
 };
 
+/*
+概要 :	メニュー操作を定義するクラス
+*/
 class Menu {
 private:
 	using Image = struct {
@@ -36,14 +40,17 @@ private:
 	Image images;
 	int start;
 	int subSelect;
+
+	bool is_select_value;
+	int selected_value;
 	
-	std::weak_ptr<PartyControl> pc;
+	std::weak_ptr<PartyControll> pc;
 
 	Sound sounds;
 
 public:
 	Menu() = default;
-	Menu(std::shared_ptr<PartyControl> p);
+	Menu(std::shared_ptr<PartyControll> p);
 	bool Update();			//全体の更新
 	bool updateMain();		//メイン
 	bool updateItem();		//アイテム
@@ -51,4 +58,6 @@ public:
 	bool updateMagic();		//魔術
 	bool updateSave();		//セーブ
 	bool closeWindow();		//ウィンドウを閉じる
+
+	bool SelectValue(int max_value); //個数を選択するメソッド
 };

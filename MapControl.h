@@ -3,7 +3,11 @@
 #include "Map.h"
 #include "Player.h"
 #include "Menu.h"
+#include "Enemy.h"
 #include <vector>
+#include <memory>
+
+using EnemyPtr = std::unique_ptr<Enemy>;
 
 //プレイヤーの向いている方向
 enum DirectionPlayer {
@@ -14,7 +18,7 @@ enum DirectionPlayer {
 };
 
 //マップ制御用のクラス。Mapクラスを配列として管理する。
-class MapControl {
+class MapControll {
 private:
 
 	//音声
@@ -87,14 +91,16 @@ private:
 	std::shared_ptr<Menu> menu;
 
 	//パーティ管理クラスのインスタンスを保持
-	std::shared_ptr<PartyControl> pc;
+	std::shared_ptr<PartyControll> pc;
 
 	Sound sounds;
 
+	std::vector<EnemyPtr> enemies;
+
 public:
-	MapControl() = default;
-	MapControl(int width, int height, int x, int y, int map, std::shared_ptr<Player> allen, std::shared_ptr<PartyControl> pc);
-	~MapControl();
+	MapControll() = default;
+	MapControll(int width, int height, int x, int y, int map, std::shared_ptr<Player> allen, std::shared_ptr<PartyControll> pc);
+	~MapControll();
 	int getX() const { positionPlayer.x; }
 	int getY() const { positionPlayer.y; }
 
@@ -106,4 +112,6 @@ public:
 
 	//IDに合わせたマップを生成する
 	void createMap();
+
+	bool CheckMoveEnemy(int x, int y);
 };

@@ -22,15 +22,22 @@ active(false),
 Block(false),
 StaWindow(NULL),
 Font(NULL),
-numMagicMap(0)
+numMagicMap(1),
+magics{
+	std::make_shared<Magic>(Magic(FIREBALL)),
+	std::make_shared<Magic>(Magic(HEAL))
+}
 {
+	StaWindow = LoadGraph("images\\playerdata_gray.png");
+	Font = CreateFontToHandle(NULL, 30, -1, DX_FONTTYPE_ANTIALIASING);
 	switch (id) {
 	case ALLEN:		//アレンの場合
+		name = "アレン";
 		status.mpMax = 10;
 		status.mp = 10;
 		status.hp = 20;
 		status.hpMax = 20;
-		status.attack = 10;
+		status.attack = 1000;
 		status.diffence = 5;
 		status.dex = 10;
 		status.magicPower = 10;
@@ -38,8 +45,14 @@ numMagicMap(0)
 		LoadDivGraph("images\\キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
 		LoadDivGraph("images\\キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
 		LoadDivGraph("images\\キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
+		LoadDivGraph("images\\Alen32Dots_Wait_Syagami_3.png", 4, 4, 1, 128, 128, images.battleWait);
+		LoadDivGraph("images\\Alen32Dots_Walk.png", 4, 4, 1, 128, 128, images.battleMoveLeft);
+		LoadDivGraph("images\\Alen32Dots_Damage2.png", 7, 7, 1, 128, 128, images.battleDamage);
+		LoadDivGraph("images\\Alen32Dots_Attack_3.png", 4, 4, 1, 128, 128, images.battleAttackLeft);
+		LoadDivGraph("images\\Alen32Dots_MagicCharge.png", 13, 13, 1, 128, 128, images.battleUseSpecial);
 		break;
 	case IMITIA:	//イミティアの場合
+		name = "イミティア";
 		hasMp = false;
 		status.mpMax = -1;
 		status.mp = -1;
@@ -51,6 +64,7 @@ numMagicMap(0)
 		status.magicPower = 10;
 		break;
 	case CRAIG:		//クレイグの場合
+		name = "クレイグ";
 		hasMp = false;
 		status.mpMax = -1;
 		status.mp = -1;
@@ -62,6 +76,7 @@ numMagicMap(0)
 		status.magicPower = 10;
 		break;
 	case RAIN:		//レインの場合
+		name = "レイン";
 		hasMp = false;
 		status.mpMax = -1;
 		status.mp = -1;
@@ -75,17 +90,20 @@ numMagicMap(0)
 	}
 }
 
+//アクティブかどうか
 bool Player::GetActive()
 {
 	return active;
 }
 
+//画面上にキャラを表示するかどうか
 bool Player::Activate()
 {
 	active = !active;
 	return true;
 }
 
+//アニメーションメソッド
 int Player::DrawChar(double x, double y, int scene)
 {
 	if (status.hp <= 0)
@@ -93,28 +111,32 @@ int Player::DrawChar(double x, double y, int scene)
 		status.hp = 0;
 		return 1;
 	}
+
+	charAniframe++;
 	switch (scene)
 	{
-	case 0:
-		charAniframe %= 59;
-		charAniframe++;
-		DrawGraph(x, y, images.battleMoveRight[charAniframe / 30], TRUE);
+	/*
+	修正した。
+	インデックス内部で除算を使用するとOutOfRangeのエラーをはくときがある。
+	そのため、必ず剰余を使用すること。
+	*/
+	case 0://バトル中の待機アニメーション
+		DrawGraph(x, y, images.battleWait[(charAniframe / 30) % 4], TRUE);
 		break;
-	case 1:
-		charAniframe %= 60;
-		charAniframe++;
-		DrawExtendGraph(x - 128, y, x + 129, y + 129, images.battleAttackRight[charAniframe / 15], TRUE);
+	case 1://バトルでの攻撃アニメーション
+		DrawExtendGraph(x - 128, y, x + 129, y + 129, images.battleAttackLeft[(charAniframe/10) % 4], TRUE);
 		break;
-	case 2:
-		charAniframe %= 65;
-		charAniframe++;
-		DrawGraph(x - 64, y, images.battleDamage[charAniframe / 5], true);
+	case 2://バトルでのダメージアニメーション
+		DrawGraph(x - 64, y, images.battleDamage[(charAniframe/10) % 5], true);
 		break;
-	case 3:
-		charAniframe %= 20;
-		charAniframe++;
-		DrawGraph(x, y, images.battleMoveRight[charAniframe / 5], true);
+	case 3://バトルでの移動アニメーション
+		DrawGraph(x, y, images.battleMoveLeft[(charAniframe/30) % 4], true);
 		break;
+	case 4://バトルでの魔術使用時のアニメーション
+		if (charAniframe > 64) {
+			charAniframe = 54;
+		}
+		DrawExtendGraph(x, y, x + 128, y + 128, images.battleUseSpecial[(charAniframe / 5) % 13], true);
 	default:
 		break;
 	}
@@ -129,17 +151,25 @@ int Player::GetAGI()
 int Player::Damage(int x)
 {
 	status.hp -= x;
+
+	//0未満にはならないようにする。
+	if (status.hp < 0) {
+		status.hp = 0;
+	}
 	return 0;
 }
 
+//能力値と武器の値を合算した数値を返す。
 int Player::getAttack() {
 	return status.attack + equipment.weapon->getPoint();
 }
 
+//能力値と防具の値を合算したス値を返す。
 int Player::getDiffence() {
 	return status.diffence + equipment.head->getPoint() + equipment.arm->getPoint() + equipment.shield->getPoint() + equipment.chest->getPoint();
 }
 
+//使用可能魔術を追加する。
 void Player::addMagic(ID id) {
 	magics.push_back(std::make_shared<Magic>(Magic(id)));
 	if (magics[magics.size() - 1]->getIsMap()) {
@@ -147,14 +177,18 @@ void Player::addMagic(ID id) {
 	}
 }
 
+//所持魔晶石を増価させる。
 void Player::plusMagicStone(int point) {
 	magicStone += point;
 }
 
+//経験値を得る。
 int Player::sendEXp(int EXp) {
 	exp.allEXP += EXp;
 	exp.stuckEXP += EXp;
 	bool can_LVUP = true;
+
+	//レベルアップ可能な間はレベルアップし続ける。
 	while (exp.NextEXP <= exp.stuckEXP)
 	{
 		exp.stuckEXP -= exp.NextEXP;
@@ -168,16 +202,16 @@ int Player::sendEXp(int EXp) {
 	return 0;
 }
 
+//ステータスを表示する。
 int Player::DrawSta(double x, double y)
 {
-	DrawFormatString(100, 100, GetColor(0, 0, 0), "test");
 	if (status.hpMax<status.hp)
 	{
 		status.hp = status.hpMax;
 	}
-	double length = 68 + 300 * status.hp / status.hpMax;
+	int length = 68 + 300 * status.hp / status.hpMax;
 	DrawExtendGraph(x, y, x + 400, y + 200, StaWindow, TRUE);
-	DrawFormatStringToHandle(x + 15, y + 15, GetColor(0, 0, 0), Font, "%s", name);
+	getName(x + 15, y + 15, GetColor(0, 0, 0));
 	DrawFormatStringToHandle(x + 25, y + 65, GetColor(0, 0, 0), Font, "%d", status.hp);
 	DrawFormatStringToHandle(x + 25, y + 115, GetColor(0, 0, 0), Font, "MP");
 	DrawLineAA(x + 70, y + 65, x + 70, y + 95, GetColor(0, 0, 0), 5);
@@ -185,10 +219,9 @@ int Player::DrawSta(double x, double y)
 	DrawLineAA(x + 70, y + 113, x + 70, y + 143, GetColor(0, 0, 0), 5);
 	DrawLineAA(x + 370, y + 113, x + 370, y + 143, GetColor(0, 0, 0), 5);
 	DrawLineAA(x + 73, y + 80, x + length, y + 80, GetColor(0, 255, 0), 5);
-
-
 	return 0;
 }
+
 int Player::ActBlock() {
 	Block = true;
 	if (Block)
@@ -198,6 +231,7 @@ int Player::ActBlock() {
 
 	return 0;
 }
+
 int Player::ReleaseBlock() {
 	if (Block)
 	{
@@ -227,6 +261,7 @@ void Player::healHp() {
 	status.hp = status.hpMax;
 }
 
+//マップでのアニメーション
 void Player::draw_map(int x, int y, int frame, int direction) {
 	switch (direction) {
 	case 0:
@@ -244,6 +279,7 @@ void Player::draw_map(int x, int y, int frame, int direction) {
 	}
 }
 
+//IDに基づいて装備を付ける。
 item_ptr Player::setEquipment(ID id, int type) {
 	item_ptr temp;
 	switch (type) {
@@ -271,6 +307,7 @@ item_ptr Player::setEquipment(ID id, int type) {
 	return temp;
 }
 
+//ポインタに基づいて装備を付ける。
 item_ptr Player::setEquipment(item_ptr item, int type) {
 	item_ptr temp;
 	switch (type) {

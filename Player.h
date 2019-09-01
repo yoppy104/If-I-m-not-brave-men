@@ -25,6 +25,10 @@ using EXP = struct {
 	int stuckEXP;	//累積経験値
 };
 
+/*
+概要 :	プレイヤーの情報を管理するクラス
+*/
+
 class Player :public Character{ // プレイヤーの構造体、味方もこれで管理
 protected:
 	std::vector <magic_ptr> magics;
@@ -32,14 +36,14 @@ protected:
 
 	EXP exp;
 
-	int LV;
-	int charAniframe;
-	int StaWindow;
+	int LV;				//レベル
+	int charAniframe;	//アニメーション用のフレーム数
+	int StaWindow;		//ステータスウィンドウの画像
 	int Font;
 	bool active;
 	bool Block;
 	
-	Equipment equipment;
+	Equipment equipment;	//装備
 
 	int magicStone; // 魔石の所持数
 
@@ -82,7 +86,7 @@ public:
 		return numMagicMap;
 	}
 
-	int useMagicMap(int index, const std::shared_ptr<PartyControl> pc) {
+	int useMagicMap(int index, const std::shared_ptr<PartyControll> pc) {
 		if (magics[index]->getCost() > status.mp) {
 			return -1;
 		}

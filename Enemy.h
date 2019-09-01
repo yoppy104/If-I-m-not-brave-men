@@ -1,38 +1,38 @@
 #pragma once
 #include "Dxlib.h"
 #include "M_Functions.h"
-#include <string.h>
-class Enemy
+#include "Character.h"
+#include "IDs.h"
+#include <string>
+
+/*
+概要 :	敵のふるまいを定義するクラス
+		Playerと同様にCharacterを継承する。
+*/
+class Enemy : public Character
 {
-	char name[15]; // 名前。これで個体を管理する
-	int hp; //現在体力
-	int hp_max; //最大体力
-	int attack; //攻撃力
-	int diffence; //防御力
-	int magic_power; //魔力
-	int dex; //敏捷性
-	int gra[1];//グラフィックハンドル格納（とりあえず）
-	int charAniframe;
-	bool active;
-	int Movetype;
-	int Attacktype;
-	int gill;
-	int exp;
+	int charAniframe;	//アニメーション用のフレーム数
+	bool active;		//行動できる状態かどうか
+	int Movetype;		//移動方式
+	int Attacktype;		//攻撃方式
+	int gill;			//倒したときに得られる金
+	int exp;			//倒したときに得られる経験値
 
 public:
-	Enemy(char name[], int hp, int attack, int diffence, int magic_power, int dex, char grafhic[],int TypeA,int TypeM);
-	int DrawEnemy(double x, double y, int scene);
+	Enemy() = default;
+	Enemy(ID id, int x, int y);
+
+	int DrawEnemy(int x, int y, int scene);
 	bool GetActive();
 	bool Activate();
-	int GetAGI();
 	int Damage(int x);
-	int GetAttack();
-	int GetDex();
-	int GetHp();
-	int GetDiffence();
 	int Getattacktype();
 	int Getmovetype();
 	int GetGill();
 	int GetEXP();
+
+	void UpdateInMap(bool up, bool down, bool left, bool right);
+	void DrawMap(int x, int y);
+
 };
 

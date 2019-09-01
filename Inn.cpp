@@ -2,12 +2,16 @@
 #include "DxLib.h"
 #include "M_Functions.h"
 
-Inn::Inn(int pos_x, int pos_y, char name[], std::vector <std::string> text, int price, std::shared_ptr<PartyControl> pc) : NPC (pos_x, pos_y, name, text, 0){
-	price = price;
-	pc = pc;
-	select_main = true;
-	subwindow_image = LoadGraph("image/command.png");
-	fade = 0;
+Inn::Inn(int pos_x, int pos_y, char name[], std::vector <std::string> text, int price, std::shared_ptr<PartyControll> pc) : 
+	NPC (pos_x, pos_y, name, text, 0),
+	price(price),
+	pc(pc),
+	select_main(true),
+	subwindow_image(0),
+	fade(0),
+	sounds{}
+{
+	subwindow_image = LoadGraph("images\\command.png");
 
 	sounds.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
 	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");
@@ -19,10 +23,12 @@ Inn::Inn(int pos_x, int pos_y, char name[], std::vector <std::string> text, int 
 	sounds.yado = LoadSoundMem("sounds\\SE_Yado.wav");
 }
 
+//オーバーライドして使用する。
 bool Inn::chat() {
 	DrawExtendGraph(100, 800, 1860, 1000, text_box, TRUE);
 	getName(150, 810);
-	if (step == 1) {
+	//stepの値によって状態を管理している。
+	if (step == 1) {//宿泊するかを決定する段階
 		DrawFormatString(150, 850, GetColor(0, 0, 0), text[step].c_str(),price * pc->getNumMember());
 		DrawExtendGraph(1650, 50, 1900, 350, subwindow_image, TRUE);
 		DrawFormatString(1700, 100, GetColor(0, 0, 0), "所持金");
@@ -67,6 +73,7 @@ bool Inn::chat() {
 			return true;
 		}
 	}
+	//-1 ~ -3はアニメーション
 	else if (step == -1) {
 		PlaySoundMem(sounds.yado, DX_PLAYTYPE_BACK, TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, 16 * fade);
@@ -96,6 +103,7 @@ bool Inn::chat() {
 		}
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	//閉じる
 	else {
 		DrawFormatString(150, 850, GetColor(0, 0, 0), text[step].c_str());
 		if (Button(KEY_INPUT_SPACE) == 1) {

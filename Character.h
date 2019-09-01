@@ -26,6 +26,7 @@ using Image = struct {
 	int mapRight[4];			//mapでの右向画像
 	int mapLeft[4];				//mapでの左向画像
 
+	int battleWait[4];			//battleでの待機画像
 	int battleMoveRight[4];		//battleでの右向き移動画像
 	int battleMoveLeft[4];		//battleでの左向き移動画像
 	int battleMoveUp[2];		//battleでの上向き移動画像
@@ -35,7 +36,8 @@ using Image = struct {
 	int battleAttackLeft[4];	//battleでの左向き攻撃画像
 	int battleAttackUp[2];		//battleでの上向き攻撃画像
 	int battleAttackDown[2];	//battleでの下向き攻撃画像
-	int battleDamage[5];		//battleでのダメージ画像
+	int battleDamage[7];		//battleでのダメージ画像
+	int battleUseSpecial[20];	//battleでの特殊攻撃、魔術など
 };
 
 // キャラクターを定義するクラス
@@ -77,7 +79,6 @@ public:
 
 	int getMp() { return status.mp; }
 	int getMpMax() { return status.mpMax; }
-
 
 	//player用
 	virtual void move();

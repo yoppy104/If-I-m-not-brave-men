@@ -7,7 +7,7 @@
 #include <algorithm>
 #include "DxLib.h"
 #include "M_Functions.h"
-#include "PartyControl.h"
+#include "PartyControll.h"
 #include "Enemy.h"
 
 class Battle_Stage
@@ -59,11 +59,11 @@ class Battle_Stage
 	int enemyLockonX;
 	int EnemyLockonY;
 
-	std::weak_ptr<PartyControl> pc;
+	std::weak_ptr<PartyControll> pc;
 
 public:
 	Battle_Stage();
-	Battle_Stage(std::shared_ptr<PartyControl> pc_m);
+	Battle_Stage(std::shared_ptr<PartyControll> pc_m);
 	void B_Sort();
 	void Draw_BattleStage();
 	int DrawBattleCharacter();
@@ -97,7 +97,7 @@ public:
 	bool Check_is_yusha(int x, int y);
 	int Check_Enemy_Death();
 	int Enemyturn();
-	int Encount_Ani();
+	int Encount_Ani(int information);
 	int WaitCommand();
 	int RunAsk();
 	int SelectMove();
@@ -111,6 +111,6 @@ public:
 	int next();
 	int Use_Fireball();
 	int Use_heal();
-	bool Battle_Update();
+	bool Battle_Update(int encount_information);
 };
 

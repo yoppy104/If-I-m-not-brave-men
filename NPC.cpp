@@ -39,6 +39,7 @@ NPC::NPC(int pos_x, int pos_y, std:: string name, std::vector <std::string> text
 
 }
 
+//方向に応じて、アニメーションを変更する
 void NPC::draw(int xx, int yy) {
 	switch (direction) {
 	case FRONT:
@@ -57,6 +58,7 @@ void NPC::draw(int xx, int yy) {
 	frame++;
 }
 
+//会話メソッド
 bool NPC::chat() {
 	if (step == text.size()) {
 		step = 0;
@@ -71,6 +73,8 @@ bool NPC::chat() {
 	return false;
 }
 
+//プレイヤーが話しかけた時に向きを変更する。
+//引数はプレイヤーの座標
 void NPC::change_direction(int xp, int yp) {
 	if (yp > y){
 		direction = FRONT;

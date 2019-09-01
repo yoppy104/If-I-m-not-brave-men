@@ -6,7 +6,7 @@
 
 
 
-Menu::Menu(std::shared_ptr<PartyControl> p) :
+Menu::Menu(std::shared_ptr<PartyControll> p) :
 	mode(MAIN),
 	step(5),
 	mainSelect(1),
@@ -16,6 +16,8 @@ Menu::Menu(std::shared_ptr<PartyControl> p) :
 	saveSelect(0),
 	subSelect(-1),
 	start(0),
+	is_select_value(false),
+	selected_value(0),
 	pc(p),
 	images{},
 	sounds{}
@@ -24,10 +26,10 @@ Menu::Menu(std::shared_ptr<PartyControl> p) :
 	images.pointer = LoadGraph("images\\pointer.png");
 	images.subwindow = LoadGraph("images\\command.png");
 
-	sounds.enter = LoadSoundMem("sound/SE_enter.wav");
-	sounds.error = LoadSoundMem("sound/SE_error.wav");
-	sounds.move = LoadSoundMem("sound/SE_move.wav");
-	sounds.cancel = LoadSoundMem("sound/SE_cancel.wav");
+	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");
+	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
+	sounds.move = LoadSoundMem("sounds\\SE_move.wav");
+	sounds.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
 
 }
 
@@ -37,24 +39,26 @@ bool Menu::Update() {
 		DrawFormatString(125, 100, GetColor(0, 0, 0), "アイテム");
 		DrawFormatString(125, 200, GetColor(0, 0, 0), "装備");
 		DrawFormatString(125, 300, GetColor(0, 0, 0), "魔術");
+
+		//現在の状態に応じたアップデータを呼ぶ
 		switch (mode) {
 		case 0:
-			return updateMain();
+			return updateMain();		//項目選択
 			break;
 		case 1:
-			return updateItem();
+			return updateItem();		//アイテム使用
 			break;
 		case 2:
-			return updateEquipment();
+			return updateEquipment();	//装備の着脱
 			break;
 		case 3:
-			return updateMagic();
+			return updateMagic();		//魔術の使用
 			break;
 		case 4:
-			return updateSave();
+			return updateSave();		//セーブ（未実装)
 			break;
 		case 5:
-			return closeWindow();
+			return closeWindow();		//ウィンドウを閉じる。
 			break;
 		}
 	}
@@ -71,7 +75,7 @@ bool Menu::updateMain() {
 	DrawLine(120, 50 + 100 * mainSelect, 270, 50 + 100 * mainSelect, GetColor(0, 0, 0), 5);
 	std::weak_ptr<Player> temp;
 
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		for (int i = 0; i < pc_p->getNumMember(); i++) {
 			temp = pc_p->getMember(i);
 			temp.lock()->getName(400, 100 + 100 * i, GetColor(0, 0, 0));
@@ -143,7 +147,7 @@ bool Menu::updateMain() {
 
 bool Menu::updateItem() {
 	int end;
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		if (pc_p->getNumItem() == 0) {
 			DrawFormatString(350, 100, GetColor(0, 0, 0), "アイテムを所持していません");
 		}
@@ -155,8 +159,7 @@ bool Menu::updateItem() {
 				end = start + 10;
 			}
 			for (int i = start; i < end; i++) {
-				pc_p->getItem(i).instance->getName(400, 80 + 50 * (i - start));
-				DrawFormatString(700, 80 + 50 * (i - start), GetColor(0, 0, 0), "%d個", pc_p->getItem(i).num);
+				pc_p->GetItemName(i, 400, 80 + 50 * (i - start));
 			}
 			DrawLine(350, 120 + 50 * itemSelect, 800, 120 + 50 * itemSelect, GetColor(0, 0, 0), 5);
 
@@ -190,6 +193,15 @@ bool Menu::updateItem() {
 					subSelect = 0;
 				}
 			}
+			else if (is_select_value) {
+				if (SelectValue(pc_p->getItem(itemSelect).num)) {
+					pc_p->reduceItem(itemSelect, selected_value);
+
+					is_select_value = false;
+					selected_value = 0;
+					subSelect = -1;
+				}
+			}
 			else {
 				DrawExtendGraph(850, 400, 1050, 700, images.subwindow, TRUE);
 				DrawFormatString(900, 450, GetColor(0, 0, 0), "使う");
@@ -212,17 +224,16 @@ bool Menu::updateItem() {
 					switch (subSelect) {
 					case 0:
 						pc_p->useItemMap(itemSelect);
+						subSelect = -1;
 						break;
 					case 1:
-						if (pc_p->getItem(itemSelect).instance->getIsSell()) {
-							pc_p->delItem(itemSelect);
-						}
+						is_select_value = true;
 						break;
 					case 2:
 						pc_p->setEquipment(0, itemSelect);
+						subSelect = -1;
 						break;
 					}
-					subSelect = -1;
 				}
 				else if (Button(KEY_INPUT_B) == 1) {
 					PlaySoundMem(sounds.cancel, DX_PLAYTYPE_BACK, TRUE);
@@ -271,7 +282,7 @@ bool Menu::updateItem() {
 
 bool Menu::updateEquipment() {
 	std::weak_ptr<Player> temp;
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		temp = pc_p->getMember(0);
 		DrawFormatString(400, 100, GetColor(0, 0, 0), "武器  : ");
 		temp.lock()->getEquipment(1)->getName(600, 100);
@@ -372,7 +383,9 @@ bool Menu::updateEquipment() {
 
 bool Menu::updateMagic() {
 	std::weak_ptr<Player> temp;
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+
+	//weakから実態を受け取る
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		temp = pc_p->getMember(0);
 	}
 	else {
@@ -381,6 +394,7 @@ bool Menu::updateMagic() {
 	}
 	int skip = 0;
 	int end;
+	//魔術の記述上限を10に設定する。所持数がそれ以下なら、最大値を上限にする。
 	if (temp.lock()->getNumMagicMap() < 10 || temp.lock()->getNumMagicMap() < start + 10) {
 		end = temp.lock()->getNumMagicMap();
 	}
@@ -388,10 +402,12 @@ bool Menu::updateMagic() {
 		end = start + 10;
 	}
 	std::vector<std::shared_ptr<Magic>> all_magics = temp.lock()->getMagics();
+	std::vector<std::shared_ptr<Magic>> useable_magics;
 	int escape_count = 0; //マップで使用できない魔術を回避した回数
-	for (int i = start; i < end; i++) {
+	for (int i = start; i < end + 1; i++) {
 		if (all_magics.at(i)->getIsMap()) {
 			all_magics.at(i)->getName(400, 100 + 50 * (i - escape_count));
+			useable_magics.push_back(all_magics.at(i));
 		}
 		else {
 			escape_count++;
@@ -429,7 +445,7 @@ bool Menu::updateMagic() {
 		}
 	}
 	else if (subSelect == 100) {
-		if (temp.lock()->getMagic(magicSelect)->effectMap()) {
+		if (useable_magics.at(magicSelect)->effectMap(temp.lock())) {
 			subSelect = -1;
 		}
 	}
@@ -470,7 +486,7 @@ bool Menu::updateMagic() {
 		else if (Button(KEY_INPUT_SPACE) == 1) {
 			PlaySoundMem(sounds.enter, DX_PLAYTYPE_BACK, TRUE);
 			if (subSelect == 0) {
-				if (temp.lock()->getMagic(magicSelect)->effectMap() != -1) {
+				if (useable_magics.at(magicSelect)->effectMap(temp.lock()) != -1) {
 					subSelect = 100;
 				}
 				else {
@@ -541,5 +557,42 @@ bool Menu::closeWindow() {
 		temp = 0;
 		return true;
 	}
+	return false;
+}
+
+bool Menu::SelectValue(int max_value) {
+	DrawExtendGraph(800, 500, 1000, 700, images.subwindow, TRUE);
+	DrawFormatString(887, 537, GetColor(0, 0, 0), "↑");
+	DrawFormatString(837, 587, GetColor(0, 0, 0), "← %d →", selected_value);
+	DrawFormatString(887, 637, GetColor(0, 0, 0), "↓");
+
+	if (Button(KEY_INPUT_UP) == 1) {
+		selected_value++;
+		if (selected_value > max_value) {
+			selected_value = max_value;
+		}
+	}
+	else if (Button(KEY_INPUT_DOWN) == 1) {
+		selected_value--;
+		if (selected_value < 0) {
+			selected_value = 0;
+		}
+	}
+	else if (Button(KEY_INPUT_LEFT) == 1) {
+		selected_value -= 10;
+		if (selected_value < 0) {
+			selected_value = 0;
+		}
+	}
+	else if (Button(KEY_INPUT_RIGHT) == 1) {
+		selected_value += 10;
+		if (selected_value > max_value) {
+			selected_value = max_value;
+		}
+	}
+	else if (Button(KEY_INPUT_SPACE) == 1 || Button(KEY_INPUT_B) == 1) {
+		return true;
+	}
+
 	return false;
 }

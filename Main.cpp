@@ -6,14 +6,15 @@
 #include "DxLib.h"
 #include "IDs.h"
 #include "M_Functions.h"
-#include "MapControl.h"
-#include "PartyControl.h"
+#include "MapControll.h"
+#include "PartyControll.h"
 #include "Battle_Stage.h"
 
 using player_ptr = std::shared_ptr<Player> ;
 
 int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine, int CmdShow)
 {
+	//ChangeWindowMode(true);	SetGraphMode(1920, 1200, 32);
 	SetGraphMode(1920, 1200, 32); // ウィンドウサイズを指定
 	SetFullScreenResolutionMode(DX_FSRESOLUTIONMODE_NATIVE);
 	SetMainWindowText("IfNotBraveman"); // ウィンドウタイトルを指定
@@ -29,55 +30,52 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	ProcessMessage(); // 割り込み処理をするときに必須
 
 	SRand(time(NULL));
-	
-	//画像ファイルの読み込み
-	int allen_image = LoadGraph("images\\剣士アレン立ち.png"); //アレンの画像
-
-	int allen_image_dead = LoadGraph("images\\剣士アレンdead.png"); //アレンの画像
 
 	// 音声ファイルの読み込み
-	int main = LoadSoundMem("sounds\\00maintheme.wav"); //メインテーマ
+	int main = LoadSoundMem("sounds\\Opening.mp3"); //メインテーマ
 	ChangeVolumeSoundMem(100, main);
 
-	//Allen allen("アレン", 496 + 160 * 5, 136 + 160 * 5, 20, 10, 3, 6, 10, new WoodSword(), new NonHead(), new LeatherArm(), new LeatherChest(), new LeatherSheild(), allen_image, 10, allen_image_dead); // アレンの構造体定義
-
+	//パーティーインスタンスを生成する。
 	player_ptr allen(new Player(ALLEN, 496 + 160 * 5, 136 + 160 * 5));
 	std::vector<player_ptr> players = { allen };
+	std:: shared_ptr<PartyControll> pc(new PartyControll(players, 0, 1000));
 
-	std:: shared_ptr<PartyControl> pc(new PartyControl(players, 0, 100));
-
+	//バトルのインスタンスを生成する。
 	std::unique_ptr<Battle_Stage> battle_stage(new Battle_Stage(pc));
 
 	int mode = TITLE;
 
 	//20 40
-	std::unique_ptr<MapControl> mapc(new MapControl(1920, 1200, 20, 40, 1, players[0], pc));
+	std::unique_ptr<MapControll> mapc(new MapControll(1920, 1200, 20, 40, 1, players[0], pc));
 
 	int image_title = LoadGraph("images\\タイトル1920 1200.png");
 
 	mode = TITLE;
 
-	while (Button(KEY_INPUT_ESCAPE) < 50 && ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0) {
+	int enemy_infomation = 0;
+
+	while (ScreenFlip() == 0 && ProcessMessage() == 0 && ClearDrawScreen() == 0 && Button(KEY_INPUT_ESCAPE) < 50) {
 		SetDrawScreen(DX_SCREEN_BACK);
 		gpUpdateKey();
 		switch (mode) {
-		case TITLE:
+		case TITLE://タイトル画面
 			if (!CheckSoundMem(main)) {
 				PlaySoundMem(main, DX_PLAYTYPE_LOOP, TRUE);
 			}
 			DrawGraph(0, 0, image_title, TRUE);
-			if (CheckHitKeyAll()) {
+			if (CheckHitKeyAll()) {//任意のキーを押したら、マップ画面に遷移する。
 				mode = MAP_NORMAL;
 				StopSoundMem(main);
 			}
 			break;
-		case MAP_NORMAL:
-			if (mapc->Update()) {
+		case MAP_NORMAL://マップ画面
+			enemy_infomation = mapc->Update();
+			if (enemy_infomation) {
 				mode = BATTLE_START;
 			}
 			break;
-		case BATTLE_START:
-			if (battle_stage->Battle_Update()) {
+		case BATTLE_START://バトル画面
+			if (battle_stage->Battle_Update(enemy_infomation)) {
 				mode = MAP_NORMAL;
 			}
 			break;

@@ -1,7 +1,7 @@
-#include "PartyControl.h"
+#include "PartyControll.h"
 #include "DxLib.h"
 
-PartyControl::PartyControl(std::vector <std::shared_ptr<Player>> players, int num, int coin) :
+PartyControll::PartyControll(std::vector <std::shared_ptr<Player>> players, int num, int coin) :
 	member(players),
 	numMagicStone(num),
 	coin(coin)
@@ -10,24 +10,29 @@ PartyControl::PartyControl(std::vector <std::shared_ptr<Player>> players, int nu
 	addItem(LEATHERARM, 1);
 	addItem(LEATHERCAP, 1);
 	addItem(PORTION, 3);
+	addItem(STEALLANCE, 1);
 }
 
-void PartyControl::delItem(int index) {
+void PartyControll::delItem(int index) {
 	items.erase(items.begin() + index);
 }
 
-void PartyControl::addItem(ID id, int num){
+//IDに基づいたアイテム追加
+void PartyControll::addItem(ID id, int num){
 	int i = 0;
+	//すでに同じIDのアイテムを所持していたら、個数を増やす。
 	for (i; i < items.size(); i++) {
 		if (items[i].id == id) {
 			items[i].num++;
 			return;
 		}
 	}
+	//なかったら、新しく追加する。
 	items.push_back(ItemData{ id, std::make_shared<Item>(Item(id)), num });
 }
 
-void PartyControl::addItem(item_ptr item, int num) {
+//ポインタに基づいたアイテム追加
+void PartyControll::addItem(item_ptr item, int num) {
 	for (auto itr = items.begin(); itr != items.end(); itr++) {
 		if (itr->id == item->getId()) {
 			itr->num++;
@@ -37,25 +42,27 @@ void PartyControl::addItem(item_ptr item, int num) {
 	items.push_back(ItemData{ item->getId(), item, num });
 }
 
-void PartyControl::reduceItem(int index, int num) {
+//アイテムの個数を減らす。
+void PartyControll::reduceItem(int index, int num) {
 	if (items[index].num > num) {
 		items[index].num -= num;
 	}
 	else {
+		//個数が0以下になるなら、項目そのものを削除する。
 		delItem(index);
 	}
 }
 
-void PartyControl::addNumMagicStone(int delta) {
+void PartyControll::addNumMagicStone(int delta) {
 	numMagicStone += delta;
 }
 
-void PartyControl::addNumCoin(int delta) {
+void PartyControll::addNumCoin(int delta) {
 	coin += delta;
 }
 
 //プレイヤーに装備させる。または、装備を変更する
-void PartyControl::setEquipment(int member_index, int item_index) {
+void PartyControll::setEquipment(int member_index, int item_index) {
 	//旧コードを補完
 	/*
 	int temp = items[item_index].instance->getIsEquip();
@@ -95,7 +102,7 @@ void PartyControl::setEquipment(int member_index, int item_index) {
 	}
 }
 
-void PartyControl::replaceEquipment(int member_index, int type) {
+void PartyControll::replaceEquipment(int member_index, int type) {
 	//旧コードを一応残しておく
 	/*
 	switch (type) {
@@ -141,10 +148,16 @@ void PartyControl::replaceEquipment(int member_index, int type) {
 	target_member->setEquipment(NOTEQUIPMENT, type);
 }
 
-void PartyControl::useItemMap(int index) {
-	items[index].instance->effectMap();
+//マップでアイテムを使用する
+void PartyControll::useItemMap(int index) {
+	items[index].instance->effectMap(member[0]);
 	items[index].num--;
 	if (items[index].num == 0) {
 		items.erase(items.begin() + index);
 	}
+}
+
+void PartyControll::GetItemName(int index, int x, int y) {
+	items[index].instance->getName(x, y);
+	DrawFormatString(x + 330, y, GetColor(0, 0, 0), "%d個", items[index].num);
 }

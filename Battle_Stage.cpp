@@ -26,8 +26,9 @@ Battle_Stage::Battle_Stage()
 	Danger = LoadGraph("images\\Danger.png");
 	result = LoadGraph("images\\Result.png");
 	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
+
 	win = LoadSoundMem("sounds\\win(test).wav");
-	nomal = LoadSoundMem("sounds\\nomal-battle.wav");
+	nomal = LoadSoundMem("sounds\\bgm01.wav");
 	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
 	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
 	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
@@ -65,7 +66,7 @@ Battle_Stage::Battle_Stage()
 	
 }
 
-Battle_Stage::Battle_Stage(std::shared_ptr<PartyControl> pc_m)
+Battle_Stage::Battle_Stage(std::shared_ptr<PartyControll> pc_m)
 {
 	pc = pc_m;
 	is_first_time = TRUE;
@@ -91,7 +92,7 @@ Battle_Stage::Battle_Stage(std::shared_ptr<PartyControl> pc_m)
 	result = LoadGraph("images\\Result.png");
 	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
 	win = LoadSoundMem("sounds\\win(test).wav");
-	nomal = LoadSoundMem("sounds\\nomal-battle.wav");
+	nomal = LoadSoundMem("sounds\\bgm01.wav");
 	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
 	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
 	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
@@ -155,19 +156,19 @@ void Battle_Stage::B_Sort()
 				std::swap(is_enemy[i], is_enemy[i + 1]);
 				swaped = true;
 			}
-			if (is_enemy[i] && !is_enemy[i + 1] && enemies[sort[i]].GetDex() < yushas[sort[i + 1]]->getDex())//今enemies、次yushasの時
+			if (is_enemy[i] && !is_enemy[i + 1] && enemies[sort[i]].getDex() < yushas[sort[i + 1]]->getDex())//今enemies、次yushasの時
 			{
 				std::swap(sort[i], sort[i + 1]);
 				std::swap(is_enemy[i], is_enemy[i + 1]);
 				swaped = true;
 			}
-			if (!is_enemy[i] && is_enemy[i + 1] && yushas[sort[i]]->getDex() < enemies[sort[i + 1]].GetDex())//今yushas、次enemiesの時
+			if (!is_enemy[i] && is_enemy[i + 1] && yushas[sort[i]]->getDex() < enemies[sort[i + 1]].getDex())//今yushas、次enemiesの時
 			{
 				std::swap(sort[i], sort[i + 1]);
 				std::swap(is_enemy[i], is_enemy[i + 1]);
 				swaped = true;
 			}
-			if (is_enemy[i] && is_enemy[i + 1] && enemies[sort[i]].GetDex() < enemies[sort[i + 1]].GetDex())//今、次ともにenemiesの時
+			if (is_enemy[i] && is_enemy[i + 1] && enemies[sort[i]].getDex() < enemies[sort[i + 1]].getDex())//今、次ともにenemiesの時
 			{
 				std::swap(sort[i], sort[i + 1]);
 				std::swap(is_enemy[i], is_enemy[i + 1]);
@@ -235,7 +236,7 @@ int Battle_Stage::PutYusha()
 	yushaLocateY.clear();
 	int putX, putY;
 	int i = 0;
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		while (i < pc_p->getNumMember())
 		{
 			putX = rand() % 6;
@@ -615,7 +616,7 @@ int Battle_Stage::PutEnemy(int biome)
 	enemies.clear();
 	enemyLocateX.clear();
 	enemyLocateY.clear();
-	Enemy USAGI("USAGI",600, 50, 10, 10, 10, "USAGI.png",0,0);
+	Enemy USAGI(HORNRABIT, 0, 0);
 	int number = 2;
 	int i = 0;
 	int putX;
@@ -690,7 +691,7 @@ int Battle_Stage::Check_Enemy_Death()
 	while (itr != enemies.end())
 	{
 		
-		if (itr->GetHp()<=0)
+		if (itr->getHp()<=0)
 		{
 			dropEXP += itr->GetEXP();
 			Dropgill += itr->GetGill();
@@ -787,7 +788,7 @@ int Battle_Stage::Enemyturn()
 	return 0;
 }
 
-int Battle_Stage::Encount_Ani()
+int Battle_Stage::Encount_Ani(int information)
 {
 	scene = 1;
 	return 0;
@@ -850,6 +851,7 @@ int Battle_Stage::WaitCommand()
 	default:
 		break;
 	}
+
 	switch (commandLayor)
 	{
 	
@@ -874,7 +876,7 @@ int Battle_Stage::WaitCommand()
 				DrawFormatStringToHandle(200, 200, GetColor(0, 0, 0), CommandFont, "ファイア\n ボール");
 				DrawLineAA(200, 245 + commandCursol[1] * 100, 360, 245 + commandCursol[1] * 100, GetColor(0, 0, 0), 4);
 				DrawLineAA(230, 285 + commandCursol[1] * 100, 330, 285 + commandCursol[1] * 100, GetColor(0, 0, 0), 4);
-				if (Button(KEY_INPUT_SPACE) >= 10)
+				if (Button(KEY_INPUT_SPACE) > 10)
 				{
 					yushas[sort[charaforcus]]->SetAniframe(0);
 					commandCursol[1] = 0;
@@ -884,7 +886,7 @@ int Battle_Stage::WaitCommand()
 			case 1:
 				DrawLineAA(200, 245 + commandCursol[1] * 100, 360, 245 + commandCursol[1] * 100, GetColor(0, 0, 0), 4);
 				DrawStringToHandle(200, 300, " ヒール", GetColor(0, 0, 0), CommandFont);
-				if (Button(KEY_INPUT_SPACE) >= 10)
+				if (Button(KEY_INPUT_SPACE) > 10)
 				{
 					yushas[sort[charaforcus]]->SetAniframe(0);
 					commandCursol[1] = 0;
@@ -902,15 +904,6 @@ int Battle_Stage::WaitCommand()
 	default:
 		break;
 	}
-		
-	
-	
-	
-	
-		
-	
-	
-	
 	yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]], 0);
 	commandCursol[0] %= 5;
 	if (commandCursol[0] < 0)
@@ -943,15 +936,15 @@ int Battle_Stage::RunAsk()
 	}
 	if (Button(KEY_INPUT_SPACE) == 1 && commandCursol[0] == 1)
 	{
-		if (rand() % 4 == 0)
+		if (rand() % 1 == 0)
 		{
 			scene = 8;
 		}
 		else
 		{
 			RunFail = true;
+			next();
 		}
-		next();
 	}
 	return 0;
 }
@@ -1027,24 +1020,55 @@ int Battle_Stage::Selectattack()
 
 int Battle_Stage::Player_attack()
 {
-	yushas[sort[charaforcus]]->DrawChar(left + B_FrameLocateX * trout_Interval + 120, up + B_FrameLocateY * trout_Interval, 1);
+
+	/*
+	memo :	敵がダメージアニメーションするように修正
+			手法は音を鳴らすタイミングでアクティブにしてその後のフレームでアニメーションを描画。
+			終了タイミングでアクティブにするのと同時に体力を減少させる
+	*/
+
+	//勇者の攻撃アニメーションを描画
+	yushas[sort[charaforcus]]->DrawChar(left + yushaLocateX[0] * trout_Interval, up + yushaLocateY[0] * trout_Interval, 1);
+	
 	Anime_frame++;
 	if (Anime_frame==30)
 	{
+		//斬撃音をならす
 		PlaySoundMem(sword, DX_PLAYTYPE_BACK);
-	}
-	if (Anime_frame>60)
-	{
+
+		//攻撃が当たった敵をアクティブにする
 		for (int i = 0; i < enemies.size(); ++i)
 		{
-			if (enemyLocateX[i] == B_FrameLocateX && enemyLocateY[i] == B_FrameLocateY)
-			{
-				enemies[i].Damage(damage(yushas[sort[charaforcus]]->getAttack(), enemies[i].GetDiffence(), 0.5));
-
+			int length = pc.lock()->getMember(0)->getEquipment().weapon->getAttackLength();
+			int dx = B_FrameLocateX - yushaLocateX[0];
+			int dy = B_FrameLocateY - yushaLocateY[0];
+			for (int temp = 0; temp < length; temp++) {
+				if (enemyLocateX[i] == B_FrameLocateX + dx * temp && enemyLocateY[i] == B_FrameLocateY + dy * temp)
+				{
+					enemies[i].Activate();
+				}
 			}
 		}
+	}
 
+	//敵のダメージアニメーションを描画する
+	if (Anime_frame > 30) {
+		for (int i = 0; i < enemies.size(); ++i) {
+			if (enemies[i].GetActive()) {
+				enemies[i].DrawEnemy(left + trout_Interval * enemyLocateX[i], up + trout_Interval * enemyLocateY[i], 2);
+			}
+		}
+	}
+	//敵を非アクティブにしてダメージをダメージを与える
+	if (Anime_frame>60)
+	{
 		yushas[sort[charaforcus]]->Activate();
+		for (int i = 0; i < enemies.size(); i++) {
+			if (enemies[i].GetActive()) {
+				enemies[i].Damage(damage(yushas[sort[charaforcus]]->getAttack(), enemies[i].getDiffence(), 0.5));
+				enemies[i].Activate();
+			}
+		}
 		next();
 	}
 	
@@ -1077,23 +1101,31 @@ int Battle_Stage::Player_Move()
 
 int Battle_Stage::Enemy_Attack()
 {
-	enemies[sort[charaforcus]].DrawEnemy(left + trout_Interval * enemyLockonX + 120, up + EnemyLockonY * trout_Interval , 0);
+	//敵の攻撃アニメーションを描画
+	enemies[sort[charaforcus]].DrawEnemy(left + trout_Interval * enemyLockonX + 32, up + EnemyLockonY * trout_Interval , 3);
 	Anime_frame++;
-	if (Anime_frame==20)
+	if (Anime_frame == 150) {
+		yushas[0]->Activate();
+	}
+	if (Anime_frame > 150) {
+		yushas[0]->DrawChar(left + yushaLocateX[0] * trout_Interval, up + yushaLocateY[0] * trout_Interval, 2);
+	}
+
+	if (Anime_frame==165)
 	{
 		PlaySoundMem(punch, DX_PLAYTYPE_BACK, true);
 	}
-	if (Anime_frame>40)
+	if (Anime_frame>170)
 	{
 		for (int i = 0; i < yushas.size(); ++i)
 		{
 			if (yushaLocateX[i] == enemyLockonX && yushaLocateY[i] == EnemyLockonY)
 			{
-				yushas[i]->Damage(damage(enemies[sort[charaforcus]].GetAttack(), yushas[i]->getDiffence(), 0.5));
-
+				yushas[i]->Damage(damage(enemies[sort[charaforcus]].getAttack(), yushas[i]->getDiffence(), 0.5));
 			}
 		}
 		enemies[sort[charaforcus]].Activate();
+		yushas[0]->Activate();
 		next();
 	}
 	return 0;
@@ -1407,7 +1439,7 @@ int Battle_Stage::next()
 }
 
 int Battle_Stage::Result(){
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 		if (CheckSoundMem(win) == 0) {
 			StopSoundMem(nomal);
 			PlaySoundMem(win, DX_PLAYTYPE_LOOP, TRUE);
@@ -1438,8 +1470,9 @@ int Battle_Stage::Result(){
 }
 
 int Battle_Stage::Use_Fireball(){
+	static bool is_animation_fire = false;
 	troutCursol = true;
-	yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]],0);
+	yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]],4);
 	setB_FrameLocate(enemyLocateX[commandCursol[1]], enemyLocateY[commandCursol[1]]);
 	if (Button(KEY_INPUT_DOWN) == 1 && commandCursol[1]+1<enemies.size())
 	{
@@ -1451,40 +1484,82 @@ int Battle_Stage::Use_Fireball(){
 	}
 	if (Button(KEY_INPUT_SPACE) == 1)
 	{
-		enemies[commandCursol[1]].Damage(yushas[sort[charaforcus]]->getMagicPower() + 5);
-		yushas[sort[charaforcus]]->Activate();
-		next();
-		commandLayor = 0;
-		troutCursol = false;
+		is_animation_fire = true;
 	}
 	if (Button(KEY_INPUT_B) == 1)
 	{
 		commandLayor = 0;
 		troutCursol = false;
 	}
+
+	//炎のアニメーションを描画できるように変更
+
+	if (is_animation_fire) {
+
+		Anime_frame++;
+
+		if (Anime_frame == 1) {
+			for (int i = 0; i < enemies.size(); ++i)
+			{
+				if (enemyLocateX[i] == B_FrameLocateX && enemyLocateY[i] == B_FrameLocateY)
+				{
+					enemies[i].Activate();
+				}
+			}
+		}
+		if (Anime_frame > 1) {
+			for (int i = 0; i < enemies.size(); ++i) {
+				if (enemies[i].GetActive()) {
+					enemies[i].DrawEnemy(left + trout_Interval * enemyLocateX[i], up + trout_Interval * enemyLocateY[i], 2);
+				}
+			}
+		}
+
+		Magic(FIREBALL).draw_battle(left + trout_Interval * enemyLocateX[commandCursol[1]] + 50, up + trout_Interval * enemyLocateY[commandCursol[1]], Anime_frame);
+
+
+		if (Anime_frame > 90) {
+			enemies[commandCursol[1]].Damage(yushas[sort[charaforcus]]->getMagicPower() + 5);
+			yushas[sort[charaforcus]]->Activate();
+			next();
+			commandLayor = 0;
+			troutCursol = false;
+			is_animation_fire = false;
+			for (int i = 0; i < enemies.size(); ++i)
+			{
+				if (enemyLocateX[i] == B_FrameLocateX && enemyLocateY[i] == B_FrameLocateY)
+				{
+					enemies[i].Activate();
+				}
+			}
+		}
+	}
 	return 0;
 }
 
 int  Battle_Stage::Use_heal(){
-	
-	yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]],0);
-	DrawExtendGraph(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]], left + trout_Interval * yushaLocateX[sort[charaforcus]] + 128, up + trout_Interval * yushaLocateY[sort[charaforcus]] +128,heal[Anime_frame/10],true);
 	Anime_frame++;
-	if (Anime_frame > 80)
-	{
-		yushas[sort[charaforcus]]->Damage(-1 * yushas[sort[charaforcus]]->getMagicPower());
-		yushas[sort[charaforcus]]->Activate();
-		next();
-		commandLayor = 0;
+	if (Anime_frame < 65) {
+		yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]], 4);
+	}else{
+		yushas[sort[charaforcus]]->DrawChar(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]], 0);
+		DrawExtendGraph(left + trout_Interval * yushaLocateX[sort[charaforcus]], up + trout_Interval * yushaLocateY[sort[charaforcus]], left + trout_Interval * yushaLocateX[sort[charaforcus]] + 128, up + trout_Interval * yushaLocateY[sort[charaforcus]] + 128, heal[Anime_frame / 10], true);
+		if (Anime_frame > 145)
+		{
+			yushas[sort[charaforcus]]->Damage(-1 * yushas[sort[charaforcus]]->getMagicPower());
+			yushas[sort[charaforcus]]->Activate();
+			next();
+			commandLayor = 0;
+		}
 	}
+	
 	
 	return 0;
 }
 
-bool Battle_Stage::Battle_Update()
+bool Battle_Stage::Battle_Update(int encount_information)
 {
-	if (std::shared_ptr<PartyControl> pc_p = pc.lock()) {
-		pc_p->getMember(0)->DrawSta(1500, 50);
+	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 
 		if (is_first_time == true)
 		{
@@ -1494,33 +1569,48 @@ bool Battle_Stage::Battle_Update()
 			is_first_time = false;
 			first();
 		}
-
+		//背景を描画
 		Draw_BattleStage();
+		//コマンドを描画
 		DrawBattleWindow(scene);
+		//プレイヤーのステータスを描画
+		for (int index = 0; index < pc_p->getNumMember(); index++) {
+			pc_p->getMember(0)->DrawSta(1500, 50 + 200 * index);
+		}
+
 		if (Button(KEY_INPUT_LSHIFT) > 0)
 		{
+			/*
+			memo :	動いてないっぽい
+					たぶん画像が読み込めていない
+			*/
 			Draw_Danger_Zone();
 		}
+		//マップ上を選択するモード
 		if (troutCursol == TRUE)
 		{
 			switch (scene)
 			{
 			case 3:
+				//動ける場所を表示する
 				DrawCanMove(sort[charaforcus]);
 				break;
 			case 4:
+				//攻撃できる場所を表示する
 				Draw_can_attack(sort[charaforcus]);
 				break;
 			default:
 				break;
 			}
+			//カーソルを表示する
 			DrawTroutCursol();
 		}
+		//バトルキャラを表示する。
 		DrawBattleCharacter();
 		switch (scene)
 		{
 		case 0:// エンカウント時のアニメーション表示
-			Encount_Ani();
+			Encount_Ani(encount_information);
 			break;
 		case 1:// 逃げるか逃げないか選ばせる
 			RunAsk();
@@ -1546,16 +1636,16 @@ bool Battle_Stage::Battle_Update()
 		case 8:// バトル終了
 			Result();
 			break;
-		case 9:
+		case 9://敵の攻撃
 			Enemy_Attack();
 			break;
-		case 10:
+		case 10://敵の移動
 			Enemy_Move();
 			break;
-		case 11:
+		case 11://回復魔術を使用
 			Use_heal();
 			break;
-		default:
+		default://初期化
 			is_first_time = TRUE;
 			troutCursol = FALSE;
 			charaforcus = 0;
@@ -1567,10 +1657,12 @@ bool Battle_Stage::Battle_Update()
 			Random = 0;
 			Battle_End = false;
 			pc_p->addNumCoin(Dropgill);
+			commandCursol[0] = 0;
 
 			dropEXP = 0;
 			Dropgill = 0;
 
+			StopSoundMem(win);
 			return true;
 			break;
 		}

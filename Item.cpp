@@ -2,6 +2,8 @@
 #include <string>
 #include "DxLib.h"
 #include "IDs.h"
+#include "Player.h"
+
 
 Item::Item(std::string name, ID id, int price, bool is_sell, int image, int is_equip):
 	name(name),
@@ -9,7 +11,8 @@ Item::Item(std::string name, ID id, int price, bool is_sell, int image, int is_e
 	price{price, (int)price / 2},
 	isSell(is_sell),
 	image(image),
-	isEquip{false, false, false, false}
+	isEquip{false, false, false, false},
+	attack_length(0)
 {
 	switch (is_equip)
 	{
@@ -38,7 +41,8 @@ Item::Item(ID id) :
 	price{0, 0},
 	isSell(true),
 	image(0),
-	isEquip{false, false, false, false}
+	isEquip{false, false, false, false},
+	attack_length(1)
 {
 	switch (id) {
 	case WOODSWORD:
@@ -64,6 +68,15 @@ Item::Item(ID id) :
 		point = 11;
 		image = 0;
 		isEquip.weapon = true;
+		break;
+	case STEALLANCE:
+		name = "“S‚Ì‚â‚è";
+		price.buy = 800;
+		price.sell = price.buy / 2;
+		point = 8;
+		image = 0;
+		isEquip.weapon = true;
+		attack_length = 2;
 		break;
 	case NOTEQUIPMENT:
 		name = "–¢‘•”õ";
@@ -146,7 +159,15 @@ int Item::getIsEquip() {
 	return 0;
 }
 
-bool Item::effectMap() {
+bool Item::effectMap(std::shared_ptr<Player> player) {
+	switch (id)
+	{
+	case PORTION:
+		player->plusHp(point);
+		break;
+	default:
+		break;
+	}
 	return false;
 }
 
