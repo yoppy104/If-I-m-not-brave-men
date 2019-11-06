@@ -25,8 +25,8 @@ Event::Event(int id) {
 		break;
 	}
 
-	text_box = LoadGraph("images\\window.png");
-	sound_enter = LoadSoundMem("sounds\\SE_enter.wav");
+	text_box = LoadGraph("images\\System\\window.png");
+	sound_enter = LoadSoundMem("sounds\\SystemES\\SE_enter.wav");
 }
 
 //設定したイベントの動作を実行する。

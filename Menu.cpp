@@ -22,14 +22,14 @@ Menu::Menu(std::shared_ptr<PartyControll> p) :
 	images{},
 	sounds{}
 {
-	images.window = LoadGraph("images\\menu.png");
-	images.pointer = LoadGraph("images\\pointer.png");
-	images.subwindow = LoadGraph("images\\command.png");
+	images.window = LoadGraph("images\\System\\menu.png");
+	images.pointer = LoadGraph("images\\System\\pointer.png");
+	images.subwindow = LoadGraph("images\\System\\command.png");
 
-	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");
-	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
-	sounds.move = LoadSoundMem("sounds\\SE_move.wav");
-	sounds.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
+	sounds.enter = LoadSoundMem("sounds\\SystemSE\\SE_enter.wav");
+	sounds.error = LoadSoundMem("sounds\\SystemSE\\SE_error.wav");
+	sounds.move = LoadSoundMem("sounds\\SystemSE\\SE_move.wav");
+	sounds.cancel = LoadSoundMem("sounds\\SystemSE\\SE_cancel.wav");
 
 }
 

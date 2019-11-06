@@ -18,21 +18,22 @@ Battle_Stage::Battle_Stage()
 	dropEXP = 0;
 	Dropgill = 0;
 
-	B_Panel = LoadGraph("images\\battlepanel.png");
-	B_BG = LoadGraph("images\\a.jpg");
-	B_Cursol = LoadGraph("images\\cursol.png");
-	B_Frame = LoadGraph("images\\battleframe.png");
-	CanMoveTrout = LoadGraph("images\\CanMoveTrout.png");
-	Danger = LoadGraph("images\\Danger.png");
-	result = LoadGraph("images\\Result.png");
-	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
+	B_Panel = LoadGraph("images\\MapTile\\battlepanel.png");
+	B_BG = LoadGraph("images\\BackGround\\a.jpg");
+	B_Cursol = LoadGraph("images\\System\\cursol.png");
+	B_Frame = LoadGraph("images\\System\\battleframe.png");
+	CanMoveTrout = LoadGraph("images\\MapTile\\CanMoveTrout.png");
+	Danger = LoadGraph("image\\Danger.png");
+	result = LoadGraph("images\\System\\Result.png");
+	game_over_image = LoadGraph("images\\BackGround\\gameover.png");
+	LoadDivGraph("images\\Effect\\Magic\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
 
-	win = LoadSoundMem("sounds\\win(test).wav");
-	nomal = LoadSoundMem("sounds\\bgm01.wav");
-	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
-	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
-	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
-	enemies_death = LoadSoundMem("sounds\\パーン.mp3");
+	win = LoadSoundMem("sounds\\BattleBGM\\win(test).wav");
+	nomal = LoadSoundMem("sounds\\BattleBGM\\bgm01.wav");
+	sword = LoadSoundMem("sounds\\BattleSE\\刀剣・斬る07.mp3");
+	punch = LoadSoundMem("sounds\\BattleSE\\手足・殴る、蹴る10.mp3");
+	run_se = LoadSoundMem("sounds\\BattleSE\\足音・草原を走る.mp3");
+	enemies_death = LoadSoundMem("sounds\\BattleSE\\パーン.mp3");
 
 	srand(time(NULL));
 	up = 136;
@@ -42,8 +43,8 @@ Battle_Stage::Battle_Stage()
 	B_FrameLocateY = -1;
 
 	CommandFont = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_4X4);
-	commandWindow = LoadGraph("images\\command.png");
-	statusWindow = LoadGraph("images\\playerdata_gray.png");
+	commandWindow = LoadGraph("images\\System\\command.png");
+	statusWindow = LoadGraph("images\\System\\playerdata_gray.png");
 	commandWindowlocateX = 100;
 	commandWindowlocateY = 100;
 	commandCursol[2] = {};
@@ -83,20 +84,21 @@ Battle_Stage::Battle_Stage(std::shared_ptr<PartyControll> pc_m)
 	dropEXP = 0;
 	Dropgill = 0;
 
-	B_Panel = LoadGraph("images\\battlepanel.png");
-	B_BG = LoadGraph("images\\a.jpg");
-	B_Cursol = LoadGraph("images\\cursol.png");
-	B_Frame = LoadGraph("images\\battleframe.png");
-	CanMoveTrout = LoadGraph("images\\CanMoveTrout.png");
+	B_Panel = LoadGraph("images\\MapTile\\battlepanel.png");
+	B_BG = LoadGraph("images\\BackGround\\a.jpg");
+	B_Cursol = LoadGraph("images\\System\\cursol.png");
+	B_Frame = LoadGraph("images\\System\\battleframe.png");
+	CanMoveTrout = LoadGraph("images\\MapTile\\CanMoveTrout.png");
 	Danger = LoadGraph("images\\Danger.png");
-	result = LoadGraph("images\\Result.png");
-	LoadDivGraph("images\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
-	win = LoadSoundMem("sounds\\win(test).wav");
-	nomal = LoadSoundMem("sounds\\bgm01.wav");
-	sword = LoadSoundMem("sounds\\刀剣・斬る07.mp3");
-	punch = LoadSoundMem("sounds\\手足・殴る、蹴る10.mp3");
-	run_se = LoadSoundMem("sounds\\足音・草原を走る.mp3");
-	enemies_death = LoadSoundMem("sounds\\パーン.mp3");
+	result = LoadGraph("images\\System\\Result.png");
+	LoadDivGraph("images\\Effect\\Magic\\Effects_Recovery.png", 8, 4, 2, 32, 32, heal);
+	win = LoadSoundMem("sounds\\BatlleBGM\\win(test).wav");
+	lose = LoadSoundMem("sounds\\BatlleBGM\\lose(test).wav");
+	nomal = LoadSoundMem("sounds\\BatlleBGM\\bgm01.wav");
+	sword = LoadSoundMem("sounds\\BattleSE\\刀剣・斬る07.mp3");
+	punch = LoadSoundMem("sounds\\BattleSE\\手足・殴る、蹴る10.mp3");
+	run_se = LoadSoundMem("sounds\\BattleSE\\足音・草原を走る.mp3");
+	enemies_death = LoadSoundMem("sounds\\BattleSE\\パーン.mp3");
 
 	srand(time(NULL));
 	up = 136;
@@ -106,8 +108,8 @@ Battle_Stage::Battle_Stage(std::shared_ptr<PartyControll> pc_m)
 	B_FrameLocateY = -1;
 
 	CommandFont = CreateFontToHandle(NULL, 40, 3, DX_FONTTYPE_ANTIALIASING_4X4);
-	commandWindow = LoadGraph("images\\command.png");
-	statusWindow = LoadGraph("images\\playerdata_gray.png");
+	commandWindow = LoadGraph("images\\System\\command.png");
+	statusWindow = LoadGraph("images\\System\\playerdata_gray.png");
 	commandWindowlocateX = 100;
 	commandWindowlocateY = 100;
 	commandCursol[2] = {};
@@ -1122,6 +1124,14 @@ int Battle_Stage::Enemy_Attack()
 			if (yushaLocateX[i] == enemyLockonX && yushaLocateY[i] == EnemyLockonY)
 			{
 				yushas[i]->Damage(damage(enemies[sort[charaforcus]].getAttack(), yushas[i]->getDiffence(), 0.5));
+
+   				if (yushas[i]->getHp() <= 0) {
+					scene = 12;
+					enemies[sort[charaforcus]].Activate();
+					yushas[0]->Activate();
+					return 0;
+					//ここ
+				}
 			}
 		}
 		enemies[sort[charaforcus]].Activate();
@@ -1557,7 +1567,20 @@ int  Battle_Stage::Use_heal(){
 	return 0;
 }
 
-bool Battle_Stage::Battle_Update(int encount_information)
+int Battle_Stage::GameOver() {
+	if (CheckSoundMem(nomal)) {
+		StopSoundMem(nomal);
+		PlaySoundMem(lose, DX_PLAYTYPE_LOOP, TRUE);
+	}
+	DrawGraph(game_over_image, 0, 0, TRUE);
+	if (Button(KEY_INPUT_SPACE) == 1) {
+		StopSoundMem(lose);
+		return -1;
+	}
+	return 0;
+}
+
+int Battle_Stage::Battle_Update(int encount_information)
 {
 	if (std::shared_ptr<PartyControll> pc_p = pc.lock()) {
 
@@ -1569,108 +1592,113 @@ bool Battle_Stage::Battle_Update(int encount_information)
 			is_first_time = false;
 			first();
 		}
-		//背景を描画
-		Draw_BattleStage();
-		//コマンドを描画
-		DrawBattleWindow(scene);
-		//プレイヤーのステータスを描画
-		for (int index = 0; index < pc_p->getNumMember(); index++) {
-			pc_p->getMember(0)->DrawSta(1500, 50 + 200 * index);
-		}
+		if (scene != 12) {
+			//背景を描画
+			Draw_BattleStage();
+			//コマンドを描画
+			DrawBattleWindow(scene);
+			//プレイヤーのステータスを描画
+			for (int index = 0; index < pc_p->getNumMember(); index++) {
+				pc_p->getMember(0)->DrawSta(1500, 50 + 200 * index);
+			}
 
-		if (Button(KEY_INPUT_LSHIFT) > 0)
-		{
-			/*
-			memo :	動いてないっぽい
-					たぶん画像が読み込めていない
-			*/
-			Draw_Danger_Zone();
-		}
-		//マップ上を選択するモード
-		if (troutCursol == TRUE)
-		{
+			if (Button(KEY_INPUT_LSHIFT) > 0)
+			{
+				/*
+				memo :	動いてないっぽい
+						たぶん画像が読み込めていない
+				*/
+				Draw_Danger_Zone();
+			}
+			//マップ上を選択するモード
+			if (troutCursol == TRUE)
+			{
+				switch (scene)
+				{
+				case 3:
+					//動ける場所を表示する
+					DrawCanMove(sort[charaforcus]);
+					break;
+				case 4:
+					//攻撃できる場所を表示する
+					Draw_can_attack(sort[charaforcus]);
+					break;
+				default:
+					break;
+				}
+				//カーソルを表示する
+				DrawTroutCursol();
+			}
+			//バトルキャラを表示する。
+			DrawBattleCharacter();
 			switch (scene)
 			{
-			case 3:
-				//動ける場所を表示する
-				DrawCanMove(sort[charaforcus]);
+			case 0:// エンカウント時のアニメーション表示
+				Encount_Ani(encount_information);
 				break;
-			case 4:
-				//攻撃できる場所を表示する
-				Draw_can_attack(sort[charaforcus]);
+			case 1:// 逃げるか逃げないか選ばせる
+				RunAsk();
 				break;
-			default:
+			case 2:// コマンド選択
+				WaitCommand();
+				break;
+			case 3:// 自キャラ移動先選択
+				SelectMove();
+				break;
+			case 4:// 自キャラ攻撃先選択
+				Selectattack();
+				break;
+			case 5:// キャラ攻撃シーン
+				Player_attack();
+				break;
+			case 6:// キャラ移動シーン
+				Player_Move();
+				break;
+			case 7:// アイテムorスキル使用シーン
+				Use_Fireball();
+				break;
+			case 8:// バトル終了
+				Result();
+				break;
+			case 9://敵の攻撃
+				Enemy_Attack();
+				break;
+			case 10://敵の移動
+				Enemy_Move();
+				break;
+			case 11://回復魔術を使用
+				Use_heal();
+				break;
+			default://初期化
+				is_first_time = TRUE;
+				troutCursol = FALSE;
+				charaforcus = 0;
+				enemyforcus = 0;
+				scene = 0;
+				number_of_character = 0;
+				Anime_frame = 0;
+				RunFail = false;
+				Random = 0;
+				Battle_End = false;
+				pc_p->addNumCoin(Dropgill);
+				commandCursol[0] = 0;
+
+				dropEXP = 0;
+				Dropgill = 0;
+
+				StopSoundMem(win);
+				return 1;
 				break;
 			}
-			//カーソルを表示する
-			DrawTroutCursol();
 		}
-		//バトルキャラを表示する。
-		DrawBattleCharacter();
-		switch (scene)
-		{
-		case 0:// エンカウント時のアニメーション表示
-			Encount_Ani(encount_information);
-			break;
-		case 1:// 逃げるか逃げないか選ばせる
-			RunAsk();
-			break;
-		case 2:// コマンド選択
-			WaitCommand();
-			break;
-		case 3:// 自キャラ移動先選択
-			SelectMove();
-			break;
-		case 4:// 自キャラ攻撃先選択
-			Selectattack();
-			break;
-		case 5:// キャラ攻撃シーン
-			Player_attack();
-			break;
-		case 6:// キャラ移動シーン
-			Player_Move();
-			break;
-		case 7:// アイテムorスキル使用シーン
-			Use_Fireball();
-			break;
-		case 8:// バトル終了
-			Result();
-			break;
-		case 9://敵の攻撃
-			Enemy_Attack();
-			break;
-		case 10://敵の移動
-			Enemy_Move();
-			break;
-		case 11://回復魔術を使用
-			Use_heal();
-			break;
-		default://初期化
-			is_first_time = TRUE;
-			troutCursol = FALSE;
-			charaforcus = 0;
-			enemyforcus = 0;
-			scene = 0;
-			number_of_character = 0;
-			Anime_frame = 0;
-			RunFail = false;
-			Random = 0;
-			Battle_End = false;
-			pc_p->addNumCoin(Dropgill);
-			commandCursol[0] = 0;
-
-			dropEXP = 0;
-			Dropgill = 0;
-
-			StopSoundMem(win);
-			return true;
-			break;
+		else {
+			return GameOver();
 		}
 	}
 	else {
 		DrawFormatString(100, 100, GetColor(255, 0, 0), "Error : pointer is deleted");
-		return true;
+		return 1;
 	}
 	
-	return false;
+	return 0;
 }

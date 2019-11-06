@@ -21,15 +21,15 @@ Cleark::Cleark(std::string name, int x, int y, std::vector<ID> item, std::vector
 		itemsInf.push_back(Item(items[i]));
 	}
 
-	image.window = LoadGraph("images\\menu.png");
-	image.subWindow = LoadGraph("images\\command.png");
-	image.pointer = LoadGraph("images\\pointer.png");
+	image.window = LoadGraph("images\\System\\menu.png");
+	image.subWindow = LoadGraph("images\\System\\command.png");
+	image.pointer = LoadGraph("images\\System\\pointer.png");
 
-	sound.coin = LoadSoundMem("sounds\\SE_coin_2.wav");
-	sound.enter = LoadSoundMem("sounds\\SE_enter.wav");
-	sound.error = LoadSoundMem("sounds\\SE_error.wav");
-	sound.move = LoadSoundMem("sounds\\SE_move.wav");
-	sound.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
+	sound.coin = LoadSoundMem("sounds\\MapSE\\SE_coin_2.wav");
+	sound.enter = LoadSoundMem("sounds\\SystemSE\\SE_enter.wav");
+	sound.error = LoadSoundMem("sounds\\SystemSE\\SE_error.wav");
+	sound.move = LoadSoundMem("sounds\\SystemSE\\SE_move.wav");
+	sound.cancel = LoadSoundMem("sounds\\SystemSE\\SE_cancel.wav");
 }
 
 //毎フレーム変化する内容をあうかう。

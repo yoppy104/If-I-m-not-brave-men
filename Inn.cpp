@@ -11,16 +11,16 @@ Inn::Inn(int pos_x, int pos_y, char name[], std::vector <std::string> text, int 
 	fade(0),
 	sounds{}
 {
-	subwindow_image = LoadGraph("images\\command.png");
+	subwindow_image = LoadGraph("images\\System\\command.png");
 
-	sounds.cancel = LoadSoundMem("sounds\\SE_cancel.wav");
-	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");
-	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
-	sounds.move = LoadSoundMem("sounds\\SE_move.wav");
-	sounds.coin = LoadSoundMem("sounds\\SE_coin_2.wav");
-	sounds.heal = LoadSoundMem("sounds\\SE_heal.wav");
+	sounds.cancel = LoadSoundMem("sounds\\SystemSE\\SE_cancel.wav");
+	sounds.enter = LoadSoundMem("sounds\\SystemSE\\SE_enter.wav");
+	sounds.error = LoadSoundMem("sounds\\SystemSE\\SE_error.wav");
+	sounds.move = LoadSoundMem("sounds\\SystemSE\\SE_move.wav");
+	sounds.coin = LoadSoundMem("sounds\\MapSE\\SE_coin_2.wav");
+	sounds.heal = LoadSoundMem("sounds\\BattleSE\\SE_heal.wav");
 	ChangeVolumeSoundMem(200, sounds.heal);
-	sounds.yado = LoadSoundMem("sounds\\SE_Yado.wav");
+	sounds.yado = LoadSoundMem("sounds\\MapSE\\SE_Yado.wav");
 }
 
 //オーバーライドして使用する。

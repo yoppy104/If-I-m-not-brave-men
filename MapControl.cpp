@@ -31,16 +31,16 @@ MapControll::MapControll(int width, int height, int x, int y, int map, std::shar
 	
 	menu = std::shared_ptr<Menu>(new Menu(pc));
 
-	sounds.main = LoadSoundMem("sounds\\bgm02.wav");
+	sounds.main = LoadSoundMem("sounds\\MapBGM\\bgm02.wav");
 	ChangeVolumeSoundMem(165, sounds.main);
 
 	createMap(MAP_NORMAL);
 
-	sounds.walk = LoadSoundMem("sounds\\“¥‚Ý‚µ‚ß‚é06.mp3");
+	sounds.walk = LoadSoundMem("sounds\\MapSE\\“¥‚Ý‚µ‚ß‚é06.mp3");
 	ChangeVolumeSoundMem(70, sounds.walk);
-	sounds.error = LoadSoundMem("sounds\\SE_error.wav");
+	sounds.error = LoadSoundMem("sounds\\System\\SE_error.wav");
 	ChangeVolumeSoundMem(255, sounds.error);
-	sounds.enter = LoadSoundMem("sounds\\SE_enter.wav");	   
+	sounds.enter = LoadSoundMem("sounds\\System\\SE_enter.wav");	   
 	/*
 	for (int i = 0; i < 24; i++) {
 		SRand(time(NULL));
@@ -110,14 +110,14 @@ void MapControll::createMap(ID id) {
 
 	switch (id) {
 	case MAP_NORMAL:
-		file_name = "datas\\worldmap.csv";
-		mapImage = LoadGraph("images\\worldmap.png");
+		file_name = "datas\\MapData\\worldmap.csv";
+		mapImage = LoadGraph("images\\MapTile\\worldmap.png");
 		mapSize.width = 100;
 		mapSize.height = 100;
 		break;
 	case MAP_HAJIET:
-		file_name = "datas\\test_map.csv";
-		mapImage = LoadGraph("images\\test_map.png");
+		file_name = "datas\\MapData\\test_map.csv";
+		mapImage = LoadGraph("images\\MapTile\\test_map.png");
 		mapSize.width = 20;
 		mapSize.height = 20;
 		break;
@@ -306,11 +306,13 @@ int MapControll::Update() {
 				point_y = positionPlayer.y;
 				break;
 			}
-			if (maps[point_x][point_y]->getIsNpc()) {
-				isChat = true;
-				isMove = false;
-				maps[point_x][point_y]->getNPC()->change_direction(positionPlayer.x, positionPlayer.y);
-				nowChat = maps[point_x][point_y]->getNPC();
+			if (IsInMap(point_x, point_y)) {
+				if (maps[point_x][point_y]->getIsNpc()) {
+					isChat = true;
+					isMove = false;
+					maps[point_x][point_y]->getNPC()->change_direction(positionPlayer.x, positionPlayer.y);
+					nowChat = maps[point_x][point_y]->getNPC();
+				}
 			}
 		}
 		//ƒƒjƒ…[‚ðŠJ‚­
@@ -393,4 +395,8 @@ bool MapControll::CheckTriggerEncount() {
 		}
 	}
 	return false;
+}
+
+bool MapControll::IsInMap(int x, int y) {
+	return (x >= 0 && x < mapSize.width) && (y >= 0 && y < mapSize.height);
 }

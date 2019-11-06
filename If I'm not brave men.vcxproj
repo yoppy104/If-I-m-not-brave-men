@@ -161,7 +161,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="Magic.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapControll.cpp" />
+    <ClCompile Include="MapControl.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="M_Functions.cpp" />
     <ClCompile Include="NPC.cpp" />
@@ -171,7 +171,6 @@
     <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\If I%27m not brave men\MapControll.h" />
     <ClInclude Include="Battle_Stage.h" />
     <ClInclude Include="Character.h" />
     <ClInclude Include="Cleark.h" />
@@ -183,11 +182,12 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="Magic.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapControll.h" />
     <ClInclude Include="Mathematic.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="M_Functions.h" />
     <ClInclude Include="NPC.h" />
-    <ClInclude Include="PartyControl.h" />
+    <ClInclude Include="PartyControll.h" />
     <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

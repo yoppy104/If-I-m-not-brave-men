@@ -50,7 +50,7 @@ Magic::Magic(ID id) :
 		usable_area = 2;
 		effect_area = 11;
 		type = FIRE;
-		LoadDivGraph("images\\Effects_Fire.png", 14, 4, 4, 128, 128, image.battle_animation);
+		LoadDivGraph("images\\Effect\\Magic\\Effects_Fire.png", 14, 4, 4, 128, 128, image.battle_animation);
 		break;
 	case HEAL:
 		name = "ÉqÅ[Éã";

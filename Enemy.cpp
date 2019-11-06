@@ -20,10 +20,10 @@ Enemy::Enemy(ID id, int x, int y) :
 		status.magicPower = 10;
 		status.mpMax = 10;
 		status.mp = status.mpMax;
-		LoadDivGraph("images\\USAGI.png", 1, 1, 1, 128, 128, images.battleMoveRight);
-		LoadDivGraph("images\\Usagi_Damage.png", 7, 7, 1, 128, 128, images.battleDamage);
-		LoadDivGraph("images\\Usagi_Attack.png", 17, 7, 3, 256, 128, images.battleUseSpecial);
-		LoadDivGraph("images\\Usagi_Walk_Map.png", 3, 3, 1, 64, 64, images.mapLeft);
+		LoadDivGraph("images\\Enemy\\HornRabit\\USAGI.png", 1, 1, 1, 128, 128, images.battleMoveRight);
+		LoadDivGraph("images\\Enemy\\HornRabit\\Usagi_Damage.png", 7, 7, 1, 128, 128, images.battleDamage);
+		LoadDivGraph("images\\Enemy\\HornRabit\\Usagi_Attack.png", 17, 7, 3, 256, 128, images.battleUseSpecial);
+		LoadDivGraph("images\\Enemy\\HornRabit\\Usagi_Walk_Map.png", 3, 3, 1, 64, 64, images.mapLeft);
 		gill = 30;
 		exp = 150;
 		break;

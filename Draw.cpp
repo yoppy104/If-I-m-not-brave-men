@@ -6,10 +6,14 @@
 #include "Player.h"
 #include "Enemy.h"
 
+/*
+memo : 現在は使用していない
+*/
+
 void battle_stage(stagedata stage) {
 	stagedata test = 1 * pow(2, 35);//見る値の範囲を36マスに限定する
-	int image_stage = LoadGraph("images\\battlepanel.png"); //通常マス
-	int image_stagenot = LoadGraph("images\\not_battlepanel.png"); //通行不能マス
+	int image_stage = LoadGraph("images\\MapTile\\battlepanel.png"); //通常マス
+	int image_stagenot = LoadGraph("images\\MapTile\\not_battlepanel.png"); //通行不能マス
 	int up = 136; //左上のy座標
 	int left = 496; //左上のx座標
 	while (test >= 1) {
@@ -85,8 +89,8 @@ void redraw_battle(stagedata stage, Enemy **_enemy, int size_enemy, Player **_pl
 }
 
 void draw_command(int sele) { //コマンド描画の関数
-	int command = LoadGraph("images\\command.png"); // コマンドパネル
-	int point = LoadGraph("images\\pointer.png"); // コマンド選択用のポインタ画像
+	int command = LoadGraph("images\\System\\command.png"); // コマンドパネル
+	int point = LoadGraph("images\\System\\pointer.png"); // コマンド選択用のポインタ画像
 
 	DrawRotaGraph(200, 400, 2.0, 0, command, TRUE); //コマンドフレームの描画
 	DrawRotaGraph(120, 220 + 100 * sele, 1.5, 0, point, TRUE); // 選択用ポインタの描画
@@ -99,8 +103,8 @@ void draw_command(int sele) { //コマンド描画の関数
 }
 
 void draw_command_do(int sele) {
-	int command = LoadGraph("images\\command.png"); // コマンドパネル
-	int point = LoadGraph("images\\pointer.png"); // コマンド選択用のポインタ画像
+	int command = LoadGraph("images\\System\\command.png"); // コマンドパネル
+	int point = LoadGraph("images\\System\\pointer.png"); // コマンド選択用のポインタ画像
 
 	DrawRotaGraph(200, 400, 2.0, 0, command, TRUE); //コマンドフレームの描画
 	DrawRotaGraph(120, 220 + 200 * sele, 1.5, 0, point, TRUE); // 選択用ポインタの描画
@@ -225,7 +229,7 @@ void draw_attack_area(int point, Player* me, int is_magic) {
 }
 
 void draw_magic_select(int select) {
-	int pointa_image = LoadGraph("images\\pointer.png");
+	int pointa_image = LoadGraph("images\\System\\pointer.png");
 	int x = (select > 8) ? 1 : 0;
 	DrawGraph(510 + 300 * x, 200 + 50 * (select % 9), pointa_image, TRUE);
 }
@@ -233,11 +237,11 @@ void draw_magic_select(int select) {
 
 void draw_attack_animation(int attack_x, int attack_y, int pos_x, int pos_y, int type, int frame) {
 	if (type == 0) {
-		int image = LoadGraph("images\\slash7.png");
+		int image = LoadGraph("images\\Effect\\Physics\\slash7.png");
 		DrawGraph(attack_x + 20 - 10 * frame, attack_y - 20 + 10 * frame, image, TRUE);
 	}
 	else if (type == 1) {
-		int image = LoadGraph("images\\slash7.png");
+		int image = LoadGraph("images\\Effect\\Physics\\slash7.png");
 		double rota = 0;
 		int dx = attack_x - pos_x;
 		int dy = attack_y - pos_y;
@@ -289,11 +293,11 @@ void draw_attack_animation(int attack_x, int attack_y, int pos_x, int pos_y, int
 		DrawRotaGraph(pos_x + (dx / 4) * frame + 64, pos_y + (dy / 4) * frame + 64, 1.0, rota, image, TRUE, FALSE);
 	}
 	else if (type == 3) {
-		int image = LoadGraph("images\\slash7.png");
+		int image = LoadGraph("images\\Effect\\Physics\\slash7.png");
 		DrawRotaGraph(attack_x + 64, attack_y + 20 - 20 + 10 * frame, 1.0, PI / 4 * 3, image, TRUE, FALSE);
 	}
 	else if (type == 4) {
-		int image = LoadGraph("images\\fireball.png");
+		int image = LoadGraph("images\\Effect\\Magic\\fireball.png");
 		int dx = attack_x - pos_x;
 		int dy = attack_y - pos_y;
 		DrawGraph(pos_x + (dx / 4) * frame, pos_y + (dy / 4) * frame, image, TRUE);

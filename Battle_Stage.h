@@ -53,6 +53,10 @@ class Battle_Stage
 	int B_FrameLocateX;
 	int B_FrameLocateY;
 
+	int lose;
+
+	int game_over_image;
+
 	std::vector<Enemy> enemies;
 	std::vector<int> enemyLocateX;
 	std::vector<int> enemyLocateY;
@@ -111,6 +115,7 @@ public:
 	int next();
 	int Use_Fireball();
 	int Use_heal();
-	bool Battle_Update(int encount_information);
+	int GameOver();
+	int Battle_Update(int encount_information);
 };
 

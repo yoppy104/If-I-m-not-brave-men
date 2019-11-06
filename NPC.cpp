@@ -13,26 +13,26 @@ NPC::NPC(int pos_x, int pos_y, std:: string name, std::vector <std::string> text
 	frame(0),
 	direction(FRONT)
 {
-	text_box = LoadGraph("images\\window.png");
+	text_box = LoadGraph("images\\System\\window.png");
 
 	switch (type) {
 	case 0:
-		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("images\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Gold hair)\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Gold hair)\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Gold hair)\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Gold hair)\\y‹à”¯’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 1:
-		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("images\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\NPC\\Mob\\Woman(Gold hair)\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\NPC\\Mob\\Woman(Gold hair)\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\NPC\\Mob\\Woman(Gold hair)\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\NPC\\Mob\\Woman(Gold hair)\\y‹à”¯—zMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 	case 2:
-		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
-		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
-		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
-		LoadDivGraph("images\\y’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Brond hair)\\y’jzMobs32Dots_2Heads_WalkOnMapª.png", 2, 2, 1, 64, 64, image.mapFront);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Brond hair)\\y’jzMobs32Dots_2Heads_WalkOnMap«.png", 2, 2, 1, 64, 64, image.mapBack);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Brond hair)\\y’jzMobs32Dots_2Heads_WalkOnMap¨.png", 3, 2, 2, 64, 64, image.mapRight);
+		LoadDivGraph("images\\NPC\\Mob\\Man(Brond hair)\\y’jzMobs32Dots_2Heads_WalkOnMap©.png", 3, 2, 2, 64, 64, image.mapLeft);
 		break;
 
 	}

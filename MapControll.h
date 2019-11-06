@@ -9,8 +9,6 @@
 
 using EnemyPtr = std::unique_ptr<Enemy>;
 
-using MapData = std::vector <std::vector<std::shared_ptr<Map>>>;
-
 //プレイヤーの向いている方向
 enum DirectionPlayer {
 	FRONT,
@@ -59,12 +57,8 @@ private:
 	//アニメーション用
 	int countFrame;
 
-	//それぞれのマップのキャッシュデータ
-	MapData village_map_data;
-	MapData world_map_data;
-
 	//マップ情報をすべて格納したコンテナ
-	MapData maps;
+	std::vector <std::vector<std::shared_ptr<Map>>> maps;
 
 	//プレイヤーの代表インスタンス
 	std::shared_ptr<Player> allen;
@@ -123,9 +117,9 @@ public:
 	//IDに合わせたマップを生成する
 	void createMap(ID id);
 
-	void SetMap();
-
 	bool CheckMoveEnemy(int x, int y);
 
 	bool CheckTriggerEncount();
+
+	bool IsInMap(int x, int y);
 };

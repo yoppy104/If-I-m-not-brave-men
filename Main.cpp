@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	SRand(time(NULL));
 
 	// 音声ファイルの読み込み
-	int main = LoadSoundMem("sounds\\Opening.mp3"); //メインテーマ
+	int main = LoadSoundMem("sounds\\SystemBGM\\Opening.mp3"); //メインテーマ
 	ChangeVolumeSoundMem(100, main);
 
 	//パーティーインスタンスを生成する。
@@ -49,7 +49,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 	//20 40
 	std::unique_ptr<MapControll> mapc(new MapControll(1920, 1200, 20, 40, 1, players[0], pc));
 
-	int image_title = LoadGraph("images\\タイトル1920 1200.png");
+	int image_title = LoadGraph("images\\BackGround\\タイトル1920 1200.png");
 
 	mode = TITLE;
 
@@ -64,7 +64,7 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 				PlaySoundMem(main, DX_PLAYTYPE_LOOP, TRUE);
 			}
 			DrawGraph(0, 0, image_title, TRUE);
-			if (CheckHitKeyAll()) {//任意のキーを押したら、マップ画面に遷移する。
+			if (AnyButton()) {//任意のキーを押したら、マップ画面に遷移する。
 				mode = MAP_NORMAL;
 				StopSoundMem(main);
 			}
@@ -76,8 +76,12 @@ int WINAPI WinMain(HINSTANCE hlnstance, HINSTANCE hPrevlnstance, LPSTR pCmdLine,
 			}
 			break;
 		case BATTLE_START://バトル画面
-			if (battle_stage->Battle_Update(enemy_infomation)) {
+			int battle = battle_stage->Battle_Update(enemy_infomation);
+			if (battle == 1) {
 				mode = MAP_NORMAL;
+			}
+			else if (battle == -1) {
+				mode = TITLE;
 			}
 			break;
 		}

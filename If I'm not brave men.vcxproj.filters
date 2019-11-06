@@ -39,9 +39,6 @@
     <Filter Include="ヘッダーファイル\Enemy">
       <UniqueIdentifier>{ab22c75e-821d-4e05-9288-fed43be7c1d5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダーファイル\Item">
-      <UniqueIdentifier>{6b257637-c3c6-418f-997e-9f657d2e8b35}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダーファイル\Magic">
       <UniqueIdentifier>{05c8155c-d669-461c-9c7e-afaa5cbbb14c}</UniqueIdentifier>
     </Filter>
@@ -71,6 +68,9 @@
     </Filter>
     <Filter Include="ヘッダーファイル\NPC">
       <UniqueIdentifier>{16f2254f-cf36-47b7-a32f-2955088379ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Map\Item">
+      <UniqueIdentifier>{6b257637-c3c6-418f-997e-9f657d2e8b35}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -104,14 +104,14 @@
     <ClCompile Include="NPC.cpp">
       <Filter>ソース ファイル\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="MapControl.cpp">
+      <Filter>ソース ファイル\Map</Filter>
+    </ClCompile>
     <ClCompile Include="Event.cpp">
       <Filter>ソース ファイル\Event</Filter>
     </ClCompile>
     <ClCompile Include="M_Functions.cpp">
       <Filter>ソース ファイル\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Menu.cpp">
-      <Filter>ソース ファイル\Menu</Filter>
     </ClCompile>
     <ClCompile Include="PartyControl.cpp">
       <Filter>ソース ファイル\Player</Filter>
@@ -125,8 +125,8 @@
     <ClCompile Include="Battle_Stage.cpp">
       <Filter>ソース ファイル\Battle</Filter>
     </ClCompile>
-    <ClCompile Include="MapControll.cpp">
-      <Filter>ソース ファイル\Map</Filter>
+    <ClCompile Include="Menu.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -143,7 +143,7 @@
       <Filter>ヘッダーファイル\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
-      <Filter>ヘッダーファイル\Item</Filter>
+      <Filter>ヘッダーファイル\Map\Item</Filter>
     </ClInclude>
     <ClInclude Include="Mathematic.h">
       <Filter>ヘッダーファイル\Material</Filter>
@@ -160,17 +160,11 @@
     <ClInclude Include="NPC.h">
       <Filter>ヘッダーファイル\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>ヘッダーファイル\Event</Filter>
-    </ClInclude>
     <ClInclude Include="M_Functions.h">
       <Filter>ヘッダーファイル\Material</Filter>
     </ClInclude>
     <ClInclude Include="Menu.h">
       <Filter>ヘッダーファイル\Menu</Filter>
-    </ClInclude>
-    <ClInclude Include="PartyControl.h">
-      <Filter>ヘッダーファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="Cleark.h">
       <Filter>ヘッダーファイル\NPC</Filter>
@@ -181,8 +175,14 @@
     <ClInclude Include="Battle_Stage.h">
       <Filter>ヘッダーファイル\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="..\If I%27m not brave men\MapControll.h">
+    <ClInclude Include="Event.h">
+      <Filter>ヘッダーファイル\Map\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="MapControll.h">
       <Filter>ヘッダーファイル\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="PartyControll.h">
+      <Filter>ヘッダーファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

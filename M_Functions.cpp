@@ -20,3 +20,12 @@ int gpUpdateKey() {
 int Button(int Keycode) {
 	return Key[Keycode];
 }
+
+bool AnyButton() {
+	for (int i = 0; i < 256; i++) {
+		if (Key[i] == 1) {
+			return true;
+		}
+	}
+	return false;
+}

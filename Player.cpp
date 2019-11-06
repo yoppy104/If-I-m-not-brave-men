@@ -28,7 +28,7 @@ magics{
 	std::make_shared<Magic>(Magic(HEAL))
 }
 {
-	StaWindow = LoadGraph("images\\playerdata_gray.png");
+	StaWindow = LoadGraph("images\\System\\playerdata_gray.png");
 	Font = CreateFontToHandle(NULL, 30, -1, DX_FONTTYPE_ANTIALIASING);
 	switch (id) {
 	case ALLEN:		//アレンの場合
@@ -41,15 +41,15 @@ magics{
 		status.diffence = 5;
 		status.dex = 10;
 		status.magicPower = 10;
-		LoadDivGraph("images\\キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, images.mapFront);
-		LoadDivGraph("images\\キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
-		LoadDivGraph("images\\キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
-		LoadDivGraph("images\\キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
-		LoadDivGraph("images\\Alen32Dots_Wait_Syagami_3.png", 4, 4, 1, 128, 128, images.battleWait);
-		LoadDivGraph("images\\Alen32Dots_Walk.png", 4, 4, 1, 128, 128, images.battleMoveLeft);
-		LoadDivGraph("images\\Alen32Dots_Damage2.png", 7, 7, 1, 128, 128, images.battleDamage);
-		LoadDivGraph("images\\Alen32Dots_Attack_3.png", 4, 4, 1, 128, 128, images.battleAttackLeft);
-		LoadDivGraph("images\\Alen32Dots_MagicCharge.png", 13, 13, 1, 128, 128, images.battleUseSpecial);
+		LoadDivGraph("images\\Player\\Allen\\Map\\キャラチップ_アレン_正面.jpg", 2, 2, 1, 64, 64, images.mapFront);
+		LoadDivGraph("images\\Player\\Allen\\Map\\キャラチップ_アレン_背面1.jpg", 2, 2, 1, 64, 64, images.mapBack);
+		LoadDivGraph("images\\Player\\Allen\\Map\\キャラチップ_アレン_右.jpg", 4, 4, 1, 64, 64, images.mapRight);
+		LoadDivGraph("images\\Player\\Allen\\Map\\キャラチップ_アレン_左.jpg", 4, 4, 1, 64, 64, images.mapLeft);
+		LoadDivGraph("images\\Player\\Allen\\Battle\\Alen32Dots_Wait_Syagami_3.png", 4, 4, 1, 128, 128, images.battleWait);
+		LoadDivGraph("images\\Player\\Allen\\Battle\\Alen32Dots_Walk.png", 4, 4, 1, 128, 128, images.battleMoveLeft);
+		LoadDivGraph("images\\Player\\Allen\\Battle\\Alen32Dots_Damage2.png", 7, 7, 1, 128, 128, images.battleDamage);
+		LoadDivGraph("images\\Player\\Allen\\Battle\\Alen32Dots_Attack_3.png", 4, 4, 1, 128, 128, images.battleAttackLeft);
+		LoadDivGraph("images\\Player\\Allen\\Battle\\Alen32Dots_MagicCharge.png", 13, 13, 1, 128, 128, images.battleUseSpecial);
 		break;
 	case IMITIA:	//イミティアの場合
 		name = "イミティア";
