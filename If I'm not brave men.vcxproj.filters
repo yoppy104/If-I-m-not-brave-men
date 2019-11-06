@@ -104,9 +104,6 @@
     <ClCompile Include="NPC.cpp">
       <Filter>ソース ファイル\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="MapControl.cpp">
-      <Filter>ソース ファイル\Map</Filter>
-    </ClCompile>
     <ClCompile Include="Event.cpp">
       <Filter>ソース ファイル\Event</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="Battle_Stage.cpp">
       <Filter>ソース ファイル\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="MapControll.cpp">
+      <Filter>ソース ファイル\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -154,9 +154,6 @@
     <ClInclude Include="Magic.h">
       <Filter>ヘッダーファイル\Magic</Filter>
     </ClInclude>
-    <ClInclude Include="MapControl.h">
-      <Filter>ヘッダーファイル\Map</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>ヘッダーファイル\Map</Filter>
     </ClInclude>
@@ -183,6 +180,9 @@
     </ClInclude>
     <ClInclude Include="Battle_Stage.h">
       <Filter>ヘッダーファイル\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\If I%27m not brave men\MapControll.h">
+      <Filter>ヘッダーファイル\Map</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
